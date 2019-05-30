@@ -2,10 +2,6 @@
 	"folders": [
 		{
 			"path": "."
-		},
-		{
-			"name": "Moisture Manager",
-			"path": "C:\\Users\\benjamin.mcgaw\\Documents\\PlatformIO\\Projects\\Moisture Manager"
 		}
 	],
 	"settings": {
