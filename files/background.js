@@ -1,53 +1,51 @@
-// Regex-pattern to check URLs against. 
-// It matches URLs like: http[s]://[...]stackoverflow.com[...]
-//var urlRegex = "https://www.educationperfect.com/*list-starter*"
-
 //Array for the target language table
-var lantoeng;
-var engtolan;
+let lantoeng = new Map();
+let engtolan = new Map();
 
 //The background page
-var bkg;
+let bkg = chrome.extension.getBackgroundPage();
 
 // A function to use as callback
-function StoreTableData(lannodes, engnodes) 
-{
-    lantoeng = new Map();
-    engtolan = new Map();
-
-    console.log("LanTable" + lannodes);
-    console.log("EngTable" + engnodes);
-
-    // for (let i = 0; i < engnodes.length; i++) 
-    // {
-    //     //const element = tablenodes[i];
-    //     let cureng = engnodes[i].getChild;
-    //     let curlan = lannodes[i].getChild;
-    //     //Add data from the current HTML element to lantoeng
-    //     lantoeng.set(curlan.textContent, cureng.textContent);
-    //     //Add data from the current HTML element to engtolan
-    //     lantoeng.set(cureng.textContent, curlan.textContent);
-
-    //     console.log("LanTable" + lannodes);
-    //     console.log("EngTable" + engnodes);
-
-    // }
+function StoreTableData_Target(lannodes) 
+{   
+    bkg.console.log("Recieved Language Nodes");
+    bkg.console.log("Lan Nodes: " + lannodes);
 }   
 
+function StoreTableData_English(engnodes) 
+{   
+    bkg.console.log("Recieved English Nodes!");
+    bkg.console.log("Eng Nodes: " + engnodes);
+}   
+
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) 
+{
+    if (changeInfo.status == 'complete' && tab.active) 
+    {
+        //If the current url is a vocabulary list
+        if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*list-starter.*/g))
+        {
+            alert("Injecting Script to Read Table");
+            chrome.tabs.executeScript(null, {
+                file: 'getanswertable.js'
+            });
+        }
+    
+    }
+    
+}); 
+
 // When the browser-action button is clicked...
-chrome.browserAction.onClicked.addListener(function (tab) {
+chrome.browserAction.onClicked.addListener(function (tab) { 
 
-    bkg = chrome.extension.getBackgroundPage();
+    bkg.console.log('Requesting Table content...');  
 
-    bkg.console.log('Requesting Table content...');
-
-    // ...check the URL of the active tab against our pattern and...
-    //if (urlRegex.test(tab.url)) {
-
+        //Request Table Data (Target Language)
+        chrome.tabs.sendMessage(tab.id, {text: 'requesting_lan'}, StoreTableData_Target);
         
-        // ...if it matches, send a message specifying a callback too
-        chrome.tabs.sendMessage(tab.id, {text: 'requesting_list'}, StoreTableData);
-        debugger;
+        //Request Table Data (Base Language)
+        chrome.tabs.sendMessage(tab.id, {text: 'requesting_eng'}, StoreTableData_English);
+
         //}
 });
 
