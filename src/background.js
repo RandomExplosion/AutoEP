@@ -35,7 +35,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab)
     
 }); 
 
-// When the browser-action button is clicked...
+//When the browser-action button is clicked...
 chrome.browserAction.onClicked.addListener(function (tab) { 
 
     bkg.console.log('Requesting Table content...');  
