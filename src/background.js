@@ -6,16 +6,21 @@ let engtolan = new Map();
 let bkg = chrome.extension.getBackgroundPage();
 
 //Callback Function For table data request
-function StoreTableData_English(tabledata) 
+function StoreTableData(tabledata) 
 {   
-    if (tabledata)
+    if (tabledata != undefined)
     {
         bkg.console.log("Recieved Table Data!");
-        bkg.console.log("Table Data: " + tabledata);
+        bkg.console.log("Creating Dictionaries");
+        for (let i = 0; i < tabledata.length; i++) //For every phrase (both languages)
+        {
+            lantoeng.set(tabledata[i][0], tabledata[i][1]); //Add it to the Target Language - Base Language Dictionary
+            engtolan.set(tabledata[i][1], tabledata[i][0]); //Add it to the Base Language - Target Language Dictionary
+        }   
     } 
     else
     {
-        bkg.console.console.error("Table Data Is NULL!");
+        bkg.console.error("Table is Empty!?");
     }
 }   
 
@@ -31,7 +36,6 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab)
                 file: 'getanswertable.js'
             });
         }
-    
     }
     
 }); 
@@ -42,12 +46,34 @@ chrome.browserAction.onClicked.addListener(function (tab) {
     bkg.console.log('Requesting Table content...');  
 
         //Request Table Data
-        chrome.tabs.sendMessage(tab.id, {text: 'requesting_lan'}, StoreTableData_Target);
+        chrome.tabs.sendMessage(tab.id, {text: 'requesting_table'}, StoreTableData);
     
-        //}
 });
 
-function LanTextToEng(stopat)
+//Translate a string from the Target Language to the Base Language
+function LanTextToEng(text2translate)
 {
+    if (lantoeng.has(text2translate)) //Check if this phrase is in the dictionary
+    {
+        let translatedtext = lantoeng.get(text2translate); //Retrieve Translated version from the dictionary
+        return translatedtext; //Return the Translated Text
+    }
+    else 
+    {
+        bkg.console.error("Dictionary Does Not Contain An Entry For This!");
+    }
+}
 
+//Translate a string from the Base Language to the Target Language
+function EngTextToLan(text2translate)
+{
+    if (engtolan.has(text2translate)) //Check if this phrase is in the dictionary
+    {
+        let translatedtext = engtolan.get(text2translate); //Retrieve Translated version from the dictionary
+        return translatedtext; //Return the Translated Text
+    }
+    else 
+    {
+        bkg.console.error("Dictionary Does Not Contain An Entry For This!");
+    }
 }
