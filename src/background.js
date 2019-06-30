@@ -5,17 +5,18 @@ let engtolan = new Map();
 //The background page
 let bkg = chrome.extension.getBackgroundPage();
 
-// A function to use as callback
-function StoreTableData_Target(lannodes) 
+//Callback Function For table data request
+function StoreTableData_English(tabledata) 
 {   
-    bkg.console.log("Recieved Language Nodes");
-    bkg.console.log("Lan Nodes: " + lannodes);
-}   
-
-function StoreTableData_English(engnodes) 
-{   
-    bkg.console.log("Recieved English Nodes!");
-    bkg.console.log("Eng Nodes: " + engnodes);
+    if (tabledata)
+    {
+        bkg.console.log("Recieved Table Data!");
+        bkg.console.log("Table Data: " + tabledata);
+    } 
+    else
+    {
+        bkg.console.console.error("Table Data Is NULL!");
+    }
 }   
 
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) 
@@ -40,12 +41,9 @@ chrome.browserAction.onClicked.addListener(function (tab) {
 
     bkg.console.log('Requesting Table content...');  
 
-        //Request Table Data (Target Language)
+        //Request Table Data
         chrome.tabs.sendMessage(tab.id, {text: 'requesting_lan'}, StoreTableData_Target);
-        
-        //Request Table Data (Base Language)
-        chrome.tabs.sendMessage(tab.id, {text: 'requesting_eng'}, StoreTableData_English);
-
+    
         //}
 });
 
