@@ -1,6 +1,7 @@
 {
     "short_name": "AutoEP",
     "name" : "AutoEP - Bot for Education Perfect",
+    "description": "A bot to auto complete education perfect tasks. Intended for Language perfect vocab tasks",
     "version": "1.0",
     "manifest_version": 2,
 
@@ -18,7 +19,6 @@
     "scripts": ["background.js"],
     "persistent": false
     },
-
     
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
     
