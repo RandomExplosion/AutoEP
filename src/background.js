@@ -5,8 +5,8 @@ let engtolan = new Map();
 //The background page
 let bkg = chrome.extension.getBackgroundPage();
 
-//Records whether the user is in-game
-var ansport = undefined;
+//Stores The Current Gamemode
+var gamemode; 
 
 //Stores The Currently Active Url
 //var url = undefined;
@@ -51,9 +51,10 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab)
         else if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*\/game\?mode=.*/g)) 
         {
             bkg.console.log('Injecting Script to Play Game >:)');
-            chrome.tabs.executeScript(tabId, {
-                file: 'readquestions.js'
-            });
+            
+                chrome.tabs.executeScript(tabId, {
+                    file: 'readquestions.js'
+                });
             
             //Record that we are in game
             //ingame = true;
@@ -84,31 +85,23 @@ chrome.browserAction.onClicked.addListener(function(tab)
     
     //Otherwise if the current webpage is a game being played
     else if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*\/game\?mode=.*/g))
-    {
-        //if (ingame = false) {
-            //Log to the console for Debugging Purposes
-            bkg.console.log('Beginning game');
-            chrome.tabs.sendMessage(tab.id, {text: 'begin_task'});
-        //}
-    }
-    
-});
-
-//When the question reading script establishes a connection
-chrome.runtime.onConnect.addListener(function(port) 
-{
-    alert("Connection Achieved!"); bkg.console.log("Achieved Connection with content script");
-    if (port.name === "questionport")
-    {
-        
+    {  
+        //Find out what gamemode is being played
         chrome.tabs.getSelected(null, function(tab) {
+            bkg.console.log('Beginning game');
             var gamemode = undefined;
             bkg.console.log("url: " + tab.url);
             debugger;
             gamemode = tab.url[tab.url.length - 1]; //Get the last character of the current url (number from 0 to 4)
             bkg.console.log("gamemode: " + gamemode);
-            ansport = port;
-            ansport.onMessage.addListener(function(msg)
+            chrome.tabs.sendMessage(tab.id, {text: 'begin_task'});
+        });
+    }
+    
+});
+
+//When we recieve a message from the question streamer (readquestion.js)
+chrome.runtime.onMessage.addListener(function(msg)
             {
                 if (msg.question)
                 {
@@ -156,7 +149,7 @@ chrome.runtime.onConnect.addListener(function(port)
                     bkg.console.error("No Question Sent!");
                 }
             });
-        });
+        
 
         /* GAMEMODE KEY: (TARGET = Language being learnt. BASE = The 1st language of the user)
         0 = TARGET text to Base text
@@ -164,8 +157,6 @@ chrome.runtime.onConnect.addListener(function(port)
         2 = Spoken TARGET to Base Text
         3 = Spoken TARGET to TARGET Text
         */
-    }
-});
 
 //Translate a string from the Target Language to the Base Language
 function LanTextToEng(text2translate)
