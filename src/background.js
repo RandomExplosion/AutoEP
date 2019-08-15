@@ -107,12 +107,15 @@ chrome.runtime.onConnect.addListener(function(port)
             debugger;
             gamemode = tab.url[tab.url.length - 1]; //Get the last character of the current url (number from 0 to 4)
             bkg.console.log("gamemode: " + gamemode);
-            port.onMessage.addListener(function(msg)
+            ansport = port;
+            ansport.onMessage.addListener(function(msg)
             {
                 if (msg.question)
                 {
                     bkg.console.log("Recieved Question: " + msg.question);
                     
+                    debugger;
+
                     //Attempt translation with error catch
                     try {
 
