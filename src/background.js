@@ -16,8 +16,8 @@ function StoreTableData(tabledata)
 {   
     if (tabledata != undefined)
     {
-        bkg.console.log('Recieved Table Data!');
-        bkg.console.log('Creating Dictionaries');
+        console.log('Recieved Table Data!');
+        console.log('Creating Dictionaries');
         for (let i = 0; i < tabledata.length; i++) //For every phrase (both languages)
         {
             lantoeng.set(tabledata[i][0], tabledata[i][1]); //Add it to the Target Language - Base Language Dictionary
@@ -26,7 +26,7 @@ function StoreTableData(tabledata)
     } 
     else
     {
-        bkg.console.error('Table is Empty!?');
+        console.error('Table is Empty!?');
     }
 }   
 
@@ -37,7 +37,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab)
         //If the current webpage is a vocabulary list
         if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*list-starter.*/g))
         {
-            bkg.console.log('Injecting Script to Read Table');
+            console.log('Injecting Script to Read Table');
             chrome.tabs.executeScript(tabId, {
                 file: 'getanswertable.js'
             });
@@ -50,7 +50,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab)
         
         else if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*\/game\?mode=.*/g)) 
         {
-            bkg.console.log('Injecting Script to Play Game >:)');
+            console.log('Injecting Script to Play Game >:)');
             
                 chrome.tabs.executeScript(tabId, {
                     file: 'readquestions.js'
@@ -63,7 +63,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab)
         //If current webpage is the test completed page
         else if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*\/test-statistics/g))
         {
-            bkg.console.log('Game Finished!');
+            console.log('Game Finished!');
         }
     }
     
@@ -77,78 +77,94 @@ chrome.browserAction.onClicked.addListener(function(tab)
     if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*list-starter.*/g))
     {
         //Log to the console for Debugging Purposes
-        bkg.console.log('Requesting Table content...');  
+        console.log('Requesting Table content...');  
 
         //Request Table Data
         chrome.tabs.sendMessage(tab.id, {text: 'requesting_table'}, StoreTableData);
     }
     
     //Otherwise if the current webpage is a game being played
-    else if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*\/game\?mode=.*/g))
-    {  
+    else if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*\/game\?mode=.*/g)){  
         //Find out what gamemode is being played
         chrome.tabs.getSelected(null, function(tab) {
-            bkg.console.log('Beginning game');
-            var gamemode = undefined;
-            bkg.console.log("url: " + tab.url);
-            debugger;
+            console.log('Beginning game');
+            console.log("url: " + tab.url);
             gamemode = tab.url[tab.url.length - 1]; //Get the last character of the current url (number from 0 to 4)
-            bkg.console.log("gamemode: " + gamemode);
-            chrome.tabs.sendMessage(tab.id, {text: 'begin_task'});
+            console.log("gamemode: " + gamemode);
+            chrome.tabs.sendMessage(tab.id, {job: 'begin_task'});
         });
     }
     
 });
 
 //When we recieve a message from the question streamer (readquestion.js)
-chrome.runtime.onMessage.addListener(function(msg)
+chrome.runtime.onMessage.addListener(function(msg){
+    if (msg.question){
+        
+        //debugger;
+
+        //Attempt translation with error catch
+        try {
+
+            var translatedstring = undefined;
+
+            //Use different Map depending on the gamemode
+            switch (gamemode)
             {
-                if (msg.question)
-                {
-                    bkg.console.log("Recieved Question: " + msg.question);
-                    
-                    debugger;
-
-                    //Attempt translation with error catch
-                    try {
-
-                        var translatedstring = undefined;
-
-                        //Use different Map depending on the gamemode
-                        switch (gamemode)
-                        {
-                            case '0': //0 = TARGET text to Base text
-                                translatedstring = LanTextToEng(msg.question); //Run the question through the map
-                                navigator.clipboard.writeText(translatedstring); //Copy It to the clipboard
-                            break;
-
-                            case '1': //BASE text to TARGET text
-                                translatedstring = EngTextToLan(msg.question); //Run the question through the map
-                                navigator.clipboard.writeText(translatedstring); //Copy It to the clipboard
-                            break;
-
-                            case '2': //Spoken TARGET to BASE TEXT <NOT IMPLIMENTED>
-                                throw "*Spoken* TARGET to BASE *Text* is not currently supported!";
-
-                            case '2': //Spoken TARGET to TARGET TEXT <NOT IMPLIMENTED>
-                                throw "*Spoken* TARGET to BASE *Text* is not currently supported!";
-
-                            //Otherwise the gamemode is unsupported
-                            default:
-                            console.error("Unsupported Game Mode: " + gamemode);
-                            break;
+                case '0': //0 = TARGET text to Base text
+                    chrome.tabs.query(
+                        { currentWindow: true, active: true },
+                        function (tabArray) {
+                      
+                            //Run the question through the map
+                            translatedstring = lantoeng.get(msg.question);
+                            
+                            console.log("Sending answer \"" + translatedstring + "\" back to content script");//Log to console
+                            //Send Answer Back to the Content Script
+                            chrome.tabs.sendMessage(tabArray[0].id, {job: 'copy', answer: translatedstring});
                         }
-                    }
-                    catch(error)
-                    {
+                    );
+                    
+                break;
 
-                    }
-                }
-                else
-                {
-                    bkg.console.error("No Question Sent!");
-                }
-            });
+                case '1': //BASE text to TARGET text
+                    //translatedstring = EngTextToLan(msg.question); //Run the question through the map
+                    chrome.tabs.query(
+                        { currentWindow: true, active: true },
+                        function (tabArray) {
+                      
+                            //Run the question through the map
+                            translatedstring = engtolan.get(msg.question);
+                            
+                            console.log("Sending answer \"" + translatedstring + "\" back to content script");//Log to console
+                            //Send Answer Back to the Content Script
+                            chrome.tabs.sendMessage(tabArray[0].id, {job: 'copy', answer: translatedstring});
+                        }
+                    );
+                break;
+
+                case '2': //Spoken TARGET to BASE TEXT <NOT IMPLIMENTED>
+                    throw "*Spoken* TARGET to BASE *Text* is not currently supported!";
+
+                case '2': //Spoken TARGET to TARGET TEXT <NOT IMPLIMENTED>
+                    throw "*Spoken* TARGET to BASE *Text* is not currently supported!";
+
+                //Otherwise the gamemode is unsupported
+                default:
+                console.error("Unsupported Game Mode: " + gamemode);
+                break;
+            }
+        }
+        catch(error)
+        {
+            alert(error);
+        }
+    }
+    else
+    {
+        console.error("No Question Sent!");
+    }
+});
         
 
         /* GAMEMODE KEY: (TARGET = Language being learnt. BASE = The 1st language of the user)
@@ -168,7 +184,7 @@ function LanTextToEng(text2translate)
     }
     else 
     {
-        bkg.console.error('Dictionary Does Not Contain An Entry For This!');
+        console.error('Dictionary Does Not Contain An Entry For This!');
     }
 
 
@@ -184,6 +200,16 @@ function EngTextToLan(text2translate)
     }
     else 
     {
-        bkg.console.error('Dictionary Does Not Contain An Entry For This!');
+        console.error('Dictionary Does Not Contain An Entry For This!');
     }
+}
+
+function correctString(startingstring){
+
+    for (let i = 0; i < startingstring.length; i++) {
+        
+
+        
+    }
+
 }
