@@ -204,12 +204,4 @@ function EngTextToLan(text2translate)
     }
 }
 
-function correctString(startingstring){
-
-    for (let i = 0; i < startingstring.length; i++) {
-        
-
-        
-    }
-
-}
+S
