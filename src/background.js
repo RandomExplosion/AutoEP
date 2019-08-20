@@ -21,12 +21,12 @@ function StoreTableData(tabledata)
 
         for (let i = 0; i < tabledata.length; i++) //For every phrase (both languages)
         {
-            lantoeng.set(tabledata[i][0].replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""), tabledata[i][1]); //Add it to the Target Language - Base Language Dictionary
-            engtolan.set(tabledata[i][1].replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""), tabledata[i][0]); //Add it to the Base Language - Target Language Dictionary
+            lantoeng.set(tabledata[i][0].replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""), tabledata[i][1].replace(/;/g, ",")); //Add it to the Target Language - Base Language Dictionary
+            engtolan.set(tabledata[i][1].replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""), tabledata[i][0].replace(/;/g, ",")); //Add it to the Base Language - Target Language Dictionary
         }   
     } 
     else
-    {
+    {   
         console.error('Table is Empty!?');
     }
 }   
@@ -115,6 +115,14 @@ chrome.runtime.onMessage.addListener(function(msg){
             //Use different Map depending on the gamemode
             switch (gamemode)   
             {
+
+            /* GAMEMODE KEY: (TARGET = Language being learnt. BASE = The 1st language of the user)
+            0 = TARGET text to Base text
+            1 = BASE text to TARGET text
+            2 = Spoken TARGET to Base Text
+            3 = Spoken TARGET to TARGET Text
+            */
+
                 case '0': //0 = TARGET text to Base text
                     chrome.tabs.query(
                         { currentWindow: true, active: true },
@@ -150,8 +158,8 @@ chrome.runtime.onMessage.addListener(function(msg){
                 case '2': //Spoken TARGET to BASE TEXT <NOT IMPLIMENTED>
                     throw "*Spoken* TARGET to BASE *Text* is not currently supported!";
 
-                case '2': //Spoken TARGET to TARGET TEXT <NOT IMPLIMENTED>
-                    throw "*Spoken* TARGET to BASE *Text* is not currently supported!";
+                case '3': //Spoken TARGET to TARGET TEXT <NOT IMPLIMENTED>
+                    throw "*Spoken* TARGET to TARGET *Text* is not currently supported!";
 
                 //Otherwise the gamemode is unsupported
                 default:
@@ -171,39 +179,5 @@ chrome.runtime.onMessage.addListener(function(msg){
 });
         
 
-        /* GAMEMODE KEY: (TARGET = Language being learnt. BASE = The 1st language of the user)
-        0 = TARGET text to Base text
-        1 = BASE text to TARGET text
-        2 = Spoken TARGET to Base Text
-        3 = Spoken TARGET to TARGET Text
-        */
+        
 
-//Translate a string from the Target Language to the Base Language
-function LanTextToEng(text2translate)
-{
-    if (lantoeng.has(text2translate)) //Check if this phrase is in the dictionary
-    {
-        let translatedtext = lantoeng.get(text2translate); //Retrieve Translated version from the dictionary
-        return translatedtext; //Return the Translated Text
-    }
-    else 
-    {
-        console.error('Dictionary Does Not Contain An Entry For This!');
-    }
-
-
-}
-
-//Translate a string from the Base Language to the Target Language
-function EngTextToLan(text2translate)
-{
-    if (engtolan.has(text2translate)) //Check if this phrase is in the dictionary
-    {
-        let translatedtext = engtolan.get(text2translate); //Retrieve Translated version from the dictionary
-        return translatedtext; //Return the Translated Text
-    }
-    else 
-    {
-        console.error('Dictionary Does Not Contain An Entry For This!');
-    }
-}
