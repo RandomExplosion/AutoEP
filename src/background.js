@@ -18,10 +18,11 @@ function StoreTableData(tabledata)
     {
         console.log('Recieved Table Data!');
         console.log('Creating Dictionaries');
+
         for (let i = 0; i < tabledata.length; i++) //For every phrase (both languages)
         {
-            lantoeng.set(tabledata[i][0], tabledata[i][1]); //Add it to the Target Language - Base Language Dictionary
-            engtolan.set(tabledata[i][1], tabledata[i][0]); //Add it to the Base Language - Target Language Dictionary
+            lantoeng.set(tabledata[i][0].replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""), tabledata[i][1]); //Add it to the Target Language - Base Language Dictionary
+            engtolan.set(tabledata[i][1].replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""), tabledata[i][0]); //Add it to the Base Language - Target Language Dictionary
         }   
     } 
     else
@@ -108,8 +109,11 @@ chrome.runtime.onMessage.addListener(function(msg){
 
             var translatedstring = undefined;
 
+            console.log(`Recieved Answer: \"${msg.question}\" from content script.`);
+            console.log(`Removing Whitespace and Punctuation: \"${msg.question.replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,"")}\" from content script.`);
+
             //Use different Map depending on the gamemode
-            switch (gamemode)
+            switch (gamemode)   
             {
                 case '0': //0 = TARGET text to Base text
                     chrome.tabs.query(
@@ -117,7 +121,7 @@ chrome.runtime.onMessage.addListener(function(msg){
                         function (tabArray) {
                       
                             //Run the question through the map
-                            translatedstring = lantoeng.get(msg.question);
+                            translatedstring = lantoeng.get(msg.question.replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""));
                             
                             console.log("Sending answer \"" + translatedstring + "\" back to content script");//Log to console
                             //Send Answer Back to the Content Script
@@ -134,7 +138,7 @@ chrome.runtime.onMessage.addListener(function(msg){
                         function (tabArray) {
                       
                             //Run the question through the map
-                            translatedstring = engtolan.get(msg.question);
+                            translatedstring = engtolan.get(msg.question.replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""));
                             
                             console.log("Sending answer \"" + translatedstring + "\" back to content script");//Log to console
                             //Send Answer Back to the Content Script

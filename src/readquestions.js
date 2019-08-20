@@ -9,9 +9,7 @@ chrome.runtime.onMessage.addListener(function (msg) {
     }
     else if (msg.job === 'copy') //If script was just sent an answer
     {
-        alert("recieved answer: " + msg.answer);
         navigator.clipboard.writeText(msg.answer);
-        alert("copied answer");
     }
 });
 
