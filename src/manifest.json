@@ -17,14 +17,25 @@
     
     "background": 
     {
-    "scripts": ["background.js"],
-    "persistent": false
+        "scripts": ["background.js"],
+        "persistent": false
     },
     
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
     
-    "browser_action": {
-    
-    "default_title": "AutoEP"
+    "browser_action": 
+    {
+        "default_title": "AutoEP"
+    },
+
+    "page_action":
+    {
+        "default_icon": 
+        {
+            "16": "icons/Orange/Icon_16.png",
+            "32": "icons/Orange/Icon_32.png",
+            "48": "icons/Orange/Icon_48.png",
+            "128": "icons/Orange/Icon_128.png"
+        }
     }
 }

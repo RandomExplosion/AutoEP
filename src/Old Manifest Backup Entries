@@ -1,4 +1,0 @@
-"content_scripts": [{
-        "matches": ["https://www.educationperfect.com/*list-starter"],
-        "js": ["getanswertable.js"]
-      }],

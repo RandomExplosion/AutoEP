@@ -12,32 +12,26 @@ var gamemode;
 //var url = undefined;
 
 //Callback Function For table data request
-function StoreTableData(tabledata) 
-{   
-    if (tabledata != undefined)
-    {
+function StoreTableData(tabledata) {   
+    if (tabledata != undefined){
         console.log('Recieved Table Data!');
         console.log('Creating Dictionaries');
 
-        for (let i = 0; i < tabledata.length; i++) //For every phrase (both languages)
-        {
+        for (let i = 0; i < tabledata.length; i++){ //For every phrase (both languages)
             lantoeng.set(tabledata[i][0].replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""), tabledata[i][1].replace(/;/g, ",")); //Add it to the Target Language - Base Language Dictionary
             engtolan.set(tabledata[i][1].replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""), tabledata[i][0].replace(/;/g, ",")); //Add it to the Base Language - Target Language Dictionary
         }   
     } 
-    else
-    {   
+    else{   
         console.error('Table is Empty!?');
     }
 }   
 
-chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) 
-{
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
     if (changeInfo.status == 'complete' && tab.active) 
     {
         //If the current webpage is a vocabulary list
-        if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*list-starter.*/g))
-        {
+        if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*list-starter.*/g)){
             console.log('Injecting Script to Read Table');
             chrome.tabs.executeScript(tabId, {
                 file: 'getanswertable.js'
@@ -49,8 +43,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab)
             // }
         }
         
-        else if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*\/game\?mode=.*/g)) 
-        {
+        else if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*\/game\?mode=.*/g)) {
             console.log('Injecting Script to Play Game >:)');
             
                 chrome.tabs.executeScript(tabId, {
@@ -62,8 +55,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab)
         }
 
         //If current webpage is the test completed page
-        else if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*\/test-statistics/g))
-        {
+        else if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*\/test-statistics/g)){
             console.log('Game Finished!');
         }
     }
@@ -75,8 +67,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab)
 chrome.browserAction.onClicked.addListener(function(tab) 
 {
     //If the current url is a vocabulary list
-    if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*list-starter.*/g))
-    {
+    if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*list-starter.*/g)){
         //Log to the console for Debugging Purposes
         console.log('Requesting Table content...');  
 
@@ -89,9 +80,9 @@ chrome.browserAction.onClicked.addListener(function(tab)
         //Find out what gamemode is being played
         chrome.tabs.getSelected(null, function(tab) {
             console.log('Beginning game');
-            console.log("url: " + tab.url);
+            console.log(`url: ${tab.url}`);
             gamemode = tab.url[tab.url.length - 1]; //Get the last character of the current url (number from 0 to 4)
-            console.log("gamemode: " + gamemode);
+            console.log(`gamemode: ${gamemode}`);
             chrome.tabs.sendMessage(tab.id, {job: 'begin_task'});
         });
     }
@@ -105,7 +96,7 @@ chrome.runtime.onMessage.addListener(function(msg){
         //debugger;
 
         //Attempt translation with error catch
-        try {
+        try{
 
             var translatedstring = undefined;
 
@@ -113,8 +104,7 @@ chrome.runtime.onMessage.addListener(function(msg){
             console.log(`Removing Whitespace and Punctuation: \"${msg.question.replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,"")}\" from content script.`);
 
             //Use different Map depending on the gamemode
-            switch (gamemode)   
-            {
+            switch (gamemode){
 
             /* GAMEMODE KEY: (TARGET = Language being learnt. BASE = The 1st language of the user)
             0 = TARGET text to Base text
@@ -124,14 +114,14 @@ chrome.runtime.onMessage.addListener(function(msg){
             */
 
                 case '0': //0 = TARGET text to Base text
-                    chrome.tabs.query(
-                        { currentWindow: true, active: true },
+                    chrome.tabs.query({
+                        currentWindow: true, active: true },
                         function (tabArray) {
-                      
-                            //Run the question through the map
+                    
+                            //Strip The question of it's punctuation and whitespace then run it through the map
                             translatedstring = lantoeng.get(msg.question.replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""));
                             
-                            console.log("Sending answer \"" + translatedstring + "\" back to content script");//Log to console
+                            console.log(`Sending answer \"${translatedstring}\" back to content script`);//Log to console
                             //Send Answer Back to the Content Script
                             chrome.tabs.sendMessage(tabArray[0].id, {job: 'copy', answer: translatedstring});
                         }
@@ -140,15 +130,14 @@ chrome.runtime.onMessage.addListener(function(msg){
                 break;
 
                 case '1': //BASE text to TARGET text
-                    //translatedstring = EngTextToLan(msg.question); //Run the question through the map
-                    chrome.tabs.query(
-                        { currentWindow: true, active: true },
+                    chrome.tabs.query({
+                        currentWindow: true, active: true },
                         function (tabArray) {
                       
-                            //Run the question through the map
+                            //Strip The question of it's punctuation and whitespace then run it through the map
                             translatedstring = engtolan.get(msg.question.replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""));
                             
-                            console.log("Sending answer \"" + translatedstring + "\" back to content script");//Log to console
+                            console.log(`Sending answer \"${translatedstring}\" back to content script`);//Log to console
                             //Send Answer Back to the Content Script
                             chrome.tabs.sendMessage(tabArray[0].id, {job: 'copy', answer: translatedstring});
                         }
@@ -163,17 +152,15 @@ chrome.runtime.onMessage.addListener(function(msg){
 
                 //Otherwise the gamemode is unsupported
                 default:
-                console.error("Unsupported Game Mode: " + gamemode);
+                console.error(`Unsupported Game Mode: ${gamemode}`);
                 break;
             }
         }
-        catch(error)
-        {
+        catch(error){
             alert(error);
         }
     }
-    else
-    {
+    else{
         console.error("No Question Sent!");
     }
 });
