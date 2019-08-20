@@ -5,6 +5,14 @@
     "version": "1.0",
     "manifest_version": 2,
 
+    "icons": 
+    {
+            "16": "icons/Orange/Icon_16.png",
+            "32": "icons/Orange/Icon_32.png",
+            "48": "icons/Orange/Icon_48.png",
+            "128": "icons/Orange/Icon_128.png"
+    },
+
     "permissions": 
     [
         "tabs",
@@ -26,16 +34,5 @@
     "browser_action": 
     {
         "default_title": "AutoEP"
-    },
-
-    "page_action":
-    {
-        "default_icon": 
-        {
-            "16": "icons/Orange/Icon_16.png",
-            "32": "icons/Orange/Icon_32.png",
-            "48": "icons/Orange/Icon_48.png",
-            "128": "icons/Orange/Icon_128.png"
-        }
     }
 }
