@@ -203,5 +203,3 @@ function EngTextToLan(text2translate)
         console.error('Dictionary Does Not Contain An Entry For This!');
     }
 }
-
-S
