@@ -1,16 +1,16 @@
 {
     "short_name": "AutoEP",
     "name" : "AutoEP - Bot for Education Perfect",
-    "description": "A bot to auto complete education perfect tasks. Intended for Language perfect vocab tasks",
+    "description": "A bot to help* complete education perfect tasks. Intended for Language perfect vocab tasks.\n #NOTE Currently Doesn't support audio tasks.",
     "version": "1.0",
     "manifest_version": 2,
 
     "icons": 
     {
-            "16": "icons/Orange/Icon_16.png",
-            "32": "icons/Orange/Icon_32.png",
-            "48": "icons/Orange/Icon_48.png",
-            "128": "icons/Orange/Icon_128.png"
+            "16": "icons/Orange/Icon_32.png",
+            "32": "icons/Orange/Icon_64.png",
+            "48": "icons/Orange/Icon_128.png",
+            "128": "icons/Orange/Icon_256.png"
     },
 
     "permissions": 
