@@ -66,7 +66,7 @@ chrome.browserAction.onClicked.addListener(function(tab)
         console.log('Requesting Table content...');  
 
         //Request Table Data
-        chrome.tabs.sendMessage(tab.id, {text: 'requesting_table'}, StoreTableData);
+        chrome.tabs.sendMessage(tab.id, {job: 'requesting_table'}, StoreTableData);
     }
     
     //Otherwise if the current webpage is a game being played
@@ -151,7 +151,7 @@ chrome.runtime.onMessage.addListener(function(msg){
             }
         }
         catch(error){
-            alert(error);
+            console.error(error);
         }
     }
     else{
