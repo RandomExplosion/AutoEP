@@ -43,7 +43,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
             // }
         }
         
-        else if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/Chinese\/.*\/game.*mode=[0123]/g)) {
+        else if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/game.*mode=[0123]/g)) {
             console.log('Injecting Script to Play Game >:)');
             
                 chrome.tabs.executeScript(tabId, {
@@ -76,7 +76,7 @@ chrome.browserAction.onClicked.addListener(function(tab)
     }
     
     //Otherwise if the current webpage is a game being played
-    else if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/Chinese\/.*\/game.*mode=[0123]/g)){  
+    else if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/game.*mode=[0123]/g)){  
         //Find out what gamemode is being played
         chrome.tabs.getSelected(null, function(tab) {
             console.log('Beginning game');
