@@ -27,70 +27,82 @@ function StoreTableData(tabledata) {
     }
 }   
 
-chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
-    if (changeInfo.status == 'complete' && tab.active) 
-    {
-        //If the current webpage is a vocabulary list
-        if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*list-starter.*/g)){
-            console.log('Injecting Script to Read Table');
-            chrome.tabs.executeScript(tabId, {
-                file: 'getanswertable.js'
-            });
-
-            // if (ingame)
-            // {
-            //     ingame = false; //Record that we are no longer in game (if we were)
-            // }
-        }
-        
-        else if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/Chinese\/.*\/game.*mode=[0123]/g)) {
-            console.log('Injecting Script to Play Game >:)');
-            
-                chrome.tabs.executeScript(tabId, {
-                    file: 'readquestions.js'
-                });
-            
-            //Record that we are in game
-            //ingame = true;
-        }
-
-        //If current webpage is the test completed page
-        else if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*\/test-statistics/g)){
-            console.log('Game Finished!');
-        }
-    }
-    
-    
-});
-
-//When the browser-action button is clicked...
-//chrome.browserAction.onClicked.addListener(function(tab) 
+//chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
 var element = document.getElementById('load');
 if (element) 
 {
     document.getElementById("load").addEventListener('click', function()
     {
-        alert("loaded!");
-        //If the current url is a vocabulary list
-        if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*list-starter.*/g)){
-            //Log to the console for Debugging Purposes
-            console.log('Requesting Table content...');  
+        chrome.tabs.query({active: true, lastFocusedWindow: true}, function(tab) 
+        {
+            var tab = tab[0];
+            var tabId = tab.id;
+            if (changeInfo.status == 'complete' && tab.active) 
+            {
+                //If the current webpage is a vocabulary list
+                if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*list-starter.*/g)){
+                    console.log('Injecting Script to Read Table');
+                    chrome.tabs.executeScript(tabId, {
+                        file: 'getanswertable.js'
+                    });
+    
+                    // if (ingame)
+                    // {
+                    //     ingame = false; //Record that we are no longer in game (if we were)
+                    // }
+                }
+                
+                else if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/Chinese\/.*\/game.*mode=[0123]/g)) {
+                    console.log('Injecting Script to Play Game >:)');
+                    
+                        chrome.tabs.executeScript(tabId, {
+                            file: 'readquestions.js'
+                        });
+                    
+                    //Record that we are in game
+                    //ingame = true;
+                }
+    
+                //If current webpage is the test completed page
+                else if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*\/test-statistics/g)){
+                    console.log('Game Finished!');
+                }
+            }
+        });
+    });
+}
 
-            //Request Table Data
-            chrome.tabs.sendMessage(tab.id, {text: 'requesting_table'}, StoreTableData);
-        }
-        
-        //Otherwise if the current webpage is a game being played
-        else if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/Chinese\/.*\/game.*mode=[0123]/g)){  
-            //Find out what gamemode is being played
-            chrome.tabs.getSelected(null, function(tab) {
-                console.log('Beginning game');
-                console.log(`url: ${tab.url}`);
-                gamemode = tab.url[tab.url.length - 1]; //Get the last character of the current url (number from 0 to 4)
-                console.log(`gamemode: ${gamemode}`);
-                chrome.tabs.sendMessage(tab.id, {job: 'begin_task'});
-            });
-        }
+//When the browser-action button is clicked...
+//chrome.browserAction.onClicked.addListener(function(tab) 
+var element = document.getElementById('start');
+if (element) 
+{
+    document.getElementById("start").addEventListener('click', function()
+    {
+        chrome.tabs.query({active: true, lastFocusedWindow: true}, function(tab) 
+        {
+            var tab = tab[0];
+            //If the current url is a vocabulary list
+            if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*list-starter.*/g)){
+                //Log to the console for Debugging Purposes
+                console.log('Requesting Table content...');  
+
+                //Request Table Data
+                chrome.tabs.sendMessage(tab.id, {text: 'requesting_table'}, StoreTableData);
+            }
+            
+            //Otherwise if the current webpage is a game being played
+            else if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/Chinese\/.*\/game.*mode=[0123]/g)){  
+                //Find out what gamemode is being played
+                chrome.tabs.getSelected(null, function(tab) {
+                    console.log('Beginning game');
+                    console.log(`url: ${tab.url}`);
+                    gamemode = tab.url[tab.url.length - 1]; //Get the last character of the current url (number from 0 to 4)
+                    console.log(`gamemode: ${gamemode}`);
+                    chrome.tabs.sendMessage(tab.id, {job: 'begin_task'});
+                });
+            }
+        });
     });
 }
 
