@@ -22,55 +22,44 @@ function StoreTableData(tabledata) {
             engtolan.set(tabledata[i][1].replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""), tabledata[i][0].replace(/;/g, ",")); //Add it to the Base Language - Target Language Dictionary
         }   
     } 
-    else{   
+    else {   
         console.error('Table is Empty!?');
     }
 }   
 
-//chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
-var element = document.getElementById('load');
-if (element) 
-{
-    document.getElementById("load").addEventListener('click', function()
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
+    if (changeInfo.status == 'complete' && tab.active) 
     {
-        chrome.tabs.query({active: true, lastFocusedWindow: true}, function(tab) 
-        {
-            var tab = tab[0];
-            var tabId = tab.id;
-            if (changeInfo.status == 'complete' && tab.active) 
-            {
-                //If the current webpage is a vocabulary list
-                if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*list-starter.*/g)){
-                    console.log('Injecting Script to Read Table');
-                    chrome.tabs.executeScript(tabId, {
-                        file: 'getanswertable.js'
-                    });
-    
-                    // if (ingame)
-                    // {
-                    //     ingame = false; //Record that we are no longer in game (if we were)
-                    // }
-                }
-                
-                else if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/Chinese\/.*\/game.*mode=[0123]/g)) {
-                    console.log('Injecting Script to Play Game >:)');
-                    
-                        chrome.tabs.executeScript(tabId, {
-                            file: 'readquestions.js'
-                        });
-                    
-                    //Record that we are in game
-                    //ingame = true;
-                }
-    
-                //If current webpage is the test completed page
-                else if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*\/test-statistics/g)){
-                    console.log('Game Finished!');
-                }
-            }
-        });
-    });
-}
+        //If the current webpage is a vocabulary list
+        if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*list-starter.*/g)){
+            console.log('Injecting Script to Read Table');
+            chrome.tabs.executeScript(tabId, {
+                file: 'getanswertable.js'
+            });
+
+            // if (ingame)
+            // {
+            //     ingame = false; //Record that we are no longer in game (if we were)
+            // }
+        }
+        
+        else if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/game.*mode=[0123]/g)) {
+            console.log('Injecting Script to Play Game >:)');
+            
+                chrome.tabs.executeScript(tabId, {
+                    file: 'readquestions.js'
+                });
+            
+            //Record that we are in game
+            //ingame = true;
+        }
+
+        //If current webpage is the test completed page
+        else if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*\/test-statistics/g)){
+            console.log('Game Finished!');
+        }
+    }
+});
 
 //When the browser-action button is clicked...
 //chrome.browserAction.onClicked.addListener(function(tab) 
@@ -79,9 +68,10 @@ if (element)
 {
     document.getElementById("start").addEventListener('click', function()
     {
-        chrome.tabs.query({active: true, lastFocusedWindow: true}, function(tab) 
+        chrome.tabs.query({currentWindow: true, active: true}, function(tab) 
         {
             var tab = tab[0];
+            //alert(tab.id);
             //If the current url is a vocabulary list
             if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*list-starter.*/g)){
                 //Log to the console for Debugging Purposes
