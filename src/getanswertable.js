@@ -11,8 +11,9 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
         //alert("PrePassLAN: " + lantable); //Display the nodelist on screen
         let strtable = Array(lannodes.length); //Create Array to store string vocab
         for (let i = 0; i<strtable.length; i++) //Make Array 2d (add space for base translation)
+        {
             strtable[i] = new Array(2);
-
+        }
         for(let i = 0; i<lannodes.length; i++)
         {
             //Copy the Target Translation for this prase to the first collumn of the array
@@ -24,5 +25,4 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
         sendResponse(strtable); //Send the nodelist back to the extention
         return true; //Indicate call to SendResponse will be Asynchronous
     }
-   
 });
