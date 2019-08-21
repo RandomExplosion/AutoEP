@@ -1,4 +1,4 @@
-alert("Script Successfully Injected >:)")
+//alert("Script Successfully Injected >:)")
 
 
 // Listen for messages
