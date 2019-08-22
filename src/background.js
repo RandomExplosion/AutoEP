@@ -107,7 +107,7 @@ if (element)
     {
         chrome.tabs.query({"currentWindow": true, "active": true}, function(tab) 
         {
-            console.log("load");
+            console.log("loading table...");
             var tab = tab[0];
             if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*list-starter.*/g)){      
                 //Log to the console for Debugging Purposes
@@ -128,7 +128,6 @@ if (element)
     {
         chrome.tabs.query({"currentWindow": true, "active": true}, function(tab) 
         {
-            console.log("start");
             var tab = tab[0];
             if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/Chinese\/.*\/game.*mode=[0123]/g)){  
                 //Find out what gamemode is being played
@@ -136,7 +135,8 @@ if (element)
                     console.log('Beginning game');
                     console.log(`url: ${tab.url}`);
                     //alert(tab.url[tab.url.length - 1]);
-                    var gamemode = tab.url[tab.url.length - 1]; //Get the last character of the current url (number from 0 to 4)
+                    //gamemode = tab.url[tab.url.length - 1]; //Get the last character of the current url (number from 0 to 4)
+                    gamemode = tab.url[tab.url.length - 1];
                     console.log(`gamemode: ${gamemode}`);
                     chrome.tabs.sendMessage(tab.id, {job: 'begin_task'});
                 });
@@ -147,21 +147,22 @@ if (element)
 
 
 //When we recieve a message from the question streamer (readquestion.js)
-chrome.runtime.onMessage.addListener(function(msg){
-    if (msg.question){
+chrome.runtime.onMessage.addListener(function(msg) {
+    if (msg.question) {
         
         //debugger;
 
         //Attempt translation with error catch
-        try{
+        try {
 
             var translatedstring = undefined;
 
             console.log(`Recieved Answer: \"${msg.question}\" from content script.`);
             console.log(`Removing Whitespace and Punctuation: \"${msg.question.replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,"")}\" from content script.`);
 
+            //alert(gamemode);
             //Use different Map depending on the gamemode
-            switch (gamemode){
+            switch (gamemode) {
 
             /* GAMEMODE KEY: (TARGET = Language being learnt. BASE = The 1st language of the user)
             0 = TARGET text to Base text
@@ -174,10 +175,10 @@ chrome.runtime.onMessage.addListener(function(msg){
                     chrome.tabs.query({
                         currentWindow: true, active: true },
                         function (tabArray) {
-                    
                             //Strip The question of it's punctuation and whitespace then run it through the map
+                            //alert("Question: " + msg.question);
                             translatedstring = lantoeng.get(msg.question.replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""));
-                            
+                            //alert("Answer: " + translatedstring);
                             console.log(`Sending answer \"${translatedstring}\" back to content script`);//Log to console
                             //Send Answer Back to the Content Script
                             chrome.tabs.sendMessage(tabArray[0].id, {job: 'copy', answer: translatedstring});
@@ -187,7 +188,7 @@ chrome.runtime.onMessage.addListener(function(msg){
                 break;
 
                 case '1': //BASE text to TARGET text
-                    chrome.tabs.query({
+                    chrome.tabs.query( {
                         currentWindow: true, active: true },
                         function (tabArray) {
                       
@@ -210,7 +211,8 @@ chrome.runtime.onMessage.addListener(function(msg){
                 //Otherwise the gamemode is unsupported
                 default:
                 //alert(gamemode);
-                console.error(`Unsupported Game Mode: ${gamemode}`);
+                //alert(`Unsupported Game Mode: ${gamemode}`);
+                console.log(`Unsupported Game Mode: ${gamemode}`);
                 break;
             }
         }

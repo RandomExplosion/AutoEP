@@ -9,16 +9,19 @@ chrome.runtime.onMessage.addListener(function (msg) {
     }
     else if (msg.job === 'copy') //If script was just sent an answer
     {
+        //alert("Copy: " + msg.answer)
         navigator.clipboard.writeText(msg.answer);
     }
 });
 
 function copyandsend() {
     //Read the question displayed on screen
-    let questiontext = document.getElementById('question-text').innerText;
-    //If the question hasn't changed since the last time we checked 
-    if(questiontext != prevquestion) {
-        prevquestion = questiontext; //Update the previous question
-        chrome.runtime.sendMessage({question: questiontext}); //Send it to the extension for processing
-    }
+    try {
+        var questiontext = document.getElementById('question-text').innerText;
+        //If the question hasn't changed since the last time we checked 
+        if(questiontext != prevquestion) {
+            prevquestion = questiontext; //Update the previous question
+            chrome.runtime.sendMessage({question: questiontext}); //Send it to the extension for processing
+        }
+    } finally {}
 }
