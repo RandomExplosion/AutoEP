@@ -3,7 +3,7 @@
 <html>
     <style type="text/css">
     body {
-      width: 500px; 
+      width: 400px; 
       height: 200px;
       position: relative;
       vertical-align:middle;
@@ -12,12 +12,19 @@
 
     <body>
         <button id="load" type="button">Load table</button>
-        <!--<p style="font-size:18px;">Number of questions to answer (leave blank for infinite):</p>
-        <input type="text" id="amount"/>-->
         <p></p>
         <button id="start" type="button">Start</button>
-        <button id="stop" type="button">Stop</button>
+        <p>*The script will auto stop when you exit the task</p> 
+
+        <button id="advanced">Advanced</button>
+        <div id="advanced-options">
+          <p></p>
+          Question answer delay: <input type="number" id="delay" placeholder="300"</>ms
+          <p></p>
+          <button id="set" type="button">Set</button>
+        </div>
 
         <script type="text/javascript" src="background.js"></script>
+        <script type="text/javascript" src="popup.js"></script>
     </body>
 </html>
