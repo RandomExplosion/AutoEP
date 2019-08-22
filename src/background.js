@@ -24,6 +24,7 @@ function StoreTableData(tabledata) {
     } 
     else {   
         console.error('Table is Empty!?');
+        //alert("Tabble is empty!?");
     }
 }   
 
@@ -63,17 +64,19 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
 
 //When the browser-action button is clicked...
 //chrome.browserAction.onClicked.addListener(function(tab) 
-var element = document.getElementById('start');
+/*
+var element = document.getElementById('load');
 if (element) 
 {
-    document.getElementById("start").addEventListener('click', function()
+    document.getElementById("load").addEventListener('click', function()
     {
-        chrome.tabs.query({currentWindow: true, active: true}, function(tab) 
+        chrome.tabs.query({"currentWindow": true, "active": true}, function(tab) 
         {
             var tab = tab[0];
-            //alert(tab.id);
             //If the current url is a vocabulary list
-            if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*list-starter.*/g)){
+            */
+            //if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*list-starter.*/g)){
+            /*
                 //Log to the console for Debugging Purposes
                 console.log('Requesting Table content...');  
 
@@ -95,6 +98,53 @@ if (element)
         });
     });
 }
+*/
+//chrome.browserAction.onClicked.addListener(function(tab) {
+var element = document.getElementById('load');
+if (element) 
+{
+    document.getElementById("load").addEventListener('click', function()
+    {
+        chrome.tabs.query({"currentWindow": true, "active": true}, function(tab) 
+        {
+            console.log("load");
+            var tab = tab[0];
+            if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*list-starter.*/g)){      
+                //Log to the console for Debugging Purposes
+                console.log('Requesting Table content...');  
+
+                //Request Table Data
+                chrome.tabs.sendMessage(tab.id, {text: 'requesting_table'}, StoreTableData);
+            }
+        });
+    });
+}
+
+//chrome.browserAction.onClicked.addListener(function(tab) {
+var element = document.getElementById('start');
+if (element) 
+{
+    document.getElementById("start").addEventListener('click', function()
+    {
+        chrome.tabs.query({"currentWindow": true, "active": true}, function(tab) 
+        {
+            console.log("start");
+            var tab = tab[0];
+            if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/Chinese\/.*\/game.*mode=[0123]/g)){  
+                //Find out what gamemode is being played
+                chrome.tabs.getSelected(null, function(tab) {
+                    console.log('Beginning game');
+                    console.log(`url: ${tab.url}`);
+                    //alert(tab.url[tab.url.length - 1]);
+                    var gamemode = tab.url[tab.url.length - 1]; //Get the last character of the current url (number from 0 to 4)
+                    console.log(`gamemode: ${gamemode}`);
+                    chrome.tabs.sendMessage(tab.id, {job: 'begin_task'});
+                });
+            }
+        });
+    });
+}
+
 
 //When we recieve a message from the question streamer (readquestion.js)
 chrome.runtime.onMessage.addListener(function(msg){
@@ -159,6 +209,7 @@ chrome.runtime.onMessage.addListener(function(msg){
 
                 //Otherwise the gamemode is unsupported
                 default:
+                //alert(gamemode);
                 console.error(`Unsupported Game Mode: ${gamemode}`);
                 break;
             }
