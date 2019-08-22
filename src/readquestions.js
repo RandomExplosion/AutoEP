@@ -21,5 +21,4 @@ function copyandsend() {
         prevquestion = questiontext; //Update the previous question
         chrome.runtime.sendMessage({question: questiontext}); //Send it to the extension for processing
     }
-    
 }
