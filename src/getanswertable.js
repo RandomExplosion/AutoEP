@@ -3,7 +3,7 @@
 // Listen for messages
 chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
     // If the received message has the expected message
-    if (msg.text === "requesting_table") {
+    if (msg.job === "requesting_table") {
         //alert("Recieved Table Request");
         let lannodes = document.querySelectorAll(".targetLanguage"); //Store the target language collumn as a nodelist
         let engnodes = document.querySelectorAll(".baseLanguage"); //Store the target language collumn as a nodelist

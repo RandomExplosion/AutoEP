@@ -83,7 +83,7 @@ if (element)
                 console.log('Requesting Table content...');  
 
                 //Request Table Data
-                chrome.tabs.sendMessage(tab.id, {text: 'requesting_table'}, StoreTableData);
+                chrome.tabs.sendMessage(tab.id, {job: 'requesting_table'}, StoreTableData);
             }
         });
     });
@@ -105,7 +105,8 @@ if (element)
             alert("NOTE: As it currently is, you will have to manually stop the ahk script after you are done [CTRL] + [SHIFT] + [ENTER]")
 
             var tab = tab[0];
-            if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/Chinese\/.*\/game.*mode=[0123]/g)){  
+            //if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/Chinese\/.*\/game.*mode=[0123]/g)) {  
+            if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/game.*mode=[0123]/g)) {  
                 //Find out what gamemode is being played
                 chrome.tabs.getSelected(null, function(tab) {
                     console.log('Beginning game');
@@ -133,7 +134,7 @@ chrome.runtime.onMessage.addListener(function(msg) {
 
             var translatedstring = undefined;
 
-            console.log(`Recieved Answer: \"${msg.question}\" from content script.`);
+            console.log(`Recieved Question: \"${msg.question}\" from content script.`);
             console.log(`Removing Whitespace and Punctuation: \"${msg.question.replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,"")}\" from content script.`);
 
             //alert(gamemode);
@@ -211,7 +212,7 @@ chrome.runtime.onMessage.addListener(function(msg) {
             }
         }
         catch(error){
-            alert(error);
+            console.error(error);
         }
     }
     else{
