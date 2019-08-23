@@ -43,22 +43,15 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
             chrome.tabs.executeScript(tabId, {
                 file: 'getanswertable.js'
             });
-
-            // if (ingame)
-            // {
-            //     ingame = false; //Record that we are no longer in game (if we were)
-            // }
         }
         
+        //If the current webpage is a game
         else if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/game.*mode=[0123]/g)) {
             console.log('Injecting Script to Play Game >:)');
             
                 chrome.tabs.executeScript(tabId, {
                     file: 'readquestions.js'
                 });
-            
-            //Record that we are in game
-            //ingame = true;
         }
 
         //If current webpage is the test completed page
