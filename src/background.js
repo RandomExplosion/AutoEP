@@ -101,7 +101,8 @@ if (element)
                 chrome.tabs.create({url: "https://www.dropbox.com/s/klqzua8zsp3qch0/edu-perfect.exe?dl=1"});        //Direct download link
             } 
             //Now you should have the file downloaded
-            alert("1. Run edu-perfect.exe\n2. Press ok on this window\n3. Click the answer input box\n4. Press [CTRL] + [SHIFT] + [ENTER]")
+            alert("1. Run edu-perfect.exe\n2. Press ok on this window\n3. Click the answer input box\n4. Press [CTRL] + [SHIFT] + [ENTER]\n*Note: It may get the first few question wrong, this is normal.")
+            alert("NOTE: AS IT CURRENTLY IS, YOU WILL HAVE TO MANUALLY STOP THE AHK SCRIPT AFTER YOU ARE DONE [CTRL] + [SHIFT] + [ENTER]")
 
             var tab = tab[0];
             if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/Chinese\/.*\/game.*mode=[0123]/g)){  
@@ -156,7 +157,13 @@ chrome.runtime.onMessage.addListener(function(msg) {
                             //alert("Answer: " + translatedstring);
                             console.log(`Sending answer \"${translatedstring}\" back to content script`);//Log to console
                             //Send Answer Back to the Content Script
-                            chrome.tabs.sendMessage(tabArray[0].id, {job: 'copy', answer: translatedstring});
+                            var accuracy = document.getElementById("accuracy").value    //Get accuracy value
+                            if (accuracy == "") {   //If it is blank, default it to 100%
+                                accuracy = 100 
+                            }
+                            if (Math.floor((Math.random() * 100) + 1) <= accuracy) {    //Get a random number and compare it with the accuracy value
+                                chrome.tabs.sendMessage(tabArray[0].id, {job: 'copy', answer: translatedstring});
+                            }
                         }
                     );
                     
@@ -172,7 +179,13 @@ chrome.runtime.onMessage.addListener(function(msg) {
                             
                             console.log(`Sending answer \"${translatedstring}\" back to content script`);//Log to console
                             //Send Answer Back to the Content Script
-                            chrome.tabs.sendMessage(tabArray[0].id, {job: 'copy', answer: translatedstring});
+                            var accuracy = document.getElementById("accuracy").value    //Get accuracy value
+                            if (accuracy == "") {   //If it is blank, default it to 100%
+                                accuracy = 100 
+                            }
+                            if (Math.floor((Math.random() * 100) + 1) <= accuracy) {    //Get a random number and compare it with the accuracy value
+                                chrome.tabs.sendMessage(tabArray[0].id, {job: 'copy', answer: translatedstring});
+                            }
                         }
                     );
                 break;
