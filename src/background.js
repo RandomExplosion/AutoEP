@@ -45,6 +45,10 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
                 file: 'getanswertable.js'
             });
 
+            // if (ingame)
+            // {
+            //     ingame = false; //Record that we are no longer in game (if we were)
+            // }
         }
         
         else if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/game.*mode=[0123]/g)) {
@@ -54,6 +58,8 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
                     file: 'readquestions.js'
                 });
             
+            //Record that we are in game
+            //ingame = true;
         }
 
         //If current webpage is the test completed page
@@ -120,7 +126,7 @@ chrome.runtime.onMessage.addListener(function(msg) {
 
             var translatedstring = undefined;
 
-            console.log(`Recieved Question: \"${msg.question}\" from content script.`);
+            console.log(`Recieved Answer: \"${msg.question}\" from content script.`);
             console.log(`Removing Whitespace and Punctuation: \"${msg.question.replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,"")}\" from content script.`);
 
             //alert(gamemode);
@@ -180,7 +186,7 @@ chrome.runtime.onMessage.addListener(function(msg) {
             }
         }
         catch(error){
-            console.error(error);
+            alert(error);
         }
     }
     else{
