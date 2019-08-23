@@ -11,12 +11,6 @@ var gamemode;
 //Stores The Currently Active Url
 //var url = undefined;
 
-//Create popup as seperate window
-//chrome.browserAction.onClicked.addListener(function() {
-//    chrome.windows.create({'url': 'popup.html', 'type': 'popup', height: 220, width:400}, function(window) {
-//    });
-//});
-
 //Callback Function For table data request
 function StoreTableData(tabledata) {   
     if (tabledata != undefined){
@@ -34,9 +28,8 @@ function StoreTableData(tabledata) {
     }
 }   
 
-chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
-    if (changeInfo.status == 'complete' && tab.active) 
-    {
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+    if (changeInfo.status == 'complete' && tab.active) {
         //If the current webpage is a vocabulary list
         if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*list-starter.*/g)){
             console.log('Injecting Script to Read Table');
@@ -62,7 +55,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
         }
 
         //If current webpage is the test completed page
-        else if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*\/test-statistics/g)){
+        else if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*\/test-statistics/g)) {
             console.log('Game Finished!');
             // TODO: Kill ahk script
         }
@@ -78,7 +71,7 @@ if (element)
         {
             console.log("loading table...");
             var tab = tab[0];
-            if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*list-starter.*/g)){      
+            if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*list-starter.*/g)) {      
                 //Log to the console for Debugging Purposes
                 console.log('Requesting Table content...');  
 
