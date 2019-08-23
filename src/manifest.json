@@ -18,6 +18,7 @@
         "tabs",
         "activeTab",
         "storage",
+        "downloads",
         "http://*/",
         "https://*/",
         "clipboardWrite"

@@ -13,10 +13,9 @@ var gamemode;
 
 //Create popup as seperate window
 //chrome.browserAction.onClicked.addListener(function() {
-//    chrome.windows.create({'url': 'popup.html', 'type': 'popup'}, function(window) {
+//    chrome.windows.create({'url': 'popup.html', 'type': 'popup', height: 220, width:400}, function(window) {
 //    });
 //});
-
 
 //Callback Function For table data request
 function StoreTableData(tabledata) {   
@@ -65,7 +64,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
         //If current webpage is the test completed page
         else if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*\/test-statistics/g)){
             console.log('Game Finished!');
-            // TODO: Write code to stop the ahk script
+            // TODO: Kill ahk script
         }
     }
 });
@@ -98,6 +97,12 @@ if (element)
     {
         chrome.tabs.query({"currentWindow": true, "active": true}, function(tab)    //Run a query for the active tab info
         {
+            //if (confirm("Do you have edu-perfect.exe downloaded? Press ok to download the file now")) {
+            //    chrome.tabs.create({url: "https://www.dropbox.com/s/klqzua8zsp3qch0/edu-perfect.exe?dl=1"});
+            //} 
+            //Now you should have the file downloaded
+            //alert("1. Run the file  2. Press ok  3. Click the answer input box  4. Press [CTRL] + [SHIFT] + [ENTER]")
+
             var tab = tab[0];
             if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/Chinese\/.*\/game.*mode=[0123]/g)){  
                 //Find out what gamemode is being played
@@ -107,6 +112,7 @@ if (element)
                     //alert(tab.url[tab.url.length - 1]);
                     gamemode = tab.url[tab.url.length - 1]; //Get the last character of the current url (number from 0 to 4)
                     console.log(`gamemode: ${gamemode}`);
+                    // TODO: Run ahk script
                     chrome.tabs.sendMessage(tab.id, {job: 'begin_task'});
                 });
             }

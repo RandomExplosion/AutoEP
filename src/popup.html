@@ -3,17 +3,23 @@
 <html>
     <style type="text/css">
     body {
-      width: 400px; 
-      height: 200px;
+      width: 220px; 
+      height: 180px;
       position: relative;
       vertical-align:middle;
     }
     </style>
 
     <body>
+        <img src="../Icons/banner.png" alt="AutoEP - Bot for Education Perfect" style="width:220px;height:100px;">
         <button id="load" type="button">Load table</button>
-        <p></p>
         <button id="start" type="button">Start</button>
+        <p></p>
+        <p>Question answer accuracy: <input type="number" id="accuracy" placeholder="100" width="30"</>%</p>
+        <p></p>
+
+        <!--
+
         <p>*The script will auto stop when you exit the task</p> 
 
         <button id="advanced">Advanced</button>
@@ -21,8 +27,11 @@
           <p></p>
           Question answer delay: <input type="number" id="delay" placeholder="300"</>ms
           <p></p>
+          **Advanced options are not implemented yet
+          <p></p>
           <button id="set" type="button">Set</button>
         </div>
+        -->
 
         <script type="text/javascript" src="background.js"></script>
         <script type="text/javascript" src="popup.js"></script>

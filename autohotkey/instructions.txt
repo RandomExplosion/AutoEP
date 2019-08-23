@@ -1,2 +1,0 @@
-Run edu-perfect.exe/ahk
-Use ([CTRL] + [SHIFT] + A) to toggle the program
