@@ -97,11 +97,11 @@ if (element)
     {
         chrome.tabs.query({"currentWindow": true, "active": true}, function(tab)    //Run a query for the active tab info
         {
-            //if (confirm("Do you have edu-perfect.exe downloaded? Press ok to download the file now")) {
-            //    chrome.tabs.create({url: "https://www.dropbox.com/s/klqzua8zsp3qch0/edu-perfect.exe?dl=1"});
-            //} 
+            if (confirm("Do you have edu-perfect.exe downloaded? Press ok to download the file now")) {
+                chrome.tabs.create({url: "https://www.dropbox.com/s/klqzua8zsp3qch0/edu-perfect.exe?dl=1"});        //Direct download link
+            } 
             //Now you should have the file downloaded
-            //alert("1. Run the file  2. Press ok  3. Click the answer input box  4. Press [CTRL] + [SHIFT] + [ENTER]")
+            alert("1. Run edu-perfect.exe\n2. Press ok on this window\n3. Click the answer input box\n4. Press [CTRL] + [SHIFT] + [ENTER]")
 
             var tab = tab[0];
             if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/Chinese\/.*\/game.*mode=[0123]/g)){  
