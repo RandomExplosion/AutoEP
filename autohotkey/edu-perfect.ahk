@@ -2,26 +2,23 @@
 
 browsers := "Chrome_WidgetWin_0,Chrome_WidgetWin_1"   ;Possible chrome names
 
-loop {
-	WinGetTitle, title, A
-	if (title == "start") {
-		loop {
-			sURL := GetActiveBrowserURL()  
-			if (sURL != "") {       ; Check if it is blank (if it is, then you aren't on chrome)
-				StringRight, lastChar, sURL, 1  ; Grab the last character of the url
-				if (lastChar == "s") {  ; Check if you are on the statistics page
-					break
-				}
-			} else {    ; If it is blank, emergency stop the script (since this means you have exited chrome)
+^+ENTER::    ; [CTRL] + [SHIFT] + [ENTER]
+	loop {
+		sURL := GetActiveBrowserURL()  
+		if (sURL != "") {       ; Check if it is blank (if it is, then you aren't on chrome)
+			StringRight, lastChar, sURL, 1  ; Grab the last character of the url
+			if (lastChar == "s") {  ; Check if you are on the statistics page
 				break
 			}
-
-			Sleep, 400 
-			SendRaw, %Clipboard%    ; Send the clipboard contents by simulating typing
-			Send, {ENTER} 
+		} else {    ; If it is blank, emergency stop the script (since this means you have exited chrome)
+			break
 		}
+
+		Sleep, 400 
+		SendRaw, %Clipboard%    ; Send the clipboard contents by simulating typing
+		Send, {ENTER} 
 	}
-}
+return
 
 GetActiveBrowserURL() {
 	global browsers
