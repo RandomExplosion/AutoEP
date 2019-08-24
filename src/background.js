@@ -84,7 +84,7 @@ if (element) {
     document.getElementById("start").addEventListener('click', function() {   //Event listener for when the 'start' button is clicked
         chrome.tabs.query({"currentWindow": true, "active": true}, function(tab) {   //Run a query for the active tab info
             if (confirm("Do you have edu-perfect.exe downloaded? Press ok to download the file now. Press cancel if you already have it downloaded.")) {
-                chrome.tabs.create({url: "https://www.dropbox.com/s/klqzua8zsp3qch0/edu-perfect.exe?dl=1"});        //Direct download link
+                chrome.tabs.create({url: "https://www.dropbox.com/s/20ds5nf7n7dkdju/edu-perfect.exe?dl=1"});        //Direct download link
             } 
             //Now you should have the file downloaded
             alert("Instructions:\n1. Run edu-perfect.exe\n2. Press ok on this window\n3. Click the answer input box\n4. Press [CTRL] + [SHIFT] + [ENTER]\n*Note: It may get the first few question or two wrong, this is normal.")
