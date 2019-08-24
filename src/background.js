@@ -24,7 +24,7 @@ function StoreTableData(tabledata) {
         console.log('Recieved Table Data!');
         console.log('Creating Dictionaries');
 
-        for (let i = 0; i < tabledata.length; i++){ //For every phrase (both languages)
+        for (let i = 0; i < tabledata.length; i++) { //For every phrase (both languages)
             lantoeng.set(tabledata[i][0].replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""), tabledata[i][1].replace(/;/g, ",")); //Add it to the Target Language - Base Language Dictionary
             engtolan.set(tabledata[i][1].replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""), tabledata[i][0].replace(/;/g, ",")); //Add it to the Base Language - Target Language Dictionary
         }   
@@ -63,13 +63,10 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 });
 
 var element = document.getElementById('load');     
-if (element) 
-{
-    document.getElementById("load").addEventListener('click', function()    //Event listener for when the 'load table' button is clicked
-    {
-        chrome.tabs.query({"currentWindow": true, "active": true}, function(tab)     //Run a query for the active tab info
-        {
-            console.log("loading table...");
+if (element) {
+    document.getElementById("load").addEventListener('click', function() {   //Event listener for when the 'load table' button is clicked
+        chrome.tabs.query({"currentWindow": true, "active": true}, function(tab) {    //Run a query for the active tab info
+            console.log("Loading table...");
             var tab = tab[0];
             if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*list-starter.*/g)) {      
                 //Log to the console for Debugging Purposes
@@ -84,12 +81,9 @@ if (element)
 
 
 var element = document.getElementById('start');
-if (element) 
-{
-    document.getElementById("start").addEventListener('click', function()    //Event listener for when the 'start' button is clicked
-    {
-        chrome.tabs.query({"currentWindow": true, "active": true}, function(tab)    //Run a query for the active tab info
-        {
+if (element) {
+    document.getElementById("start").addEventListener('click', function() {   //Event listener for when the 'start' button is clicked
+        chrome.tabs.query({"currentWindow": true, "active": true}, function(tab) {   //Run a query for the active tab info
             if (confirm("Do you have edu-perfect.exe downloaded? Press ok to download the file now. Press cancel if you already have it downloaded.")) {
                 chrome.tabs.create({url: "https://www.dropbox.com/s/klqzua8zsp3qch0/edu-perfect.exe?dl=1"});        //Direct download link
             } 
@@ -98,7 +92,6 @@ if (element)
             alert("NOTE: As it currently is, you will have to manually stop the ahk script after you are done [CTRL] + [SHIFT] + [ENTER]")
 
             var tab = tab[0];
-            //if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/Chinese\/.*\/game.*mode=[0123]/g)) {  
             if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/game.*mode=[0123]/g)) {  
                 //Find out what gamemode is being played
                 chrome.tabs.getSelected(null, function(tab) {
