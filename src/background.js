@@ -83,12 +83,8 @@ var element = document.getElementById('start');
 if (element) {
     document.getElementById("start").addEventListener('click', function() {   //Event listener for when the 'start' button is clicked
         chrome.tabs.query({"currentWindow": true, "active": true}, function(tab) {   //Run a query for the active tab info
-            if (confirm("Do you have edu-perfect.exe downloaded? Press ok to download the file now. Press cancel if you already have it downloaded.")) {
-                alert("NOTE: After downloading the file, you will have to re-load the table");
-                chrome.tabs.create({url: "https://www.dropbox.com/s/20ds5nf7n7dkdju/edu-perfect.exe?dl=1"});        //Direct download link
-            } 
-            //Now you should have the file downloaded
-            alert("Instructions:\n1. Run edu-perfect.exe\n2. Press ok on this window\n3. Click the answer input box\n4. Press [CTRL] + [SHIFT] + [ENTER]\n*Note: It may get the first few question or two wrong, this is normal.")
+            alert("Please run edu-perfect.exe now");
+            alert("After dismissing this alert, please select the answer entry box and press [CTRL] + [SHIFT] + [ENTER]\n*Note: It may get the first few question or two wrong, this is normal.");
 
             var tab = tab[0];
             if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/game.*mode=[0123]/g)) {  

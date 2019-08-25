@@ -1,13 +1,13 @@
 #SingleInstance force
 
-browsers := "Chrome_WidgetWin_0,Chrome_WidgetWin_1"   ;Possible chrome names
+browsers := "Chrome_WidgetWin_0,Chrome_WidgetWin_1"   ; Possible chrome names
 
 ^+ENTER::    ; [CTRL] + [SHIFT] + [ENTER]
 	loop {
 		sURL := GetActiveBrowserURL()  
 		if (sURL != "") {       ; Check if it is blank (if it is, then you aren't on chrome)
-			StringRight, lastChar, sURL, 1  ; Grab the last character of the url
-			if (lastChar == "s") {  ; Check if you are on the statistics page
+			StringRight, lastChars, sURL, 15  ; Grab the last character of the url
+			if (lastChars == "test-statistics") {  ; Check if you are on the statistics page and end the script
 				break
 			}
 		} else {    ; If it is blank, emergency stop the script (since this means you have exited chrome)
@@ -19,6 +19,28 @@ browsers := "Chrome_WidgetWin_0,Chrome_WidgetWin_1"   ;Possible chrome names
 		Send, {ENTER} 
 	}
 return
+
+
+; This below code would be able to start running by itself. Unfortunately, due to unforseen issues with something that education perfect has running in the background. 
+;																  It flags chrome that something is messing with it and tells the user that the connection is unsecure.
+;loop {
+;	sURL := GetActiveBrowserURL()    ; Get browser url
+;
+;	StringRight, lastChars, sURL, 11  ; Grab the last 11 characters of the url
+;	StringTrimRight, lastChars, lastChars, 1  ; Remove the last char of the url (since this can be different on the game page)
+;	if (lastChars == "game?mode=") {	; Check if you are on the game page. If so, start the script
+;		loop {
+;			sURL := GetActiveBrowserURL()  ; Get browser url
+;			StringRight, lastChars, sURL, 15  ; Grab the last 15 characters of the url
+;			if (lastChars == "test-statistics") {  ; Check if you are on the statistics page and end the script
+;				break
+;			}
+;			Sleep, 400 
+;			SendRaw, %Clipboard%    ; Send the clipboard contents by simulating typing
+;			Send, {ENTER} 
+;		}
+;	}
+;}
 
 GetActiveBrowserURL() {
 	global browsers
@@ -83,8 +105,9 @@ GetAddressBar(accObj) {
 			return accAddressBar
 }
 
-IsURL(sURL) {   ; No clue how this works, copied this off stack overflow. It checks if what is parsed is a url or not
-	return RegExMatch(sURL, "^(?<Protocol>https?|ftp)://(?<Domain>(?:[\w-]+\.)+\w\w+)(?::(?<Port>\d+))?/?(?<Path>(?:[^:/?# ]*/?)+)(?:\?(?<Query>[^#]+)?)?(?:\#(?<Hash>.+)?)?$")	 
+IsURL(sURL) {   ; Check whether parsed value is a url or not
+	;return RegExMatch(sURL, "^(?<Protocol>https?|ftp)://(?<Domain>(?:[\w-]+\.)+\w\w+)(?::(?<Port>\d+))?/?(?<Path>(?:[^:/?# ]*/?)+)(?:\?(?<Query>[^#]+)?)?(?:\#(?<Hash>.+)?)?$")	 
+	return RegExMatch(sURL, "^(?<Protocol>https?|ftp)://")
 }
 
 
