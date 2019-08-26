@@ -6,41 +6,20 @@ browsers := "Chrome_WidgetWin_0,Chrome_WidgetWin_1"   ; Possible chrome names
 	loop {
 		sURL := GetActiveBrowserURL()  
 		if (sURL != "") {       ; Check if it is blank (if it is, then you aren't on chrome)
-			StringRight, lastChars, sURL, 15  ; Grab the last character of the url
-			if (lastChars == "test-statistics") {  ; Check if you are on the statistics page and end the script
-				break
+			StringRight, lastChars, sURL, 11  ; Grab the last characters of the url
+			StringTrimRight, lastChars, lastChars, 1 ; Remove the last character of the url
+			if (lastChars != "game?mode=") {  ; Check if you are on not on the game page
+				break	; Exit the loop if you aren't
 			}
-		} else {    ; If it is blank, emergency stop the script (since this means you have exited chrome)
+		} else {    ; If it is blank, stop the script (since this means you have exited chrome)
 			break
 		}
 
-		Sleep, 400 
+		Sleep, 300 
 		SendRaw, %Clipboard%    ; Send the clipboard contents by simulating typing
 		Send, {ENTER} 
 	}
 return
-
-
-; This below code would be able to start running by itself. Unfortunately, due to unforseen issues with something that education perfect has running in the background. 
-;																  It flags chrome that something is messing with it and tells the user that the connection is unsecure.
-;loop {
-;	sURL := GetActiveBrowserURL()    ; Get browser url
-;
-;	StringRight, lastChars, sURL, 11  ; Grab the last 11 characters of the url
-;	StringTrimRight, lastChars, lastChars, 1  ; Remove the last char of the url (since this can be different on the game page)
-;	if (lastChars == "game?mode=") {	; Check if you are on the game page. If so, start the script
-;		loop {
-;			sURL := GetActiveBrowserURL()  ; Get browser url
-;			StringRight, lastChars, sURL, 15  ; Grab the last 15 characters of the url
-;			if (lastChars == "test-statistics") {  ; Check if you are on the statistics page and end the script
-;				break
-;			}
-;			Sleep, 400 
-;			SendRaw, %Clipboard%    ; Send the clipboard contents by simulating typing
-;			Send, {ENTER} 
-;		}
-;	}
-;}
 
 GetActiveBrowserURL() {
 	global browsers

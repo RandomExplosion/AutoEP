@@ -8,15 +8,11 @@ let bkg = chrome.extension.getBackgroundPage();
 //Stores The Current Gamemode
 var gamemode; 
 
+//Stores the accuracy
+var accuracy;
+
 //Stores The Currently Active Url
 //var url = undefined;
-
-// Check whether extension is newly installed
-chrome.runtime.onInstalled.addListener(function(details) {
-    if (details.reason == "install") {   // || details.reason == "update") {      //Check whether it is a new install
-        alert("NOTE: While using this extension, the inspect element window (of the popup) needs to be open. (I'm trying to fix this)")
-    }
-});
 
 //Callback Function For table data request
 function StoreTableData(tabledata) {   
@@ -61,46 +57,60 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     }
 });
 
-var element = document.getElementById('load');     
-if (element) {
-    document.getElementById("load").addEventListener('click', function() {   //Event listener for when the 'load table' button is clicked
-        chrome.tabs.query({"currentWindow": true, "active": true}, function(tab) {    //Run a query for the active tab info
-            console.log("Loading table...");
-            var tab = tab[0];
-            if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*list-starter.*/g)) {      
-                //Log to the console for Debugging Purposes
-                console.log('Requesting Table content...');  
+chrome.runtime.onMessage.addListener (function(msg) {   //Listener for the events from the popup
+    if (msg.job == "load") {
+        load();
+    }
+    if (msg.job == "start") {
+        accuracy = msg.accuracy
+        start();
+    }
+});
 
-                //Request Table Data
-                chrome.tabs.sendMessage(tab.id, {job: 'requesting_table'}, StoreTableData);
-            }
-        });
+//var element = document.getElementById('load');     
+//if (element) {
+//    document.getElementById("load").addEventListener('click', function() {   //Event listener for when the 'load table' button is clicked
+function load() {
+    chrome.tabs.query({"currentWindow": true, "active": true}, function(tab) {    //Run a query for the active tab info
+        console.log("Loading table...");
+        var tab = tab[0];
+        if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*list-starter.*/g)) {      
+            //Log to the console for Debugging Purposes
+            console.log('Requesting Table content...');  
+
+            //Request Table Data
+            chrome.tabs.sendMessage(tab.id, {job: 'requesting_table'}, StoreTableData);
+        }
     });
 }
+//    });
+//}
 
 
-var element = document.getElementById('start');
-if (element) {
-    document.getElementById("start").addEventListener('click', function() {   //Event listener for when the 'start' button is clicked
-        chrome.tabs.query({"currentWindow": true, "active": true}, function(tab) {   //Run a query for the active tab info
-            alert("Please run edu-perfect.exe now");
-            alert("After dismissing this alert, please select the answer entry box and press [CTRL] + [SHIFT] + [ENTER]\n*Note: It may get the first few question or two wrong, this is normal.");
+//var element = document.getElementById('start');
+//if (element) {
+//    document.getElementById("start").addEventListener('click', function() {   //Event listener for when the 'start' button is clicked
+function start() {
+    chrome.tabs.query({"currentWindow": true, "active": true}, function(tab) {   //Run a query for the active tab info
+        //alert("Please run edu-perfect.exe now");
+        //alert("After dismissing this alert, please select the answer entry box and press [CTRL] + [SHIFT] + [ENTER]\n*Note: It may take a few seconds to get started.");
 
-            var tab = tab[0];
-            if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/game.*mode=[0123]/g)) {  
-                //Find out what gamemode is being played
-                chrome.tabs.getSelected(null, function(tab) {
-                    console.log('Beginning game');
-                    console.log(`url: ${tab.url}`);
-                    //alert(tab.url[tab.url.length - 1]);
-                    gamemode = tab.url[tab.url.length - 1]; //Get the last character of the current url (number from 0 to 4)
-                    console.log(`gamemode: ${gamemode}`);
-                    chrome.tabs.sendMessage(tab.id, {job: 'begin_task'});
-                });
-            }
-        });
+        var tab = tab[0];
+        if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/game.*mode=[0123]/g)) {  
+            //Find out what gamemode is being played
+            chrome.tabs.getSelected(null, function(tab) {
+                console.log('Beginning game');
+                console.log(`url: ${tab.url}`);
+                //alert(tab.url[tab.url.length - 1]);
+                gamemode = tab.url[tab.url.length - 1]; //Get the last character of the current url (number from 0 to 4)
+                console.log(`gamemode: ${gamemode}`);
+                chrome.tabs.sendMessage(tab.id, {job: 'begin_task'});
+            });
+        }
     });
 }
+//    });
+//}
 
 
 //When we recieve a message from the question streamer (readquestion.js)
@@ -138,14 +148,7 @@ chrome.runtime.onMessage.addListener(function(msg) {
                             //alert("Answer: " + translatedstring);
                             console.log(`Sending answer \"${translatedstring}\" back to content script`);//Log to console
                             //Send Answer Back to the Content Script
-                            var accuracy = document.getElementById("accuracy").value    //Get accuracy value
-                            if (accuracy == "" || accuracy > 100) {   //If it is blank or over 100, default it to 100%
-                                accuracy = 100 
-                            }
-                            if (accuracy < 0) {     //If it is below zero, set it to 0%
-                                accuracy = 0
-                            }
-                            if (Math.floor((Math.random() * 100) + 1) <= accuracy) {    //Get a random number and compare it with the accuracy value
+                            if (Math.floor((Math.random() * 100) + 1) <= accuracy) {    //Get a random number and compare it with the accuracy value 
                                 chrome.tabs.sendMessage(tabArray[0].id, {job: 'copy', answer: translatedstring});
                             }
                         }
@@ -163,14 +166,7 @@ chrome.runtime.onMessage.addListener(function(msg) {
                             
                             console.log(`Sending answer \"${translatedstring}\" back to content script`);//Log to console
                             //Send Answer Back to the Content Script
-                            var accuracy = document.getElementById("accuracy").value    //Get accuracy value
-                            if (accuracy == "" || accuracy > 100) {   //If it is blank or over 100, default it to 100%
-                                accuracy = 100 
-                            }
-                            if (accuracy < 0) {     //If it is below zero, set it to 0%
-                                accuracy = 0
-                            }
-                            if (Math.floor((Math.random() * 100) + 1) <= accuracy) {    //Get a random number and compare it with the accuracy value
+                            if (Math.floor((Math.random() * 100) + 1) <= accuracy) {    //Get a random number and compare it with the accuracy value  
                                 chrome.tabs.sendMessage(tabArray[0].id, {job: 'copy', answer: translatedstring});
                             }
                         }
@@ -191,11 +187,12 @@ chrome.runtime.onMessage.addListener(function(msg) {
                 break;
             }
         }
-        catch(error){
+        catch(error) {
             console.error(error);
         }
     }
-    else{
-        console.error("No Question Sent!");
+    else {
+        //console.error("No Question Sent!");
+        console.log("No Question Sent!");
     }
 });

@@ -9,6 +9,7 @@ chrome.runtime.onMessage.addListener(function (msg) {
     }
     else if (msg.job === 'copy') { //If script was just sent an answer
         //alert("Copy: " + msg.answer)
+        setTimeout(function(){}, 100); //100 ms delay
         navigator.clipboard.writeText(msg.answer);
     }
 });
