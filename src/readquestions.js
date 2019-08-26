@@ -1,10 +1,10 @@
-alert('Script Successfully Injected!');
+//alert('Script Successfully Injected!');
 var prevquestion; //The question that was displayed last time the script checked
 
 //This is the script injected into the webpage read questions
 chrome.runtime.onMessage.addListener(function (msg) {
     if (msg.job === 'begin_task'){
-        alert('Beginning Task >:)'); //Log to console for debug purposes
+        //alert('Beginning Task >:)'); //Log to console for debug purposes
         setInterval(copyandsend, 0); //Begin Question Streaming Routine
     }
     else if (msg.job === 'copy') //If script was just sent an answer
