@@ -15,11 +15,36 @@ browsers := "Chrome_WidgetWin_0,Chrome_WidgetWin_1"   ; Possible chrome names
 			break
 		}
 
-		Sleep, 300 
+		Sleep, 400 
 		SendRaw, %Clipboard%    ; Send the clipboard contents by simulating typing
 		Send, {ENTER} 
 	}
 return
+
+;loop {
+;	sURL := GetActiveBrowserURL()
+;	if (sURL != "" ) {
+;		StringRight, lastChars, sURL, 11  ; Grab the last characters of the url
+;		StringTrimRight, lastChars, lastChars, 1 ; Remove the last character of the url
+;		if (lastChars == "game?mode=") {	; Check if you are on the game page and start the script
+;			Sleep, 1000 ; Wait a second for the extension to get started
+;			loop {
+;				sURL := GetActiveBrowserURL()
+;				if (sURL == "") {
+;					ExitApp
+;				}
+;				StringRight, lastChars, sURL, 11  ; Grab the last characters of the url
+;				StringTrimRight, lastChars, lastChars, 1 ; Remove the last character of the url
+;				if (lastChars != "game?mode=") {	; Check if you aren't on the game page and exit the loop
+;					ExitApp
+;				}
+;				Sleep, 300 
+;				SendRaw, %Clipboard%    ; Send the clipboard contents by simulating typing
+;				Send, {ENTER} 
+;			}
+;		}
+;	}
+;}
 
 GetActiveBrowserURL() {
 	global browsers
