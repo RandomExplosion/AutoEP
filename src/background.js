@@ -21,8 +21,9 @@ function StoreTableData(tabledata) {
         console.log('Creating Dictionaries');
 
         for (let i = 0; i < tabledata.length; i++) { //For every phrase (both languages)
-            lantoeng.set(tabledata[i][0].replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""), tabledata[i][1].replace(/;/g, ",")); //Add it to the Target Language - Base Language Dictionary
-            engtolan.set(tabledata[i][1].replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""), tabledata[i][0].replace(/;/g, ",")); //Add it to the Base Language - Target Language Dictionary
+                                       //First remove anything in brackets, then any leftover punctuation
+            lantoeng.set(tabledata[i][0].replace(/ *\([^)]*\) */g, "").replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""), tabledata[i][1].replace(/;/g, ",")); //Add it to the Target Language - Base Language Dictionary
+            engtolan.set(tabledata[i][1].replace(/ *\([^)]*\) */g, "").replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""), tabledata[i][0].replace(/;/g, ",")); //Add it to the Base Language - Target Language Dictionary
         }   
     } 
     else {   
@@ -125,7 +126,7 @@ chrome.runtime.onMessage.addListener(function(msg) {
             var translatedstring = undefined;
 
             console.log(`Recieved Question: \"${msg.question}\" from content script.`);
-            console.log(`Removing Whitespace and Punctuation: \"${msg.question.replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,"")}\" from content script.`);
+            console.log(`Removing Whitespace and Punctuation: \"${msg.question.replace(/ *\([^)]*\) */g, "").replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,"")}\" from content script.`);
 
             //alert(gamemode);
             //Use different Map depending on the gamemode
@@ -144,7 +145,7 @@ chrome.runtime.onMessage.addListener(function(msg) {
                         function (tabArray) {
                             //Strip The question of it's punctuation and whitespace then run it through the map
                             //alert("Question: " + msg.question);
-                            translatedstring = lantoeng.get(msg.question.replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""));
+                            translatedstring = lantoeng.get(msg.question.replace(/ *\([^)]*\) */g, "").replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""));
                             //alert("Answer: " + translatedstring);
                             console.log(`Sending answer \"${translatedstring}\" back to content script`);//Log to console
                             //Send Answer Back to the Content Script
@@ -162,7 +163,7 @@ chrome.runtime.onMessage.addListener(function(msg) {
                         function (tabArray) {
                       
                             //Strip The question of it's punctuation and whitespace then run it through the map
-                            translatedstring = engtolan.get(msg.question.replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""));
+                            translatedstring = engtolan.get(msg.question.replace(/ *\([^)]*\) */g, "").replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""));
                             
                             console.log(`Sending answer \"${translatedstring}\" back to content script`);//Log to console
                             //Send Answer Back to the Content Script
