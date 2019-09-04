@@ -46,9 +46,9 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
         else if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/game.*mode=[0123]/g)) {
             console.log('Injecting Script to Play Game >:)');
             
-                chrome.tabs.executeScript(tabId, {
-                    file: 'readquestions.js'
-                });
+            chrome.tabs.executeScript(tabId, {
+                file: 'readquestions.js'
+            });
         }
 
         //If current webpage is the test completed page
@@ -63,14 +63,11 @@ chrome.runtime.onMessage.addListener (function(msg) {   //Listener for the event
         load();
     }
     if (msg.job == "start") {
-        accuracy = msg.accuracy
+        accuracy = msg.accuracy;
         start();
     }
 });
 
-//var element = document.getElementById('load');     
-//if (element) {
-//    document.getElementById("load").addEventListener('click', function() {   //Event listener for when the 'load table' button is clicked
 function load() {
     chrome.tabs.query({"currentWindow": true, "active": true}, function(tab) {    //Run a query for the active tab info
         console.log("Loading table...");
@@ -84,25 +81,16 @@ function load() {
         }
     });
 }
-//    });
-//}
 
-
-//var element = document.getElementById('start');
-//if (element) {
-//    document.getElementById("start").addEventListener('click', function() {   //Event listener for when the 'start' button is clicked
 function start() {
     chrome.tabs.query({"currentWindow": true, "active": true}, function(tab) {   //Run a query for the active tab info
-        //alert("Please run edu-perfect.exe now");
-        //alert("After dismissing this alert, please select the answer entry box and press [CTRL] + [SHIFT] + [ENTER]\n*Note: It may take a few seconds to get started.");
-
         var tab = tab[0];
         if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/game.*mode=[0123]/g)) {  
             //Find out what gamemode is being played
             chrome.tabs.getSelected(null, function(tab) {
                 console.log('Beginning game');
                 console.log(`url: ${tab.url}`);
-                //alert(tab.url[tab.url.length - 1]);
+
                 gamemode = tab.url[tab.url.length - 1]; //Get the last character of the current url (number from 0 to 4)
                 console.log(`gamemode: ${gamemode}`);
                 chrome.tabs.sendMessage(tab.id, {job: 'begin_task'});
@@ -110,9 +98,6 @@ function start() {
         }
     });
 }
-//    });
-//}
-
 
 //When we recieve a message from the question streamer (readquestion.js)
 chrome.runtime.onMessage.addListener(function(msg) {
@@ -144,11 +129,9 @@ chrome.runtime.onMessage.addListener(function(msg) {
                         currentWindow: true, active: true },
                         function (tabArray) {
                             //Strip The question of it's punctuation and whitespace then run it through the map
-                            //alert("Question: " + msg.question);
                             translatedstring = lantoeng.get(msg.question.replace(/ *\([^)]*\) */g, "").replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""));
-                            //alert("Answer: " + translatedstring);
+                            
                             console.log(`Sending answer \"${translatedstring}\" back to content script`);//Log to console
-                            //Send Answer Back to the Content Script
                             if (Math.floor((Math.random() * 100) + 1) <= accuracy) {    //Get a random number and compare it with the accuracy value 
                                 chrome.tabs.sendMessage(tabArray[0].id, {job: 'copy', answer: translatedstring});
                             }
@@ -182,7 +165,6 @@ chrome.runtime.onMessage.addListener(function(msg) {
 
                 //Otherwise the gamemode is unsupported
                 default:
-                //alert(gamemode);
                 //alert(`Unsupported Game Mode: ${gamemode}`);
                 console.log(`Unsupported Game Mode: ${gamemode}`);
                 break;
