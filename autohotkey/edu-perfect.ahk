@@ -6,9 +6,9 @@ browsers := "Chrome_WidgetWin_0,Chrome_WidgetWin_1"   ; Possible chrome names
 	loop {
 		sURL := GetActiveBrowserURL()  
 		if (sURL != "") {       ; Check if it is blank (if it is, then you aren't on chrome)
-			StringRight, lastChars, sURL, 11  ; Grab the last characters of the url
+			StringRight, lastChars, sURL, 6  ; Grab the last characters of the url
 			StringTrimRight, lastChars, lastChars, 1 ; Remove the last character of the url
-			if (lastChars != "game?mode=") {  ; Check if you are on not on the game page
+			if (lastChars != "mode=") {  ; Check if you are on not on the game page
 				break	; Exit the loop if you aren't
 			}
 		} else {    ; If it is blank, stop the script (since this means you have exited chrome)
@@ -20,6 +20,7 @@ browsers := "Chrome_WidgetWin_0,Chrome_WidgetWin_1"   ; Possible chrome names
 		Send, {ENTER} 
 	}
 return
+
 
 ;loop {
 ;	sURL := GetActiveBrowserURL()
