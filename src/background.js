@@ -35,7 +35,7 @@ function StoreTableData(tabledata) {
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     if (changeInfo.status == 'complete' && tab.active) {
         //If the current webpage is a vocabulary list
-        if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*list-starter.*/g)){
+        if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*list-starter.*/g)) {
             console.log('Injecting Script to Read Table');
             chrome.tabs.executeScript(tabId, {
                 file: 'getanswertable.js'
@@ -55,16 +55,6 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
         else if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*\/test-statistics/g)) {
             console.log('Game Finished!');
         }
-    }
-});
-
-chrome.runtime.onMessage.addListener (function(msg) {   //Listener for the events from the popup
-    if (msg.job == "load") {
-        load();
-    }
-    if (msg.job == "start") {
-        accuracy = msg.accuracy;
-        start();
     }
 });
 
@@ -174,8 +164,15 @@ chrome.runtime.onMessage.addListener(function(msg) {
             console.error(error);
         }
     }
+    //Check for messages from the popup
+    else if (msg.job == "load") {
+        load();
+    }
+    else if (msg.job == "start") {
+        accuracy = msg.accuracy;
+        start();
+    }
     else {
-        //console.error("No Question Sent!");
-        console.log("No Question Sent!");
+        console.log("No Question Sent!")
     }
 });

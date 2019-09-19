@@ -3,6 +3,7 @@
 browsers := "Chrome_WidgetWin_0,Chrome_WidgetWin_1"   ; Possible chrome names
 
 ^+ENTER::    ; [CTRL] + [SHIFT] + [ENTER]
+	lp := 0
 	loop {
 		sURL := GetActiveBrowserURL()  
 		if (sURL != "") {       ; Check if it is blank (if it is, then you aren't on chrome)
@@ -10,6 +11,9 @@ browsers := "Chrome_WidgetWin_0,Chrome_WidgetWin_1"   ; Possible chrome names
 			StringTrimRight, lastChars, lastChars, 1 ; Remove the last character of the url
 			if (lastChars != "mode=") {  ; Check if you are on not on the game page
 				break	; Exit the loop if you aren't
+			}
+			if (lp == 1) {
+				break
 			}
 		} else {    ; If it is blank, stop the script (since this means you have exited chrome)
 			break
@@ -21,31 +25,9 @@ browsers := "Chrome_WidgetWin_0,Chrome_WidgetWin_1"   ; Possible chrome names
 	}
 return
 
-
-;loop {
-;	sURL := GetActiveBrowserURL()
-;	if (sURL != "" ) {
-;		StringRight, lastChars, sURL, 11  ; Grab the last characters of the url
-;		StringTrimRight, lastChars, lastChars, 1 ; Remove the last character of the url
-;		if (lastChars == "game?mode=") {	; Check if you are on the game page and start the script
-;			Sleep, 1000 ; Wait a second for the extension to get started
-;			loop {
-;				sURL := GetActiveBrowserURL()
-;				if (sURL == "") {
-;					ExitApp
-;				}
-;				StringRight, lastChars, sURL, 11  ; Grab the last characters of the url
-;				StringTrimRight, lastChars, lastChars, 1 ; Remove the last character of the url
-;				if (lastChars != "game?mode=") {	; Check if you aren't on the game page and exit the loop
-;					ExitApp
-;				}
-;				Sleep, 300 
-;				SendRaw, %Clipboard%    ; Send the clipboard contents by simulating typing
-;				Send, {ENTER} 
-;			}
-;		}
-;	}
-;}
+^+A::	; [CTRL] + [SHIFT] + A
+	lp := 1
+return
 
 GetActiveBrowserURL() {
 	global browsers
