@@ -7,10 +7,10 @@
 
     "icons": 
     {
-            "16": "icons/Orange/Icon_32.png",
-            "32": "icons/Orange/Icon_64.png",
-            "48": "icons/Orange/Icon_128.png",
-            "128": "icons/Orange/Icon_256.png"
+        "16": "icons/Orange/Icon_32.png",
+        "32": "icons/Orange/Icon_64.png",
+        "48": "icons/Orange/Icon_128.png",
+        "128": "icons/Orange/Icon_256.png"
     },
 
     "permissions": 
@@ -33,6 +33,7 @@
     
     "browser_action": 
     {
-        "default_title": "AutoEP"
+        "default_title": "AutoEP",
+        "default_popup": "popup.html"
     }
 }
