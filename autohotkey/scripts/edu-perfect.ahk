@@ -2,28 +2,31 @@
 
 browsers := "Chrome_WidgetWin_0,Chrome_WidgetWin_1"   ; Possible chrome names
 
-^+ENTER::    ; [CTRL] + [SHIFT] + [ENTER]
-	lp := 0
-	loop {
-		sURL := GetActiveBrowserURL()  
-		if (sURL != "") {       ; Check if it is blank (if it is, then you aren't on chrome)
-			StringRight, lastChars, sURL, 6  ; Grab the last characters of the url
-			StringTrimRight, lastChars, lastChars, 1 ; Remove the last character of the url
-			if (lastChars != "mode=") {  ; Check if you are on not on the game page
-				break	; Exit the loop if you aren't
-			}
-			if (lp == 1) {
+loop {
+	if (clipboard == "autoStartScript138952254848") {	; Random numbers so it can't accidentally be copied to the clipboard 
+		lp := 0
+		loop {
+			sURL := GetActiveBrowserURL()  
+			if (sURL != "") {       ; Check if it is blank (if it is, then you aren't on chrome)
+				StringRight, lastChars, sURL, 6  ; Grab the last characters of the url
+				StringTrimRight, lastChars, lastChars, 1 ; Remove the last character of the url
+				if (lastChars != "mode=") {  ; Check if you are on not on the game page
+					break	; Exit the loop if you aren't
+				}
+				if (lp == 1) {
+					break
+				}
+			} else {    ; If it is blank, stop the script (since this means you have exited chrome)
 				break
 			}
-		} else {    ; If it is blank, stop the script (since this means you have exited chrome)
-			break
+			if (clipboard != "autoStartScript138952254848") {
+				Sleep, 400	; Sleep for 400 ms to give the extension time to catch up 
+				SendRaw, %Clipboard%    ; Send the clipboard contents by simulating typing
+				Send, {ENTER} 
+			}
 		}
-
-		Sleep, 400 
-		SendRaw, %Clipboard%    ; Send the clipboard contents by simulating typing
-		Send, {ENTER} 
 	}
-return
+}
 
 ^+A::	; [CTRL] + [SHIFT] + A
 	lp := 1

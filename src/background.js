@@ -14,6 +14,10 @@ var accuracy;
 //Stores The Currently Active Url
 //var url = undefined;
 
+const sleep = (milliseconds) => {       //Function to pause script for an amount of milliseconds
+    return new Promise(resolve => setTimeout(resolve, milliseconds))
+}
+
 //Callback Function For table data request
 function StoreTableData(tabledata) {   
     if (tabledata != undefined){
@@ -83,7 +87,10 @@ function start() {
 
                 gamemode = tab.url[tab.url.length - 1]; //Get the last character of the current url (number from 0 to 4)
                 console.log(`gamemode: ${gamemode}`);
-                chrome.tabs.sendMessage(tab.id, {job: 'begin_task'});
+                chrome.tabs.sendMessage(tab.id, {job: 'copy', answer: 'autoStartScript138952254848'});  //Copy this unique string to the clipboard, the ahk script is listening for this to start
+                sleep(50).then(() => { // Wait 50ms to give the ahk script time to start
+                    chrome.tabs.sendMessage(tab.id, {job: 'begin_task'});
+                })
             });
         }
     });
