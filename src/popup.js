@@ -24,7 +24,7 @@ document.getElementById("start").addEventListener('click', function() {   //Even
 });
 
 window.addEventListener('keyup', function(event) {
-    if (event.keyCode === 13) {
+    if (event.keyCode === 13) { //If the user presses enter, Start reading automatically
       start();
     }
   });

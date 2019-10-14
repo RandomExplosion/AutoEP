@@ -42,3 +42,7 @@ input:focus {
     border-color:dodgerBlue;
     box-shadow:0 0 8px 0 dodgerBlue;
 }
+
+html {
+    box-shadow:0 0 8px 0 dodgerBlue;
+}
