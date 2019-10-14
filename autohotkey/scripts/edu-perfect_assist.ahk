@@ -1,32 +1,42 @@
+#NoEnv
 #SingleInstance force
 
+record := []    ; Array for storing the key press record
 browsers := "Chrome_WidgetWin_0,Chrome_WidgetWin_1"   ; Possible chrome names
 
-^+ENTER::    ; [CTRL] + [SHIFT] + [ENTER]
-	lp := 0
-	loop {
-		sURL := GetActiveBrowserURL()  
-		if (sURL != "") {       ; Check if it is blank (if it is, then you aren't on chrome)
-			StringRight, lastChars, sURL, 6  ; Grab the last characters of the url
-			StringTrimRight, lastChars, lastChars, 1 ; Remove the last character of the url
-			if (lastChars != "mode=") {  ; Check if you are on not on the game page
-				break	; Exit the loop if you aren't
-			}
-			if (lp == 1) {
-				break
-			}
-		} else {    ; If it is blank, stop the script (since this means you have exited chrome)
-			break
-		}
-
-		Sleep, 400 
-		SendRaw, %Clipboard%    ; Send the clipboard contents by simulating typing
-		Send, {ENTER} 
+Similarity(a,b) {
+	StringSplit, a,a
+	StringSplit, b,b
+	LoopCount := (a0 > b0) ? a0 : b0
+	Loop, % LoopCount
+	{
+		if (a%A_Index% = b%A_index%)
+			matches++
 	}
-return
+	return (matches = "") ? 0 : Round(matches/LoopCount*100)
+}
 
-^+A::	; [CTRL] + [SHIFT] + A
-	lp := 1
+$ENTER:: 
+    sURL := GetActiveBrowserURL()  
+    if (sURL != "") {       ; Check if it is blank (if it is, then you aren't on chrome)
+        StringRight, lastChars, sURL, 6  ; Grab the last characters of the url
+        StringTrimRight, lastChars, lastChars, 1 ; Remove the last character of the url
+        if (lastChars == "mode=") {  ; Check if you are on the game page, so it only runs in the right page
+            str := ""
+            for index, value in record {
+                str .= value
+            }
+            clip := clipboard
+
+            sim := Similarity(str, clip)
+            if (sim > 70 && sim < 100) {
+                Send, ^a
+                Sendraw, %Clipboard%
+            }
+        }
+    }
+    record := []
+    Send, {ENTER}
 return
 
 GetActiveBrowserURL() {
@@ -125,3 +135,134 @@ Acc_Children(Acc) {
 			ErrorLevel := "AccessibleChildren DllCall Failed"
 	}
 }
+
+
+$a::
+    record.push("a")
+    Send, a
+return
+
+$b::
+    record.push("b")
+    Send, b
+return
+
+$c::
+    record.push("c")
+    Send, c
+return
+
+$d::
+    record.push("d")
+    Send, d
+return
+
+$e::
+    record.push("e")
+    Send, e
+return
+
+$f::
+    record.push("f")
+    Send, f
+return
+
+$g::
+    record.push("g")
+    Send, g
+return
+
+$h::
+    record.push("h")
+    Send, h
+return
+
+$i::
+    record.push("i")
+    Send, i
+return
+
+$j::
+    record.push("j")
+    Send, j
+return
+
+$k::
+    record.push("k")
+    Send, k
+return
+
+$l::
+    record.push("l")
+    Send, l
+return
+
+$m::
+    record.push("m")
+    Send, m
+return
+
+$n::
+    record.push("n")
+    Send, n
+return
+
+$o::
+    record.push("o")
+    Send, o
+return
+
+$p::
+    record.push("p")
+    Send, p
+return
+
+$q::
+    record.push("q")
+    Send, q
+return
+
+$r::
+    record.push("r")
+    Send, r
+return
+
+$s::
+    record.push("s")
+    Send, s
+return
+
+$t::
+    record.push("t")
+    Send, t
+return
+
+$u::
+    record.push("u")
+    Send, u
+return
+
+$v::
+    record.push("v")
+    Send, v
+return
+
+$w::
+    record.push("w")
+    Send, w
+return
+
+$y::
+    record.push("y")
+    Send, y
+return
+
+$x::
+    record.push("x")
+    Send, x
+return
+
+$z::
+    record.push("z")
+    Send, z
+return
