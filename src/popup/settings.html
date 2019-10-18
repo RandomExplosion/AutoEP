@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<html>
+   <link rel="stylesheet" type="text/css" href="style.css">
+
+   <body>
+      <div id="tabs">
+         <form action="main.html">
+            <button classtype="submit">Main</button>
+         </form>
+         <form action="settings.html">
+            <button class="button_currentPage" type="submit">Settings</button>
+         </form>
+         <form action="theme.html">
+            <button type="submit">Theme</button>
+         </form>
+      </div>
+
+      <p>
+         <br>
+         Mode:
+         <br>
+         <label class="container">Default
+            <input type="radio" id="mode_default" name="radio">
+            <span class="checkmark"></span>
+         </label>
+         <label class="container">Assist
+            <input type="radio" id="mode_assist" name="radio">
+            <span class="checkmark"></span>
+         </label>
+
+         <div class="page">
+            <label class="field a-field a-field_a2">
+               <input class="field__input a-field__input" id="accuracy" placeholder="100">
+               <span class="a-field__label-wrap">
+               <span class="a-field__label">Accuracy</span>
+            </span>
+         </div>
+         <div class="page">
+            <label class="field a-field a-field_a2">
+               <input class="field__input a-field__input" id="accuracy_assist " placeholder="100">
+               <span class="a-field__label-wrap">
+               <span class="a-field__label">Assist mode match level</span>
+            </span>
+         </div>
+
+      </p>
+
+   </body>
+
+   <script type="text/javascript" src="settings.js"></script>
+</html>

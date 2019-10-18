@@ -87,10 +87,9 @@ function start() {
 
                 gamemode = tab.url[tab.url.length - 1]; //Get the last character of the current url (number from 0 to 4)
                 console.log(`gamemode: ${gamemode}`);
-                chrome.tabs.sendMessage(tab.id, {job: 'copy', answer: 'autoStartScript138952254848'});  //Copy this unique string to the clipboard, the ahk script is listening for this to start
-                sleep(50).then(() => { // Wait 50ms to give the ahk script time to start
-                    chrome.tabs.sendMessage(tab.id, {job: 'begin_task'});
-                })
+                //sleep(50).then(() => { // Wait 50ms to give the ahk script time to start
+                chrome.tabs.sendMessage(tab.id, {job: 'begin_task'});
+                //})
             });
         }
     });
@@ -176,6 +175,7 @@ chrome.runtime.onMessage.addListener(function(msg) {
         load();
     }
     else if (msg.job == "start") {
+        mode = msg.mode
         accuracy = msg.accuracy;
         start();
     }

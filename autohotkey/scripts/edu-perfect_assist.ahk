@@ -29,7 +29,7 @@ $ENTER::
             clip := clipboard
 
             sim := Similarity(str, clip)
-            if (sim > 70 && sim < 100) {
+            if (sim > 60 && sim < 100) {
                 Send, ^a
                 Sendraw, %Clipboard%
             }

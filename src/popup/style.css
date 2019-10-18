@@ -1,0 +1,769 @@
+
+body {
+    height: 400px;
+    width: 610px;
+    background: #272121;
+    color: #fff;
+}
+
+p {
+    font-size: 20px;
+}
+
+.button_currentPage {
+    border-radius: 10px 10px 0 0;
+    color: #fff;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 20px;
+    border: none;
+    width: 200px;
+    background: #443737;
+    letter-spacing: 1px;
+    -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
+}
+
+button {
+    border-radius: 10px 10px 0 0;
+    color: #fff;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: #115173;
+    padding: 20px;
+    border: none;
+    transition: all 0.4s ease 0s;
+    width: 200px;
+}
+button:hover {
+    background: #49505a;
+    letter-spacing: 1px;
+    -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+    box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
+    transition: all 0.4s ease 0s;
+}
+button:focus {
+    outline:none;
+}
+
+input, select, textarea {
+    color: #fff;
+}
+
+option {
+    color: #000;
+}
+
+form {
+    display: inline-block;
+}
+
+select {
+    color: #000;
+}
+option {
+    color: #000;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*  Radio checkboxe    */
+
+.container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+  border-radius: 50%;
+}
+
+.container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+.container input:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.container .checkmark:after {
+ 	top: 9px;
+	left: 9px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: white;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*  Dropdown Box    */
+
+/* example: 
+         <form id="app-cover">
+            <div id="select-box">
+               <input type="checkbox" id="options-view-button">
+               <div id="select-button" class="brd">
+                  <div id="selected-value">
+                     <span style="color:#000">Select a mode</span>
+                  </div>
+               </div>
+               <div id="options">
+                  <div class="option">
+                     <input class="s-c top" type="radio" name="platform" value="default">
+                     <input class="s-c bottom" type="radio" name="platform" value="default">
+                     <span class="label">Default</span>
+                     <span class="opt-val">Default</span>
+                  </div>
+                  <div class="option">
+                     <input class="s-c top" type="radio" name="platform" value="assist">
+                     <input class="s-c bottom" type="radio" name="platform" value="assist">
+                     <span class="label">Assist</span>
+                     <span class="opt-val">Assist</span>
+                  </div>
+                  <div id="option-bg"></div>
+               </div>
+            </div>
+         </form>
+*/
+
+.brd
+{
+    border: 1px solid #e2eded;
+    border-color: #eaf1f1 #e4eded #dbe7e7 #e4eded;
+}
+
+#app-cover
+{
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    width: 300px;
+    height: 42px;
+    margin: 100px auto 0 auto;
+}
+
+#select-button
+{
+    position: relative;
+    height: 16px;
+    padding: 12px 14px;
+    background-color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#options-view-button
+{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 3;
+}
+
+#selected-value
+{
+    font-size: 16px;
+    line-height: 1;
+    margin-right: 26px;
+}
+
+.option i
+{
+    width: 16px;
+    height: 16px;
+}
+
+.option, .label
+{
+    color: #2d3667;
+    font-size: 16px;
+}
+
+#chevrons
+{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 12px;
+    padding: 9px 14px;
+}
+
+#chevrons i
+{
+    display: block;
+    height: 50%;
+    color: #d1dede;
+    font-size: 12px;
+    text-align: left;
+}
+
+#options-view-button:checked + #select-button #chevrons i
+{
+    color: #2d3667;
+}
+
+.options
+{
+    position: absolute;
+    left: 0;
+    width: 250px;
+}
+
+#options
+{
+    position: absolute;
+    top: 42px;
+    right: 0;
+    left: 0;
+    width: 298px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 4px;
+}
+
+#options-view-button:checked ~ #options
+{
+    border: 1px solid #e2eded;
+    border-color: #eaf1f1 #e4eded #dbe7e7 #e4eded;
+}
+
+.option
+{
+    position: relative;
+    line-height: 1;
+    transition: 0.3s ease all;
+    z-index: 2;
+}
+
+.option i
+{
+    position: absolute;
+    left: 14px;
+    padding: 0;
+    display: none;
+}
+
+#options-view-button:checked ~ #options .option i
+{
+    display: block;
+    padding: 12px 0;
+}
+
+.label
+{
+    display: none;
+    padding: 0;
+    margin-left: 27px;
+}
+
+#options-view-button:checked ~ #options .label
+{
+    display: block;
+    padding: 12px 14px;    
+}
+
+.s-c
+{
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 50%;
+}
+
+.s-c.top
+{
+    top: 0;
+}
+
+.s-c.bottom
+{
+    bottom: 0;
+}
+
+input[type="radio"]
+{
+    position: absolute;
+    right: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.s-c:hover ~ i
+{
+    color: #fff;
+    opacity: 0;
+}
+
+.s-c:hover
+{
+    height: 100%;
+    z-index: 1;
+}
+
+.s-c.bottom:hover + i
+{
+    bottom: -25px;
+    animation: moveup 0.3s ease 0.1s forwards;
+}
+
+.s-c.top:hover ~ i
+{
+    top: -25px;
+    animation: movedown 0.3s ease 0.1s forwards;
+}
+
+@keyframes moveup
+{
+    0%{ bottom: -25px; opacity: 0;}
+    100%{ bottom: 0; opacity: 1;}
+}
+
+@keyframes movedown
+{
+    0%{ top: -25px; opacity: 0;}
+    100%{ top: 0; opacity: 1;}
+}
+
+.label
+{
+    transition: 0.3s ease all;
+}
+
+.opt-val
+{
+    position: absolute;
+    left: 14px;
+    width: 217px;
+    height: 21px;
+    opacity: 0;
+    background-color: #fff;
+    transform: scale(0);
+}
+
+.option input[type="radio"]:checked ~ .opt-val
+{
+    opacity: 1;
+    transform: scale(1);
+}
+
+.option input[type="radio"]:checked ~ i
+{
+    top: 0;
+    bottom: auto;
+    opacity: 1;
+    animation: unset;
+}
+
+.option input[type="radio"]:checked ~ i, .option input[type="radio"]:checked ~ .label
+{
+    color:#fff;
+}
+
+.option input[type="radio"]:checked ~ .label:before
+{
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+}
+
+#options-view-button:not(:checked) ~ #options .option input[type="radio"]:checked ~ .opt-val
+{
+    top: -30px;
+}
+
+.option:nth-child(1) input[type="radio"]:checked ~ .label:before
+{
+    background-color: #000;
+    border-radius: 4px 4px 0 0;
+}
+
+.option:nth-child(1) input[type="radio"]:checked ~ .opt-val
+{
+    top: -31px;
+}
+
+.option:nth-child(2) input[type="radio"]:checked ~ .label:before
+{
+    background-color: #ea4c89;
+}
+
+.option:nth-child(2) input[type="radio"]:checked ~ .opt-val
+{
+    top: -71px;
+}
+
+.option:nth-child(3) input[type="radio"]:checked ~ .label:before
+{
+    background-color: #0057ff;
+}
+
+.option:nth-child(3) input[type="radio"]:checked ~ .opt-val
+{
+    top: -111px;
+}
+
+.option:nth-child(4) input[type="radio"]:checked ~ .label:before
+{
+    background-color: #32c766;
+}
+
+.option:nth-child(4) input[type="radio"]:checked ~ .opt-val
+{
+    top: -151px;
+}
+
+.option:nth-child(5) input[type="radio"]:checked ~ .label:before
+{
+    background-color: #f48024;
+}
+
+.option:nth-child(5) input[type="radio"]:checked ~ .opt-val
+{
+    top: -191px;
+}
+
+.option:nth-child(6) input[type="radio"]:checked ~ .label:before
+{
+    background-color: #006400;
+    border-radius: 0 0 4px 4px;
+}
+
+.option:nth-child(6) input[type="radio"]:checked ~ .opt-val
+{
+    top: -231px;
+}
+
+.option .fa-codepen
+{
+    color: #000;
+}
+
+.option .fa-dribbble
+{
+    color: #ea4c89;
+}
+
+.option .fa-behance
+{
+    color: #0057ff;
+}
+
+.option .fa-hackerrank
+{
+    color: #32c766;
+}
+
+.option .fa-stack-overflow
+{
+    color: #f48024;
+}
+
+.option .fa-free-code-camp
+{
+    color: #006400;
+}
+
+#option-bg
+{
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 40px;
+    transition: 0.3s ease all;
+    z-index: 1;
+    display: none;
+}
+
+#options-view-button:checked ~ #options #option-bg
+{
+    display: block;
+}
+
+.option:hover .label
+{
+    color: #fff;
+}
+
+.option:nth-child(1):hover ~ #option-bg
+{
+    top: 0;
+    background-color: #000;
+    border-radius: 4px 4px 0 0;
+}
+
+.option:nth-child(2):hover ~ #option-bg
+{
+    top: 40px;
+    background-color: #ea4c89;
+}
+
+.option:nth-child(3):hover ~ #option-bg
+{
+    top: 80px;
+    background-color: #0057ff;
+}
+
+.option:nth-child(4):hover ~ #option-bg
+{
+    top: 120px;
+    background-color: #32c766;
+}
+
+.option:nth-child(5):hover ~ #option-bg
+{
+    top: 160px;
+    background-color: #f48024;
+}
+
+.option:nth-child(6):hover ~ #option-bg
+{
+    top: 200px;
+    background-color: #006400;
+    border-radius: 0 0 4px 4px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*  Input Box   */
+  
+.page {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 1000px;
+    margin: auto;
+    padding: 15px;
+    
+    display: grid;
+    grid-gap: 30px;
+    align-items: flex-end;
+    order: 1;
+  }
+  
+  @media (min-width: 50px) {
+    .page {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+  }
+  
+  
+  .field{
+    --uiFieldPlaceholderColor: var(--fieldPlaceholderColor, #767676);
+  }
+  
+  .field__input{ 
+    background-color: transparent;
+    border-radius: 0;
+    border: none;
+  
+    -webkit-appearance: none;
+  
+    font-family: inherit;
+    font-size: 1em;
+  }
+  
+  .field__input:focus::-webkit-input-placeholder{
+    color: var(--uiFieldPlaceholderColor);
+  }
+  
+  .a-field{
+    display: inline-block;
+  }
+  
+  .a-field__input{ 
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    font-size: 17px;
+  }
+  
+  .a-field__input:focus{
+    outline: none;
+  }
+  
+  .a-field{
+    --uiFieldHeight: var(--fieldHeight, 40px);  
+    --uiFieldBorderWidth: var(--fieldBorderWidth, 2px);
+    --uiFieldBorderColor: var(--fieldBorderColor);
+  
+    --uiFieldFontSize: var(--fieldFontSize, 1em);
+    --uiFieldHintFontSize: var(--fieldHintFontSize, 1em);
+  
+    --uiFieldPaddingRight: var(--fieldPaddingRight, 15px);
+    --uiFieldPaddingBottom: var(--fieldPaddingBottom, 15px);
+    --uiFieldPaddingLeft: var(--fieldPaddingLeft, 15px);   
+  
+    position: relative;
+    box-sizing: border-box;
+    font-size: var(--uiFieldFontSize);
+    padding-top: 1em;  
+  }
+  
+  .a-field__input{
+    height: var(--uiFieldHeight);
+    padding: 0 var(--uiFieldPaddingRight) 0 var(--uiFieldPaddingLeft);
+    border-bottom: var(--uiFieldBorderWidth) solid var(--uiFieldBorderColor);  
+  }
+  
+  .a-field__input::-webkit-input-placeholder{
+    opacity: 0;
+    transition: opacity .2s ease-out;
+  }
+  
+  .a-field__input:not(:placeholder-shown) ~ .a-field__label-wrap .a-field__label{
+    opacity: 0;
+    bottom: var(--uiFieldPaddingBottom);
+  }
+  
+  .a-field__input:focus::-webkit-input-placeholder{
+    opacity: 1;
+    transition-delay: .2s;
+  }
+  
+  .a-field__label-wrap{
+    box-sizing: border-box;
+    width: 100%;
+    height: var(--uiFieldHeight);	
+  
+    pointer-events: none;
+    cursor: text;
+  
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    font-size: 20px;
+  }
+  
+  .a-field__label{
+    position: absolute;
+    left: var(--uiFieldPaddingLeft);
+    bottom: calc(50% - .5em);
+  
+    line-height: 1;
+    font-size: var(--uiFieldHintFontSize);
+  
+    pointer-events: none;
+    transition: bottom .2s cubic-bezier(0.9,-0.15, 0.1, 1.15), opacity .2s ease-out;
+    will-change: bottom, opacity;
+  }
+  
+  .a-field__input:focus ~ .a-field__label-wrap .a-field__label{
+    opacity: 1;
+    bottom: var(--uiFieldHeight);
+  }
+  
+  .a-field_a2 .a-field__label-wrap::after{
+    content: "";
+    box-sizing: border-box;
+    width: 0;
+    height: var(--uiFieldBorderWidth);
+    background-color: var(--fieldBorderColorActive);
+  
+    position: absolute;
+    bottom: 0;
+    left: 0;  
+  
+    will-change: width;
+    transition: width .285s ease-out;
+  }
+  
+  .a-field_a2 .a-field__input:focus ~ .a-field__label-wrap::after{
+    width: 100%;
+  }
+  
+  .field {
+    --fieldBorderColor: #D1C4E9;
+    --fieldBorderColorActive: #673AB7;
+  }
