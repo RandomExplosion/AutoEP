@@ -1,5 +1,5 @@
 
-const sleep = (milliseconds) => {       //Function to pause script for an amount of milliseconds
+const sleep = (milliseconds) => {       // Function to pause script for an amount of milliseconds
     return new Promise(resolve => setTimeout(resolve, milliseconds))
 }
 
@@ -9,7 +9,7 @@ function load() {
 }
 
 function start() {
-    chrome.storage.local.get(['mode'], function(data) {
+    chrome.storage.local.get(['mode'], function(data) {     // Retrive the data for the settings from chrome's local storage
         console.log("Current mode retrieved as " + data.mode + "%");
         mode = data.mode
     });
@@ -23,32 +23,32 @@ function start() {
         accuracy_assist = parseInt(data.accuracy_assist)
     });
 
-    sleep(100).then(() => { // Give it time to retrive the data
-        if (mode == "undefined") {
+    sleep(100).then(() => {     // Give it time to retrive the data, since they are asnchronous functions
+        if (mode != "default" && mode != "assist") {        // If a mode has not been set, default to default mode
             mode = "default"
         }
         if (mode == "default") {
-            if (typeof accuracy != "number") {
-                alert("You have not selected the accuracy! Please visit the settings page")
+            if (typeof accuracy != "number") {      // Make sure the accuracy value is a correct number
+                alert("You have set the accuracy! Please visit the settings page")
             } else if (isNaN(accuracy)) {
-                alert("You have not selected the accuracy! Please visit the settings page")
+                alert("You have set the accuracy! Please visit the settings page")
             } else {
-                if (accuracy > 100) {
+                if (accuracy > 100) {       // If it is a number but out of the range round it
                     accuracy = 100
                 } else if (accuracy < 0) {
                     accuracy = 0
                 }
                 chrome.runtime.sendMessage({job: "start", mode: "default", accuracy: accuracy});
-                sleep(50).then(() => {
+                sleep(50).then(() => {      // Wait 50ms for the message to send properly before terminating the window and thus, this script
                     window.close();
                 })
             }
     
         } else if (mode == "assist") {
             if (typeof accuracy_assist != "number") {
-                alert("You have not selected the assist mode match level! Please visit the settings page")
+                alert("You have set the assist mode match level! Please visit the settings page")
             } else if (isNaN(accuracy_assist)) {
-                alert("You have not selected the assist mode match level! Please visit the settings page")
+                alert("You have set the assist mode match level! Please visit the settings page")
             } else {
                 if (accuracy > 100) {
                     accuracy = 100
@@ -60,9 +60,6 @@ function start() {
                     window.close();
                 })
             }
-    
-        } else {
-            alert("You have not selected a mode! Please visit the settings page")
         }
     })
 }
