@@ -3,6 +3,24 @@ const sleep = (milliseconds) => {       // Function to pause script for an amoun
     return new Promise(resolve => setTimeout(resolve, milliseconds))
 }
 
+window.addEventListener('load', function() {        // Runs when the tab is opened (when the html loads)
+    chrome.storage.local.get(['theme'], function(data) {
+        console.log("Theme retrieved as " + data.theme);
+        theme = data.theme
+    });
+
+    sleep(100).then(() => {        // Give it time to retrive the data
+        if (theme != "dark" && theme != "light") {
+            theme = "dark"
+        }
+        if (theme == "dark") {     
+            document.getElementById("theme").href = "style_dark.css"    // Update the page css
+        } else if (theme == "light") {
+            document.getElementById("theme").href = "style_light_css"
+        }
+    })
+})
+
 function load() {
     chrome.runtime.sendMessage({job: "load"});
     window.close();   
@@ -17,13 +35,12 @@ function start() {
         console.log("Accuracy retrieved as " + data.accuracy + "%");
         accuracy = parseInt(data.accuracy)
     });
-
     chrome.storage.local.get(['accuracy_assist'], function(data) {
         console.log("Assist match level retrieved as " + data.accuracy_assist + "%");
         accuracy_assist = parseInt(data.accuracy_assist)
     });
 
-    sleep(100).then(() => {     // Give it time to retrive the data, since they are asnchronous functions
+    sleep(100).then(() => {        // Give it time to retrive the data
         if (mode != "default" && mode != "assist") {        // If a mode has not been set, default to default mode
             mode = "default"
         }

@@ -1,0 +1,78 @@
+
+/* This file contains all css relating to colour, the settings here are for the light theme */
+/* TODO: Figure out a good light colour scheme */
+
+
+body {
+    background: #BBC8C8;
+    color: #000;
+}
+
+.button_currentPage {
+    color: #000;
+    background: #BBC8C8;
+}
+
+button {
+    color: #fff;
+    background: #EEAE8C;
+}
+button:hover {
+    background: #B6AFA5;
+}
+
+input, select, textarea {
+    color: #000;
+}
+
+option {
+    color: #fff;
+}
+
+select {
+    color: #fff;
+}
+
+option {
+    color: #fff;
+}
+
+
+
+
+
+
+
+/*  Checkbox    */
+
+.checkmark {
+  background-color: #fff;
+}
+
+.container:hover input ~ .checkmark {
+  background-color: #333333;
+}
+
+.container input:checked ~ .checkmark {
+  background-color: #DE690C;
+}
+
+.container .checkmark:after {
+	background: #000;
+}
+
+
+
+
+
+
+/*  Input Box   */
+  
+.field{
+    --uiFieldPlaceholderColor: var(--fieldPlaceholderColor, #898989);
+}
+
+.field {
+    --fieldBorderColor: #2E3B16;
+    --fieldBorderColorActive: #98C548;
+}
