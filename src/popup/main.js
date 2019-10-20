@@ -27,15 +27,13 @@ function load() {
 }
 
 function start() {
-    chrome.storage.local.get(['mode'], function(data) {     // Retrive the data for the settings from chrome's local storage
+    chrome.storage.local.get(['mode', 'accuracy', 'accuracy_assist'], function(data) {     // Retrive the data for the settings from chrome's local storage
         console.log("Current mode retrieved as " + data.mode + "%");
         mode = data.mode
-    });
-    chrome.storage.local.get(['accuracy'], function(data) {
+        
         console.log("Accuracy retrieved as " + data.accuracy + "%");
         accuracy = parseInt(data.accuracy)
-    });
-    chrome.storage.local.get(['accuracy_assist'], function(data) {
+
         console.log("Assist match level retrieved as " + data.accuracy_assist + "%");
         accuracy_assist = parseInt(data.accuracy_assist)
     });

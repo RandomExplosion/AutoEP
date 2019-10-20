@@ -4,19 +4,16 @@ const sleep = (milliseconds) => {       //Function to pause script for an amount
 }
 
 window.addEventListener('load', function() {        // Runs when the tab is opened (when the html loads)
-    chrome.storage.local.get(['mode'], function(data) {     // Retrive the stored data for the settings from chrome's local storage
+    chrome.storage.local.get(['mode', 'accuracy', 'accuracy_assist', 'theme'], function(data) {     // Retrive the stored data for the settings from chrome's local storage
         console.log("Current mode retrieved as " + data.mode);
         mode = data.mode
-    });
-    chrome.storage.local.get(['accuracy'], function(data) {
+        
         console.log("Accuracy retrieved as " + data.accuracy + "%");
         accuracy = parseInt(data.accuracy)
-    });
-    chrome.storage.local.get(['accuracy_assist'], function(data) {
+
         console.log("Assist match level retrieved as " + data.accuracy_assist + "%");
         accuracy_assist = parseInt(data.accuracy_assist)
-    });
-    chrome.storage.local.get(['theme'], function(data) {
+
         console.log("Theme retrieved as " + data.theme);
         theme = data.theme
     });

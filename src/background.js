@@ -11,11 +11,14 @@ var gamemode;
 //Stores the accuracy
 var accuracy;
 
-//Stores The Currently Active Url
-//var url = undefined;
-
-const sleep = (milliseconds) => {       //Function to pause script for an amount of milliseconds
+//Function to pause script for an amount of milliseconds
+const sleep = (milliseconds) => {       
     return new Promise(resolve => setTimeout(resolve, milliseconds))
+}
+
+//Function to press the more time button
+function moreTime() {
+    document.getElementsByClassName("more-time-button nice-button positive-green")[0].click()
 }
 
 //Callback Function For table data request
@@ -87,9 +90,7 @@ function start() {
 
                 gamemode = tab.url[tab.url.length - 1]; //Get the last character of the current url (number from 0 to 4)
                 console.log(`gamemode: ${gamemode}`);
-                //sleep(50).then(() => { // Wait 50ms to give the ahk script time to start
                 chrome.tabs.sendMessage(tab.id, {job: 'begin_task'});
-                //})
             });
         }
     });
