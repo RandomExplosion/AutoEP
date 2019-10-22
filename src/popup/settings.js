@@ -25,7 +25,7 @@ window.addEventListener('load', function() {        // Runs when the tab is open
         if (theme == "dark") {     
             document.getElementById("theme").href = "style_dark.css"    // Update the page css
         } else if (theme == "light") {
-            document.getElementById("theme").href = "style_light_css"
+            document.getElementById("theme").href = "style_light.css"
         }
 
         if (mode == "default") {
@@ -39,7 +39,7 @@ window.addEventListener('load', function() {        // Runs when the tab is open
             document.getElementById("accuracy").value = accuracy;
         }
         if (typeof accuracy_assist != "number") {} else if (isNaN(accuracy_assist)) {} else {
-            document.getElementById("accuracy_assist").value = accuracy_assist;
+            document.querySelectorAll("input")[3].value = accuracy_assist;
         }
     })
 })
@@ -60,16 +60,16 @@ if (acc_obj) {
     }
 }
 
-var acc_assist_obj = document.getElementById("accuracy_assist");        // This cant find the object for some reason - TODO: THIS DOES NOT WORK
+var acc_assist_obj = document.querySelectorAll("input")[3]  // I know this method is a bit weird, but when i use the method used for the other input box it failes to find the input object
 if (acc_assist_obj) {
-    document.getElementById("accuracy_assist").onchange = function () {     // Same as above function but for the accuracy match level
+    document.querySelectorAll("input")[3].onchange = function () {     // Same as above function but for the accuracy match level
         try {
             chrome.storage.local.remove("accuracy_assist");
         } catch (err) {
             console.log(err)
         }
 
-        var accuracy_assist = document.getElementById("accuracy_assist").value;
+        var accuracy_assist = document.querySelectorAll("input")[3].value;
         chrome.storage.local.set({'accuracy_assist': accuracy_assist}, function () {
             console.log("Assist match level saved as " + accuracy_assist + "%")
         });

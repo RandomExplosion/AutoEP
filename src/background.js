@@ -8,17 +8,14 @@ let bkg = chrome.extension.getBackgroundPage();
 //Stores The Current Gamemode
 var gamemode; 
 
+//Stores the current script run mode (default / assist)
+var mode;
+
 //Stores the accuracy
 var accuracy;
 
-//Function to pause script for an amount of milliseconds
-const sleep = (milliseconds) => {       
-    return new Promise(resolve => setTimeout(resolve, milliseconds))
-}
-
-//Function to press the more time button
-function moreTime() {
-    document.getElementsByClassName("more-time-button nice-button positive-green")[0].click()
+function sleep(time) {
+    return new Promise((resolve) => setTimeout(resolve, time));
 }
 
 //Callback Function For table data request
@@ -178,7 +175,25 @@ chrome.runtime.onMessage.addListener(function(msg) {
     else if (msg.job == "start") {
         mode = msg.mode
         accuracy = msg.accuracy;
-        start();
+
+        chrome.tabs.query({"currentWindow": true, "active": true}, function(tab) {   //Run a query for the active tab info
+            var tab = tab[0];
+            if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/game.*mode=[0123]/g)) {  
+                startStr = "autoStartScript4968593563904788-" + mode
+                if (mode == "assist") {
+                    startStr = startStr + "-" + accuracy
+                }
+                console.log(`Starting autohotkey: Mode: ${mode} | Accuracy: ${accuracy}%`)
+                console.log(`Start string: ${startStr}`)
+                sleep(500).then(() => { // Give the popup time to properly close
+                    chrome.tabs.sendMessage(tab.id, {job: 'copy', answer: startStr});
+                })
+            }
+        })
+
+        sleep(500).then(() => {    // Give the ahk script time to recieve the clipboard contents and start
+            start();
+        })
     }
     else {
         console.log("No Question Sent!")

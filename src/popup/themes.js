@@ -18,7 +18,7 @@ window.addEventListener('load', function() {        // Runs when the tab is open
             document.getElementById("light").checked = false;     // Chrck and uncheck the checkboxes so they reflect the current settings
             document.getElementById("dark").checked = true;    
         } else if (theme == "light") {
-            document.getElementById("theme").href = "style_light_css"
+            document.getElementById("theme").href = "style_light.css"
             document.getElementById("dark").checked = false;
             document.getElementById("light").checked = true;
         }
@@ -34,7 +34,7 @@ document.getElementById("dark").onchange = function () {        // Update the sa
 
 document.getElementById("light").onchange = function () {        // Update the saved mode when the checkboxes are modified
     chrome.storage.local.set({'theme': "light"}, function () {
-        document.getElementById("theme").href = "style_light_css"
+        document.getElementById("theme").href = "style_light.css"
         console.log("Theme saved as light");
     });
 }

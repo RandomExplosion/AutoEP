@@ -1,77 +1,19 @@
 
 /* This file contains all css relating to colour, the settings here are for the dark theme */
 
-body {
-    background: #443737;
-    color: #fff;
-}
+/*  Colour Scheme   */
+:root {
+    --window-background: #443737;
+    --text: #fff;
 
-.button_currentPage {
-    color: #fff;
-    background: #443737;
-}
+    --button-background: #115173;
+    --button-background-action: #9c32da;
+    --button-hover: #49505a;
 
-button {
-    color: #fff;
-    background: #115173;
-}
+    --checkbox-unchecked: #eee;
+    --checkbox-hover: #ccc;
+    --checkbox-checked: #2196F3;
 
-button:hover {
-    background: #49505a;
-}
-
-input, select, textarea {
-    color: #fff;
-}
-
-option {
-    color: #000;
-}
-
-select {
-    color: #000;
-}
-
-option {
-    color: #000;
-}
-
-
-
-
-
-
-
-/*  Checkbox    */
-
-.checkmark {
-  background-color: #eee;
-}
-
-.container:hover input ~ .checkmark {
-  background-color: #ccc;
-}
-
-.container input:checked ~ .checkmark {
-  background-color: #2196F3;
-}
-
-.container .checkmark:after {
-	background: #fff;
-}
-
-
-
-
-
-
-/*  Input Box   */
-  
-.field{
-    --uiFieldPlaceholderColor: var(--fieldPlaceholderColor, #767676);
-}
-
-.field {
-    --fieldBorderColor: #D1C4E9;
-    --fieldBorderColorActive: #673AB7;
+    --input-unselected: #d1C4e9;
+    --input-selected: #673ab7;
 }

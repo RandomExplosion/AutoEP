@@ -1,32 +1,86 @@
+#NoEnv
 #SingleInstance force
 
+lp := 1     ; Default mode toggle
+lpas := 1       ; Assist mode toggle
+record := []    ; Assist mode text storage
 browsers := "Chrome_WidgetWin_0,Chrome_WidgetWin_1"   ; Possible chrome names
 
-^+ENTER::
-	lp := 0
-	loop {
-		if (lp == 1) {
-			break
-		}
-		sURL := GetActiveBrowserURL()  
-		if (sURL != "") {       ; Check if it is blank (if it is, then you aren't on chrome)
-			StringRight, lastChars, sURL, 6  ; Grab the last characters of the url
-			StringTrimRight, lastChars, lastChars, 1 ; Remove the last character of the url
-			if (lastChars != "mode=") {  ; Check if you are on not on the game page
-				break	; Exit the loop if you aren't
-			}
-		} else {    ; If it is blank, stop the script (since this means you have exited chrome)
-			break
-		}
-		SendRaw, %Clipboard%    ; Send the clipboard contents by simulating typing
-		Send, {ENTER} 
-		Sleep, 500   ; Sleep 500ms to let the extension catch up
-	}
-return
+
+loop {  
+    if (Clipboard == "autoStartScript4968593563904788-default") {   ; Check for the message from the extension. Yes, it communicates with the clipbaord. No, this was not a bad idea (because it works)
+        lp := 0     ; Value that is 0 when default mode is running
+        while (lp == 0) {
+            sURL := GetActiveBrowserURL()  ; Grab the current open url on chrome
+            if (sURL != "") {       ; Check if it is blank (then you aren't on chrome)
+                StringRight, lastChars, sURL, 6 ; Cut the url to be just the last 6 characters
+                StringTrimRight, lastChars, lastChars, 1    ; Remove the last character (as this can change depending on the gamemode)
+                if (lastChars != "mode=") {     ; Check if you aren't on the game page, if you aren't then stop the script
+                    lp := 1
+                }
+            } else {        ; Exit the script if you aren't on chrome
+                lp := 1
+            }
+            Clipwait 1, 0       ; This will wait 0.5 seconds for the clipboard to update, before continuing the script, if nothing is found. It currently just pastes the last thing in the clipboard
+            ;if (ErrorLevel) {}   ; This means nothing was copied to the clipboard
+            Sendraw %Clipboard% ; Send the clipboard, uses sendraw so it can't mess with anything
+            Send {ENTER}   
+            Clipboard := "" ; Empty the clipboard
+        }
+    }
+    if (RegExMatch(Clipboard, "autoStartScript4968593563904788-assist-.") > 0) {    ; The string also has the match level, so we check it with a regex wildcard
+        StringRight, accuracy, Clipboard, 2 ; Save the last two characters of the input string, this is the match level
+        lpas := 0 
+        record := []
+        while (lpas == 0) {
+            sURL := GetActiveBrowserURL()  
+            if (sURL != "") {     
+                StringRight, lastChars, sURL, 6
+                StringTrimRight, lastChars, lastChars, 1 
+                if (lastChars != "mode=") {  
+                    lpas := 1	
+                }
+            } else {    
+                lpas := 1
+            }
+        }
+    }
+}
 
 ^+A::	; [CTRL] + [SHIFT] + A		!!!Hold it down to stop the script, you can't just tap it
 	lp := 1
 return
+
+$ENTER:: 
+    if (lpas == 0) {    ; Check if assist mode is currently running
+        str := ""
+        for index, value in record {
+            str .= value
+        }
+        clip := clipboard
+
+        sim := Similarity(str, clip)        ; Check the similarity and if it is within the accuracy then delete the entered text and enter the keyboard
+        if (sim > accuracy && sim < 100) {
+            Send, ^a
+            Sendraw, %Clipboard%
+        }
+    }
+    record := []
+    Send, {ENTER}
+return
+
+
+Similarity(a,b) {       ; Check the similarity of two strings, returns a precentage
+	StringSplit, a,a
+	StringSplit, b,b
+	LoopCount := (a0 > b0) ? a0 : b0
+	Loop, % LoopCount
+	{
+		if (a%A_Index% = b%A_index%)
+			matches++
+	}
+	return (matches = "") ? 0 : Round(matches/LoopCount*100)
+}
 
 GetActiveBrowserURL() {
 	global browsers
@@ -124,3 +178,137 @@ Acc_Children(Acc) {
 			ErrorLevel := "AccessibleChildren DllCall Failed"
 	}
 }
+
+
+
+
+
+$a::
+    record.push("a")
+    Send, a
+return
+
+$b::
+    record.push("b")
+    Send, b
+return
+
+$c::
+    record.push("c")
+    Send, c
+return
+
+$d::
+    record.push("d")
+    Send, d
+return
+
+$e::
+    record.push("e")
+    Send, e
+return
+
+$f::
+    record.push("f")
+    Send, f
+return
+
+$g::
+    record.push("g")
+    Send, g
+return
+
+$h::
+    record.push("h")
+    Send, h
+return
+
+$i::
+    record.push("i")
+    Send, i
+return
+
+$j::
+    record.push("j")
+    Send, j
+return
+
+$k::
+    record.push("k")
+    Send, k
+return
+
+$l::
+    record.push("l")
+    Send, l
+return
+
+$m::
+    record.push("m")
+    Send, m
+return
+
+$n::
+    record.push("n")
+    Send, n
+return
+
+$o::
+    record.push("o")
+    Send, o
+return
+
+$p::
+    record.push("p")
+    Send, p
+return
+
+$q::
+    record.push("q")
+    Send, q
+return
+
+$r::
+    record.push("r")
+    Send, r
+return
+
+$s::
+    record.push("s")
+    Send, s
+return
+
+$t::
+    record.push("t")
+    Send, t
+return
+
+$u::
+    record.push("u")
+    Send, u
+return
+
+$v::
+    record.push("v")
+    Send, v
+return
+
+$w::
+    record.push("w")
+    Send, w
+return
+
+$y::
+    record.push("y")
+    Send, y
+return
+
+$x::
+    record.push("x")
+    Send, x
+return
+
+$z::
+    record.push("z")
+    Send, z
+return

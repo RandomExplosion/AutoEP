@@ -4,6 +4,8 @@
 body {
     height: 400px;
     width: 610px;
+    background: var(--window-background);
+    color: var(--text);
 }
 
 p {
@@ -18,6 +20,8 @@ p {
     border: none;
     width: 200px;
     letter-spacing: 1px;
+    color: var(--text);
+    background: var(--window-background);
     -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
     box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
 }
@@ -30,11 +34,15 @@ button {
     border: none;
     transition: all 0.4s ease 0s;
     width: 200px;
+    cursor:pointer;
+    color: var(--text);
+    background: var(--button-background);
 }
 
 button:hover {
     letter-spacing: 1px;
     transition: all 0.4s ease 0s;
+    background: var(--button-hover);
     -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
     box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
 }
@@ -47,6 +55,9 @@ form {
     display: inline-block;
 }
 
+input, select, textarea {
+  color: var(--text);
+}
 
 
 
@@ -79,6 +90,10 @@ form {
   cursor: pointer;
 }
 
+.container:hover input ~ .checkmark {
+  background-color: var(--checkbox-hover);
+}
+
 .checkmark {
   position: absolute;
   top: 0;
@@ -86,6 +101,7 @@ form {
   height: 25px;
   width: 25px;
   border-radius: 50%;
+  background-color: var(--checkbox-unchecked);
 }
 
 .checkmark:after {
@@ -96,6 +112,7 @@ form {
 
 .container input:checked ~ .checkmark:after {
   display: block;
+  background-color: var(--checkbox-checked);
 }
 
 .container .checkmark:after {
@@ -103,7 +120,8 @@ form {
 	left: 9px;
 	width: 8px;
 	height: 8px;
-	border-radius: 50%;
+  border-radius: 50%;
+	background: var(--text);
 }
 
 
@@ -135,6 +153,11 @@ form {
     .page {
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     }
+  }
+
+  .field {
+    --fieldBorderColor: #D1C4E9;
+    --fieldBorderColorActive: #673AB7;
   }
   
   .field__input{ 

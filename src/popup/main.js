@@ -16,7 +16,7 @@ window.addEventListener('load', function() {        // Runs when the tab is open
         if (theme == "dark") {     
             document.getElementById("theme").href = "style_dark.css"    // Update the page css
         } else if (theme == "light") {
-            document.getElementById("theme").href = "style_light_css"
+            document.getElementById("theme").href = "style_light.css"
         }
     })
 })

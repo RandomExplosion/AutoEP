@@ -1,2 +1,0 @@
-#NoEnv
-#SingleInstance force
