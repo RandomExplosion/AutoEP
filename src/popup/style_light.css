@@ -1,19 +1,18 @@
 
 /* This file contains all css relating to colour, the settings here are for the light theme */
-/* TODO: Figure out a good light colour scheme */
 
 /*  Colour Scheme   */
 :root {
-    --window-background: #bbc8c8;
+    --window-background: #E2FFF2;
     --text: #000;
 
-    --button-background: #eeae8c;
-    --button-background-action: #63cd25;
+    --button-background: #C3E8E2;
+    --button-background-action: #D7FFD6;
     --button-hover: #b6afa5;
 
-    --checkbox-unchecked: #111111;
-    --checkbox-hover: #333333;
-    --checkbox-checked: #de690c;
+    --checkbox-unchecked: #55FFC0;
+    --checkbox-hover: #2EC4EB;
+    --checkbox-checked: #35E862;
 
     --input-unselected: #2e3b16;
     --input-selected: #98c548;

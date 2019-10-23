@@ -21,7 +21,7 @@ loop {
             } else {        ; Exit the script if you aren't on chrome
                 lp := 1
             }
-            Clipwait 1, 0       ; This will wait 0.5 seconds for the clipboard to update, before continuing the script, if nothing is found. It currently just pastes the last thing in the clipboard
+            Clipwait 1, 1       ; This will wait 1 seconds for the clipboard to update, before continuing the script, if nothing is found. It currently just pastes the last thing in the clipboard
             ;if (ErrorLevel) {}   ; This means nothing was copied to the clipboard
             Sendraw %Clipboard% ; Send the clipboard, uses sendraw so it can't mess with anything
             Send {ENTER}   
