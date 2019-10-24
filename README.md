@@ -2,7 +2,7 @@
 AutoEp is an automation solution for the Online Learning Site: Education Perfect 
 
 ## Setup
-The files inside the [src](https://github.com/RandomExplosion/AutoEP/tree/master/src) folder need to be packed as a chrome extension, do this by going to [chrome://extensions](chrome://extensions) and clicking load unpacked and pointing it to the src folder.
+The files inside the [src](https://github.com/RandomExplosion/AutoEP/tree/master/src) folder need to be packed as a chrome extension, do this by going to `chrome://extensions` and clicking load unpacked and pointing it to the src folder.
 
 ## Usage
 Please make sure the [autohotkey script](https://github.com/RandomExplosion/AutoEP/blob/master/autohotkey/edu-perfect.exe) is running in the background while attempting to use the extension. It will run as a tray app and have a tray icon. \
