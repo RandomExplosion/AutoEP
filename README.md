@@ -11,7 +11,7 @@ Click on the extension icon to open the popup to use it.
 Please visit the [usage](https://github.com/RandomExplosion/AutoEP/wiki/Usage) page of the wiki for a more detailed explanation
 
 ### Modes
-Default - The normal mode, self answers questions 
+Default - The normal mode, self answers questions  
 Assist - All of the benefits, none of the guilt! (basically an autocorrect)
 
 ### Notes
