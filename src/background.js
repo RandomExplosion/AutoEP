@@ -195,6 +195,11 @@ chrome.runtime.onMessage.addListener(function(msg) {
             start();
         })
     }
+    else if (msg.job == "update_buttons") {
+        chrome.tabs.query({"currentWindow": true, "active": true}, function(tab) {   //Run a query for the active tab info
+            chrome.runtime.sendMessage({job: "toggle_buttons", url: tab[0].url});
+        })
+    }
     else {
         console.log("No Question Sent!")
     }
