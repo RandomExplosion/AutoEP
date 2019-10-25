@@ -8,7 +8,7 @@ window.addEventListener('load', function() {        // Runs when the tab is open
         console.log("Theme retrieved as " + data.theme);
         theme = data.theme
     });
-
+    chrome.runtime.sendMessage({job: "update_buttons"});
     sleep(100).then(() => {        // Give it time to retrive the data
         if (theme != "dark" && theme != "light") {
             theme = "dark"
@@ -19,6 +19,23 @@ window.addEventListener('load', function() {        // Runs when the tab is open
             document.getElementById("theme").href = "style_light.css"
         }
     })
+})
+
+chrome.runtime.onMessage.addListener(function (msg) {
+    if (msg.job == "toggle_buttons") {
+        if (msg.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/game.*mode=[0123]/g)) {  
+            document.getElementById("start").disabled = false;
+            document.getElementById("load").disabled = true;
+        }
+        else if (msg.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*list-starter.*/g)) {      
+            document.getElementById("load").disabled = false;
+            document.getElementById("start").disabled = true;
+        }
+        else {
+            document.getElementById("load").disabled = true;     
+            document.getElementById("start").disabled = true;      
+        }
+    }
 })
 
 function load() {
@@ -44,9 +61,9 @@ function start() {
         }
         if (mode == "default") {
             if (typeof accuracy != "number") {      // Make sure the accuracy value is a correct number
-                alert("You have set the accuracy! Please visit the settings page")
+                alert("You have not set the accuracy! Please visit the settings page")
             } else if (isNaN(accuracy)) {
-                alert("You have set the accuracy! Please visit the settings page")
+                alert("You have not set the accuracy! Please visit the settings page")
             } else {
                 if (accuracy > 100) {       // If it is a number but out of the range round it
                     accuracy = 100

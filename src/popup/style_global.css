@@ -39,7 +39,13 @@ button {
     background: var(--button-background);
 }
 
-button:hover {
+button:disabled {
+    opacity: 0.5;
+    transition: disabled;
+    background: rgb(192, 192, 192) !important;
+}
+
+button:hover:enabled {
     letter-spacing: 1px;
     transition: all 0.4s ease 0s;
     background: var(--button-hover);
@@ -47,7 +53,7 @@ button:hover {
     box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
 }
 
-button:focus {
+button:focus:enabled {
     outline:none;
 }
 
