@@ -162,8 +162,12 @@ input, select, textarea {
   }
 
   .field {
+    --fieldBorderColor: var(--input-underline-deselected);
+    --fieldBorderColorActive: var(--input-underline-selected);   
+    /* 
     --fieldBorderColor: #D1C4E9;
     --fieldBorderColorActive: #673AB7;
+    */
   }
   
   .field__input{ 

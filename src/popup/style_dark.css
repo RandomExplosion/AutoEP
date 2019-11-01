@@ -16,4 +16,6 @@
 
     --input-unselected: #f39c69;
     --input-selected: #f17d39;
+    --input-underline-deselected: #f71c0c;
+    --input-underline-selected: #09cf2a;
 }
