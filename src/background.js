@@ -175,25 +175,7 @@ chrome.runtime.onMessage.addListener(function(msg) {
     else if (msg.job == "start") {
         mode = msg.mode
         accuracy = msg.accuracy;
-
-        chrome.tabs.query({"currentWindow": true, "active": true}, function(tab) {   //Run a query for the active tab info
-            var tab = tab[0];
-            if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/game.*mode=[0123]/g)) {  
-                startStr = "autoStartScript4968593563904788-" + mode
-                if (mode == "assist") {
-                    startStr = startStr + "-" + accuracy
-                }
-                console.log(`Starting autohotkey: Mode: ${mode} | Accuracy: ${accuracy}%`)
-                console.log(`Start string: ${startStr}`)
-                sleep(500).then(() => { // Give the popup time to properly close
-                    chrome.tabs.sendMessage(tab.id, {job: 'copy', answer: startStr});
-                })
-            }
-        })
-
-        sleep(500).then(() => {    // Give the ahk script time to recieve the clipboard contents and start
-            start();
-        })
+        start();
     }
     else if (msg.job == "update_buttons") {
         chrome.tabs.query({"currentWindow": true, "active": true}, function(tab) {   //Run a query for the active tab info
