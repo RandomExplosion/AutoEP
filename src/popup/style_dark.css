@@ -3,17 +3,17 @@
 
 /*  Colour Scheme   */
 :root {
-    --window-background: #443737;
+    --window-background: #3a342f;
     --text: #fff;
 
-    --button-background: #115173;
-    --button-background-action: #9c32da;
-    --button-hover: #49505a;
+    --button-background: #aa5b2d;
+    --button-background-action: #f17d39;
+    --button-hover: #5a5149;
 
     --checkbox-unchecked: #eee;
     --checkbox-hover: #ccc;
-    --checkbox-checked: #2196F3;
+    --checkbox-checked: #f17d39;
 
-    --input-unselected: #d1C4e9;
-    --input-selected: #673ab7;
+    --input-unselected: #f39c69;
+    --input-selected: #f17d39;
 }
