@@ -16,7 +16,7 @@ chrome.runtime.onMessage.addListener(function (msg) {
             setInterval(checkAnswer, 200);
         }
     }
-    else if (msg.job === 'copy') { //If script was just sent an answer
+    else if (msg.job === 'answer') { //If script was just sent an answer
         if (mode == "default") {
             submit(msg.answer);
             if (msg.answer == "incorrect") {
@@ -102,8 +102,8 @@ function checkAnswer() {
         match = (longerLength - costs[s2.length]) / parseFloat(longerLength) * 100;   
     }
 
-    console.log(`Checking answer: '${answer}' against '${document.querySelectorAll("[id='answer-text']")[1].value}'`)
-    console.log(`Match: ${match}%`)
+    //console.log(`Checking answer: '${answer}' against '${document.querySelectorAll("[id='answer-text']")[1].value}'`)
+    //console.log(`Match: ${match}%`)
     if (match >= accuracy) {
         submit(answer);
         //document.querySelectorAll("[id='answer-text']")[1].value = "";;
