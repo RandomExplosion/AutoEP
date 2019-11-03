@@ -87,7 +87,7 @@ function start() {
 
                 gamemode = tab.url[tab.url.length - 1]; //Get the last character of the current url (number from 0 to 4)
                 console.log(`gamemode: ${gamemode}`);
-                chrome.tabs.sendMessage(tab.id, {job: 'begin_task'});
+                chrome.tabs.sendMessage(tab.id, {job: 'begin_task', mode: mode, accuracy: accuracy});
             });
         }
     });
@@ -126,8 +126,11 @@ chrome.runtime.onMessage.addListener(function(msg) {
                             translatedstring = lantoeng.get(msg.question.replace(/ *\([^)]*\) */g, "").replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""));
                             
                             console.log(`Sending answer \"${translatedstring}\" back to content script`);//Log to console
-                            if (Math.floor((Math.random() * 100) + 1) <= accuracy) {    //Get a random number and compare it with the accuracy value 
+                            if (Math.floor((Math.random() * 100) + 1) <= accuracy || mode == "assist") {    //Get a random number and compare it with the accuracy value 
                                 chrome.tabs.sendMessage(tabArray[0].id, {job: 'copy', answer: translatedstring});
+                            }
+                            else {
+                                chrome.tabs.sendMessage(tabArray[0].id, {job: 'copy', answer: "incorrect"});
                             }
                         }
                     );
@@ -144,8 +147,11 @@ chrome.runtime.onMessage.addListener(function(msg) {
                             
                             console.log(`Sending answer \"${translatedstring}\" back to content script`);//Log to console
                             //Send Answer Back to the Content Script
-                            if (Math.floor((Math.random() * 100) + 1) <= accuracy) {    //Get a random number and compare it with the accuracy value  
+                            if (Math.floor((Math.random() * 100) + 1) <= accuracy || mode == "assist") {    //Get a random number and compare it with the accuracy value  
                                 chrome.tabs.sendMessage(tabArray[0].id, {job: 'copy', answer: translatedstring});
+                            }
+                            else {
+                                chrome.tabs.sendMessage(tabArray[0].id, {job: 'copy', answer: "incorrect"});
                             }
                         }
                     );
