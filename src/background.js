@@ -8,7 +8,7 @@ let bkg = chrome.extension.getBackgroundPage();
 //Stores The Current Gamemode
 var gamemode; 
 
-//Stores the current script run mode (default / assist)
+//Stores the current mode (default / assist)
 var mode;
 
 //Stores the accuracy
@@ -31,8 +31,8 @@ function StoreTableData(tabledata) {
         }   
     } 
     else {   
-        console.error('Table is Empty!?');
-        //alert("Tabble is empty!?");
+        console.log('Table is Empty!?');
+        //console.error("Tabble is empty!?");
     }
 }   
 
@@ -52,6 +52,9 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
             
             chrome.tabs.executeScript(tabId, {
                 file: 'readquestions.js'
+            });
+            chrome.tabs.executeScript(tabId, {
+                file: 'bot.js'
             });
         }
 
@@ -87,7 +90,7 @@ function start() {
 
                 gamemode = tab.url[tab.url.length - 1]; //Get the last character of the current url (number from 0 to 4)
                 console.log(`gamemode: ${gamemode}`);
-                chrome.tabs.sendMessage(tab.id, {job: 'begin_task'});
+                chrome.tabs.sendMessage(tab.id, {job: 'begin_task', mode: mode, accuracy: accuracy});
             });
         }
     });
@@ -96,8 +99,6 @@ function start() {
 //When we recieve a message from the question streamer (readquestion.js)
 chrome.runtime.onMessage.addListener(function(msg) {
     if (msg.question) {
-        
-        //debugger;
 
         //Attempt translation with error catch
         try {
@@ -126,8 +127,11 @@ chrome.runtime.onMessage.addListener(function(msg) {
                             translatedstring = lantoeng.get(msg.question.replace(/ *\([^)]*\) */g, "").replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""));
                             
                             console.log(`Sending answer \"${translatedstring}\" back to content script`);//Log to console
-                            if (Math.floor((Math.random() * 100) + 1) <= accuracy) {    //Get a random number and compare it with the accuracy value 
+                            if (Math.floor((Math.random() * 100) + 1) <= accuracy || mode == "assist") {    //Get a random number and compare it with the accuracy value 
                                 chrome.tabs.sendMessage(tabArray[0].id, {job: 'copy', answer: translatedstring});
+                            }
+                            else {
+                                chrome.tabs.sendMessage(tabArray[0].id, {job: 'copy', answer: "incorrect"});
                             }
                         }
                     );
@@ -144,8 +148,11 @@ chrome.runtime.onMessage.addListener(function(msg) {
                             
                             console.log(`Sending answer \"${translatedstring}\" back to content script`);//Log to console
                             //Send Answer Back to the Content Script
-                            if (Math.floor((Math.random() * 100) + 1) <= accuracy) {    //Get a random number and compare it with the accuracy value  
+                            if (Math.floor((Math.random() * 100) + 1) <= accuracy || mode == "assist") {    //Get a random number and compare it with the accuracy value  
                                 chrome.tabs.sendMessage(tabArray[0].id, {job: 'copy', answer: translatedstring});
+                            }
+                            else {
+                                chrome.tabs.sendMessage(tabArray[0].id, {job: 'copy', answer: "incorrect"});
                             }
                         }
                     );
