@@ -8,7 +8,7 @@ let bkg = chrome.extension.getBackgroundPage();
 //Stores The Current Gamemode
 var gamemode; 
 
-//Stores the current script run mode (default / assist)
+//Stores the current mode (default / assist)
 var mode;
 
 //Stores the accuracy
@@ -31,8 +31,8 @@ function StoreTableData(tabledata) {
         }   
     } 
     else {   
-        console.error('Table is Empty!?');
-        //alert("Tabble is empty!?");
+        console.log('Table is Empty!?');
+        //console.error("Tabble is empty!?");
     }
 }   
 
@@ -52,6 +52,9 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
             
             chrome.tabs.executeScript(tabId, {
                 file: 'readquestions.js'
+            });
+            chrome.tabs.executeScript(tabId, {
+                file: 'bot.js'
             });
         }
 
@@ -96,8 +99,6 @@ function start() {
 //When we recieve a message from the question streamer (readquestion.js)
 chrome.runtime.onMessage.addListener(function(msg) {
     if (msg.question) {
-        
-        //debugger;
 
         //Attempt translation with error catch
         try {
