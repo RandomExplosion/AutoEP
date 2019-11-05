@@ -127,7 +127,7 @@ chrome.runtime.onMessage.addListener(function(msg) {
                             translatedstring = lantoeng.get(msg.question.replace(/ *\([^)]*\) */g, "").replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""));
                             
                             console.log(`Sending answer \"${translatedstring}\" back to content script`);//Log to console
-                            if (Math.floor((Math.random() * 100) + 1) <= accuracy || mode == "assist") {    //Get a random number and compare it with the accuracy value 
+                            if (Math.floor((Math.random() * 100) + 1) <= accuracy || mode == "assist") {    //Get a random number and compare it with the accuracy value (assist mode bypasses this)
                                 chrome.tabs.sendMessage(tabArray[0].id, {job: 'answer', answer: translatedstring});
                             }
                             else {

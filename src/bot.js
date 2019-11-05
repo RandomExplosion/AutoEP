@@ -2,10 +2,6 @@
 var answer;  //The current answer
 var mode;  //The current mode
 
-const sleep = (milliseconds) => {
-    return new Promise(resolve => setTimeout(resolve, milliseconds))
-}
-
 chrome.runtime.onMessage.addListener(function (msg) {
     if (msg.job === 'begin_task') {
         injectJS();     //Call the function to inject the js function to submit the answer
@@ -20,8 +16,8 @@ chrome.runtime.onMessage.addListener(function (msg) {
         if (mode == "default") {
             submit(msg.answer);
             if (msg.answer == "incorrect") {
-                sleep(2000).then(() => {    // Give the popup time to appear
-                    document.getElementById("continue-button").click(); // Click the continue button
+                new Promise(resolve => setTimeout(resolve, 2000)).then(() => {  // Give the popup time to appear (sleep 2000ms)
+                    document.getElementById("continue-button").click();     // Click the continue button
                 });
             }
         }
@@ -60,6 +56,7 @@ function submit(text) {     // Submit text
 };
 
 function checkAnswer() {
+    //Compare the user's answer to the correct answer
     var s1 = document.querySelectorAll("[id='answer-text']")[1].value;
     var s2 = answer;
     var match = 0;
@@ -106,7 +103,6 @@ function checkAnswer() {
     //console.log(`Match: ${match}%`)
     if (match >= accuracy) {
         submit(answer);
-        //document.querySelectorAll("[id='answer-text']")[1].value = "";;
     }    
 }
 
@@ -115,8 +111,8 @@ function checkAnswer() {
 
 
 
-// Unused function
-function moreTime() {
+// Unused function 
+function moreTime() {       // Function to click the more time button
     timer = document.getElementsByClassName("clock-label ep-animate ng-binding")[0].innerText; // Get the current amount of seconds left
     if (parseInt(timer, 10) < 5) {       // Check if there is less then 5 seconds left
         document.getElementsByClassName("more-time-button nice-button positive-green")[0].click();  // Click the more time button
