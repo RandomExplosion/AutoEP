@@ -15,6 +15,6 @@ function copyandsend() {
     //If the question hasn't changed since the last time we checked 
     if (questiontext != prevquestion) {
         prevquestion = questiontext; //Update the previous question
-        chrome.runtime.sendMessage({question: questiontext}); //Send it to the extension for processing
+        chrome.runtime.sendMessage({job: "answerQuestion", question: questiontext}); //Send it to the extension for processing
     }
 }

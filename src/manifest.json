@@ -2,7 +2,7 @@
     "short_name": "AutoEP",
     "name" : "AutoEP - Bot for Education Perfect",
     "description": "A bot to help* complete education perfect tasks. Intended for Language perfect vocab tasks.\n #NOTE Currently Doesn't support audio tasks.",
-    "version": "1.1",
+    "version": "1.1.2",
     "manifest_version": 2,
 
     "icons": 

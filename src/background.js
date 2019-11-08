@@ -25,14 +25,13 @@ function StoreTableData(tabledata) {
         console.log('Creating Dictionaries');
 
         for (let i = 0; i < tabledata.length; i++) { //For every phrase (both languages)
-                                       //First remove anything in brackets, then any leftover punctuation
+            //First remove anything in brackets, then any leftover punctuation
             lantoeng.set(tabledata[i][0].replace(/ *\([^)]*\) */g, "").replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""), tabledata[i][1].replace(/;/g, ",")); //Add it to the Target Language - Base Language Dictionary
             engtolan.set(tabledata[i][1].replace(/ *\([^)]*\) */g, "").replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""), tabledata[i][0].replace(/;/g, ",")); //Add it to the Base Language - Target Language Dictionary
         }   
     } 
     else {   
         console.log('Table is Empty!?');
-        //console.error("Tabble is empty!?");
     }
 }   
 
@@ -98,7 +97,7 @@ function start() {
 
 //When we recieve a message from the question streamer (readquestion.js)
 chrome.runtime.onMessage.addListener(function(msg) {
-    if (msg.question) {
+    if (msg.job == "answerQuestion") {
 
         //Attempt translation with error catch
         try {
@@ -112,16 +111,15 @@ chrome.runtime.onMessage.addListener(function(msg) {
             //Use different Map depending on the gamemode
             switch (gamemode) {
 
-            /* GAMEMODE KEY: (TARGET = Language being learnt. BASE = The 1st language of the user)
-            0 = TARGET text to Base text
-            1 = BASE text to TARGET text
-            2 = Spoken TARGET to Base Text
-            3 = Spoken TARGET to TARGET Text
-            */
+                /* GAMEMODE KEY: (TARGET = Language being learnt. BASE = The 1st language of the user)
+                0 = TARGET text to Base text
+                1 = BASE text to TARGET text
+                2 = Spoken TARGET to Base Text
+                3 = Spoken TARGET to TARGET Text
+                */
 
-                case '0': //0 = TARGET text to Base text
-                    chrome.tabs.query({
-                        currentWindow: true, active: true },
+                case '0': { //TARGET text to Base text
+                    chrome.tabs.query({currentWindow: true, active: true},
                         function (tabArray) {
                             //Strip The question of it's punctuation and whitespace then run it through the map
                             translatedstring = lantoeng.get(msg.question.replace(/ *\([^)]*\) */g, "").replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""));
@@ -135,12 +133,11 @@ chrome.runtime.onMessage.addListener(function(msg) {
                             }
                         }
                     );
-                    
-                break;
+                    break;
+                }
 
-                case '1': //BASE text to TARGET text
-                    chrome.tabs.query( {
-                        currentWindow: true, active: true },
+                case '1': { //BASE text to TARGET text
+                    chrome.tabs.query({currentWindow: true, active: true},
                         function (tabArray) {
                       
                             //Strip The question of it's punctuation and whitespace then run it through the map
@@ -156,23 +153,32 @@ chrome.runtime.onMessage.addListener(function(msg) {
                             }
                         }
                     );
-                break;
+                    break;
+                }
 
-                case '2': //Spoken TARGET to BASE TEXT <NOT IMPLIMENTED>
-                    throw "*Spoken* TARGET to BASE *Text* is not currently supported!";
+                case '2': { //Spoken TARGET to BASE TEXT <NOT IMPLEMENTED>
+                    alert("Listening mode is not currently supported!");
+                    break;
+                }
 
-                case '3': //Spoken TARGET to TARGET TEXT <NOT IMPLIMENTED>
-                    throw "*Spoken* TARGET to TARGET *Text* is not currently supported!";
+                case '3': { //Spoken TARGET to TARGET TEXT <NOT IMPLEMENTED>
+                    alert("Dictation mode is not currently supported!");
+                    break;
+                }
 
                 //Otherwise the gamemode is unsupported
-                default:
-                //alert(`Unsupported Game Mode: ${gamemode}`);
-                console.log(`Unsupported Game Mode: ${gamemode}`);
-                break;
+                default: { 
+                    if (msg.question) {
+                        alert(`Unsupported Game Mode: ${gamemode}`);
+                    }
+                    else if (!msg.question) {
+                        console.log("No question sent!");
+                    }
+                }
             }
         }
         catch(error) {
-            console.error(error);
+            console.log(error);
         }
     }
     //Check for messages from the popup
@@ -188,8 +194,5 @@ chrome.runtime.onMessage.addListener(function(msg) {
         chrome.tabs.query({"currentWindow": true, "active": true}, function(tab) {   //Run a query for the active tab info
             chrome.runtime.sendMessage({job: "toggle_buttons", url: tab[0].url});
         })
-    }
-    else {
-        console.log("No Question Sent!")
     }
 });
