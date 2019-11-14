@@ -4,21 +4,7 @@ const sleep = (milliseconds) => {       // Function to pause script for an amoun
 }
 
 window.addEventListener('load', function() {        // Runs when the tab is opened (when the html loads)
-    chrome.storage.local.get(['theme'], function(data) {
-        console.log("Theme retrieved as " + data.theme);
-        theme = data.theme
-    });
     chrome.runtime.sendMessage({job: "update_buttons"});
-    sleep(100).then(() => {        // Give it time to retrive the data
-        if (theme != "dark" && theme != "light") {
-            theme = "dark"
-        }
-        if (theme == "dark") {     
-            document.getElementById("theme").href = "style_dark.css"    // Update the page css
-        } else if (theme == "light") {
-            document.getElementById("theme").href = "style_light.css"
-        }
-    })
 })
 
 chrome.runtime.onMessage.addListener(function (msg) {

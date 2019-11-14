@@ -4,7 +4,7 @@ const sleep = (milliseconds) => {       //Function to pause script for an amount
 }
 
 window.addEventListener('load', function() {        // Runs when the tab is opened (when the html loads)
-    chrome.storage.local.get(['mode', 'accuracy', 'accuracy_assist', 'theme'], function(data) {     // Retrive the stored data for the settings from chrome's local storage
+    chrome.storage.local.get(['mode', 'accuracy', 'accuracy_assist'], function(data) {     // Retrive the stored data for the settings from chrome's local storage
         console.log("Current mode retrieved as " + data.mode);
         mode = data.mode
         
@@ -13,21 +13,9 @@ window.addEventListener('load', function() {        // Runs when the tab is open
 
         console.log("Assist match level retrieved as " + data.accuracy_assist + "%");
         accuracy_assist = parseInt(data.accuracy_assist)
-
-        console.log("Theme retrieved as " + data.theme);
-        theme = data.theme
     });
 
     sleep(100).then(() => {        // Give it time to retrive the data
-        if (theme != "dark" && theme != "light") {      // Check for the current theme
-            theme = "dark"
-        }
-        if (theme == "dark") {     
-            document.getElementById("theme").href = "style_dark.css"    // Update the page css
-        } else if (theme == "light") {
-            document.getElementById("theme").href = "style_light.css"
-        }
-
         if (mode == "default") {
             document.getElementById("mode_assist").checked = false;     // Chrck and uncheck the checkboxes so they reflect the current settings
             document.getElementById("mode_default").checked = true;    
