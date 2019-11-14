@@ -45,8 +45,8 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
             });
         }
         
-        //If the current webpage is a game
-        else if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/game.*mode=[0123]/g)) {
+        //If the current webpage is a game                                                                                  
+        else if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/game.*mode=[0123]/g) || tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/dash.*mode=[0123]/g)) {
             console.log('Injecting Script to Play Game >:)');
             
             chrome.tabs.executeScript(tabId, {
@@ -81,7 +81,8 @@ function load() {
 function start() {
     chrome.tabs.query({"currentWindow": true, "active": true}, function(tab) {   //Run a query for the active tab info
         var tab = tab[0];
-        if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/game.*mode=[0123]/g)) {  
+        alert("Validating");
+        if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/game.*mode=[0123]/g) || tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/dash.*mode=[0123]/g)) {  
             //Find out what gamemode is being played
             chrome.tabs.getSelected(null, function(tab) {
                 console.log('Beginning game');

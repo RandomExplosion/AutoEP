@@ -23,7 +23,7 @@ window.addEventListener('load', function() {        // Runs when the tab is open
 
 chrome.runtime.onMessage.addListener(function (msg) {
     if (msg.job == "toggle_buttons") {
-        if (msg.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/game.*mode=[0123]/g)) {  
+        if (msg.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/game.*mode=[0123]/g) || msg.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/dash.*mode=[0123]/g)) {  
             document.getElementById("start").disabled = false;
             document.getElementById("load").disabled = true;
         }

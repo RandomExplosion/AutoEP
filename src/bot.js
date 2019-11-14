@@ -40,6 +40,7 @@ function injectJS() {       // Function to inject the js to submit js into the p
         $('input').val(text)
         $('input').change();
         angular.element('#submit-button').triggerHandler('click');
+        angular.element('button.submit-button').triggerHandler('click');
     }`;
     var script = document.createElement('script');      // Create a script tag on the page
     script.textContent = code;      // Add the code into the script tag
