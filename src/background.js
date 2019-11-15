@@ -18,6 +18,18 @@ function sleep(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
 }
 
+chrome.runtime.onInstalled.addListener(function(details) {       // Runs when the extension is newly installed
+    if (details.reason == "install") {
+        console.log("This is a first install!");
+        if (!window.confirm("EULA: We do not condone the use of this whatever TODO improve this.\nDo you except the EULA?")) {
+            chrome.management.uninstallSelf();
+        }
+    } 
+    else if (details.reason == "update" && chrome.runtime.getManifest().version != details.previousVersion) {  // Check for update and make sure it is a new version
+        console.log("Updated from " + details.previousVersion + " to " + chrome.runtime.getManifest().version + "!");
+    }
+});
+
 //Callback Function For table data request
 function StoreTableData(tabledata) {   
     if (tabledata != undefined){
