@@ -19,4 +19,7 @@
 
     --input-underline-deselected: #f0b897;
     --input-underline-selected: #f17d39;
+
+    --slider-filled: dodgerblue;
+    --slider-unfilled: rgb(228, 37, 37);
 }

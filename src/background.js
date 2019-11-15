@@ -14,9 +14,14 @@ var mode;
 //Stores the accuracy
 var accuracy;
 
+//Stores the delay
+var delay;
+
 chrome.runtime.onInstalled.addListener(function(details) {       // Runs when the extension is newly installed
     if (details.reason == "install") {
         console.log("This is a first install!");
+        chrome.storage.local.set({'delay': '300'}, function () {});
+
         // Request user to accept eula here
     } 
     else if (details.reason == "update" && chrome.runtime.getManifest().version != details.previousVersion) {  // Check for update and make sure it is a new version
@@ -87,7 +92,6 @@ function load() {
 function start() {
     chrome.tabs.query({"currentWindow": true, "active": true}, function(tab) {   //Run a query for the active tab info
         var tab = tab[0];
-        alert("Validating");
         if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/game.*mode=[0123]/g) || tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/dash.*mode=[0123]/g)) {  
             //Find out what gamemode is being played
             chrome.tabs.getSelected(null, function(tab) {
@@ -96,7 +100,7 @@ function start() {
 
                 gamemode = tab.url[tab.url.length - 1]; //Get the last character of the current url (number from 0 to 4)
                 console.log(`gamemode: ${gamemode}`);
-                chrome.tabs.sendMessage(tab.id, {job: 'begin_task', mode: mode, accuracy: accuracy});
+                chrome.tabs.sendMessage(tab.id, {job: 'begin_task', mode: mode, accuracy: accuracy, delay: delay});
             });
         }
     });
@@ -195,6 +199,7 @@ chrome.runtime.onMessage.addListener(function(msg) {
     else if (msg.job == "start") {
         mode = msg.mode
         accuracy = msg.accuracy;
+        delay = msg.delay
         start();
     }
     else if (msg.job == "update_buttons") {

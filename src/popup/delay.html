@@ -12,11 +12,19 @@
          <form action="settings.html">
             <button type="submit">Settings</button>
          </form>
-         <form action="404.html">
-            <button class="button_currentPage" type="submit">-</button>
+         <form action="delay.html">
+            <button class="button_currentPage" type="submit">Delay</button>
          </form>
       </div>
    </body>
+   <br>
+   <div class="slidecontainer">
+      <input type="range" min="0" max="1000" class="slider" id="delay">
+   </div>
 
-   <script type="text/javascript" src="themes.js"></script>
+   <p id="delayVal">
+      Delay: 300ms
+   </p>
+
+   <script type="text/javascript" src="delay.js"></script>
 </html>

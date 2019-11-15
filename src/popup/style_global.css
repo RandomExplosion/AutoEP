@@ -290,3 +290,39 @@ input, select, textarea {
   .a-field_a2 .a-field__input:focus ~ .a-field__label-wrap::after{
     width: 100%;
   }
+
+
+
+
+
+
+
+
+
+
+
+/*  Range Slider   */
+  
+input[type="range"] { 
+  margin: auto;
+  -webkit-appearance: none;
+  position: relative;
+  overflow: hidden;
+  height: 40px;
+  width: 600px;
+  cursor: pointer;
+  border-radius: 0; /* iOS */
+}
+
+::-webkit-slider-runnable-track {
+  background: var(--slider-unfilled);
+}
+
+::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px; /* 1 */
+  height: 40px;
+  background: #fff;
+  box-shadow: -100vw 0 0 100vw var(--slider-filled);
+  border: 2px solid #999; /* 1 */
+}

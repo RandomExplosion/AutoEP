@@ -5,7 +5,7 @@ var prevquestion; //The question that was displayed last time the script checked
 chrome.runtime.onMessage.addListener(function (msg) {
     if (msg.job === 'begin_task') {
         console.log('Beginning Task >:)'); //Log to console for debug purposes
-        setInterval(copyandsend, 300); //Begin Question Streaming Routine
+        setInterval(copyandsend, msg.delay); //Begin Question Streaming Routine
     }
 });
 

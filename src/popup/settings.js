@@ -1,8 +1,3 @@
-
-const sleep = (milliseconds) => {       //Function to pause script for an amount of milliseconds
-    return new Promise(resolve => setTimeout(resolve, milliseconds))
-}
-
 window.addEventListener('load', function() {        // Runs when the tab is opened (when the html loads)
     chrome.storage.local.get(['mode', 'accuracy', 'accuracy_assist'], function(data) {     // Retrive the stored data for the settings from chrome's local storage
         console.log("Current mode retrieved as " + data.mode);
@@ -15,7 +10,7 @@ window.addEventListener('load', function() {        // Runs when the tab is open
         accuracy_assist = parseInt(data.accuracy_assist)
     });
 
-    sleep(100).then(() => {        // Give it time to retrive the data
+    new Promise(resolve => setTimeout(resolve, 100)).then(() => {        // Give it time to retrive the data
         if (mode == "default") {
             document.getElementById("mode_assist").checked = false;     // Chrck and uncheck the checkboxes so they reflect the current settings
             document.getElementById("mode_default").checked = true;    

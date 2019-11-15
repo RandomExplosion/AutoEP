@@ -30,15 +30,19 @@ function load() {
 }
 
 function start() {
-    chrome.storage.local.get(['mode', 'accuracy', 'accuracy_assist'], function(data) {     // Retrive the data for the settings from chrome's local storage
+    chrome.storage.local.get(['mode', 'delay', 'accuracy', 'accuracy_assist'], function(data) {     // Retrive the data for the settings from chrome's local storage
         console.log("Current mode retrieved as " + data.mode + "%");
         mode = data.mode
+
+        console.log("Delay retrieved as " + data.delay + "ms");
+        delay = data.delay
         
         console.log("Accuracy retrieved as " + data.accuracy + "%");
         accuracy = parseInt(data.accuracy)
 
         console.log("Assist match level retrieved as " + data.accuracy_assist + "%");
         accuracy_assist = parseInt(data.accuracy_assist)
+
     });
 
     sleep(100).then(() => {        // Give it time to retrive the data
@@ -56,7 +60,7 @@ function start() {
                 } else if (accuracy < 0) {
                     accuracy = 0
                 }
-                chrome.runtime.sendMessage({job: "start", mode: "default", accuracy: accuracy});
+                chrome.runtime.sendMessage({job: "start", delay: delay, mode: "default", accuracy: accuracy});
                 sleep(50).then(() => {      // Wait 50ms for the message to send properly before terminating the window and thus, this script
                     window.close();
                 })
@@ -73,7 +77,7 @@ function start() {
                 } else if (accuracy < 0) {
                     accuracy = 0
                 }
-                chrome.runtime.sendMessage({job: "start", mode: "assist", accuracy: accuracy_assist});
+                chrome.runtime.sendMessage({job: "start", delay: delay, mode: "assist", accuracy: accuracy_assist});
                 sleep(50).then(() => {
                     window.close();
                 })
