@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html>
+<html id="delayPage">
    <link rel="stylesheet" type="text/css" href="style_global.css">
    <link rel="stylesheet" type="text/css" id="theme" href="style_dark.css">
 
@@ -16,15 +16,16 @@
             <button class="button_currentPage" type="submit">Delay</button>
          </form>
       </div>
+   
+      <br>
+      
+      <div class="slidecontainer">
+         <input type="range" min="0" max="1000" class="slider" id="delay">
+      </div>
+
+      <p id="delayVal">
+         Delay: 300ms
+      </p>
    </body>
-   <br>
-   <div class="slidecontainer">
-      <input type="range" min="0" max="1000" class="slider" id="delay">
-   </div>
-
-   <p id="delayVal">
-      Delay: 300ms
-   </p>
-
    <script type="text/javascript" src="delay.js"></script>
 </html>
