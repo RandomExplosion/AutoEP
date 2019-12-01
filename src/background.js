@@ -8,7 +8,7 @@ let bkg = chrome.extension.getBackgroundPage();
 //Stores The Current Gamemode
 var gamemode; 
 
-//Stores the current mode (default / assist)
+//Stores the current mode (default / assist / hackerman)
 var mode;
 
 //Stores the accuracy
@@ -136,7 +136,7 @@ chrome.runtime.onMessage.addListener(function(msg) {
                             translatedstring = lantoeng.get(msg.question.replace(/ *\([^)]*\) */g, "").replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""));
                             
                             console.log(`Sending answer \"${translatedstring}\" back to content script`);//Log to console
-                            if (Math.floor((Math.random() * 100) + 1) <= accuracy || mode == "assist") {    //Get a random number and compare it with the accuracy value (assist mode bypasses this)
+                            if (Math.floor((Math.random() * 100) + 1) <= accuracy || mode == "assist" || mode == "hackerman") {    //Get a random number and compare it with the accuracy value (assist mode bypasses this)
                                 chrome.tabs.sendMessage(tabArray[0].id, {job: 'answer', answer: translatedstring});
                             }
                             else {
@@ -156,7 +156,7 @@ chrome.runtime.onMessage.addListener(function(msg) {
                             
                             console.log(`Sending answer \"${translatedstring}\" back to content script`);//Log to console
                             //Send Answer Back to the Content Script
-                            if (Math.floor((Math.random() * 100) + 1) <= accuracy || mode == "assist") {    //Get a random number and compare it with the accuracy value  
+                            if (Math.floor((Math.random() * 100) + 1) <= accuracy || mode == "assist" || mode == "hackerman") {    //Get a random number and compare it with the accuracy value  
                                 chrome.tabs.sendMessage(tabArray[0].id, {job: 'answer', answer: translatedstring});
                             }
                             else {

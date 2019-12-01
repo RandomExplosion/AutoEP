@@ -10,6 +10,8 @@ chrome.runtime.onMessage.addListener(function (msg) {
         if (msg.mode == "assist") {
             accuracy = msg.accuracy;
             setInterval(checkAnswer, 200);
+        } else if (msg.mode == "hackerman") {
+            setInterval(updateAnswer, 5);
         }
     }
     else if (msg.job === 'answer') { //If script was just sent an answer
@@ -21,7 +23,7 @@ chrome.runtime.onMessage.addListener(function (msg) {
                 });
             }
         }
-        else if (mode == "assist") {
+        else if (mode == "assist" || mode == "hackerman") {
             answer = msg.answer
         }
 
@@ -107,8 +109,21 @@ function checkAnswer() {
     }    
 }
 
+function updateAnswer() {
+    try {
+        var answer_text = answer.slice(0, document.querySelectorAll("[id='answer-text']")[1].value.length);
 
+        var code = `$('input').val("${answer_text}"); $('input').change();`;
+        var script = document.createElement('script');      // Create a script tag on the page
+        script.textContent = code;      // Add the code into the script tag
+        (document.head||document.documentElement).appendChild(script);  // Add the script to the document
+        script.remove();  
 
+        if (answer == document.querySelectorAll("[id='answer-text']")[1].value) {
+            submit(answer);
+        }
+    } catch (err) {}
+}
 
 
 

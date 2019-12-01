@@ -13,10 +13,16 @@ window.addEventListener('load', function() {        // Runs when the tab is open
     new Promise(resolve => setTimeout(resolve, 100)).then(() => {        // Give it time to retrive the data
         if (mode == "default") {
             document.getElementById("mode_assist").checked = false;     // Chrck and uncheck the checkboxes so they reflect the current settings
-            document.getElementById("mode_default").checked = true;    
+            document.getElementById("mode_default").checked = true;   
+            document.getElementById("mode_hackerman").checked = false; 
         } else if (mode == "assist") {
             document.getElementById("mode_default").checked = false;
             document.getElementById("mode_assist").checked = true;
+            document.getElementById("mode_hackerman").checked = false;
+        } else if (mode == "hackerman") {
+            document.getElementById("mode_default").checked = false;
+            document.getElementById("mode_assist").checked = false;
+            document.getElementById("mode_hackerman").checked = true;          
         }
         if (typeof accuracy != "number") {} else if (isNaN(accuracy)) {} else {     // Set the text in the input fields
             document.getElementById("accuracy").value = accuracy;
@@ -43,16 +49,16 @@ if (acc_obj) {
     }
 }
 
-var acc_assist_obj = document.querySelectorAll("input")[3]  // I know this method is a bit weird, but when i use the method used for the other input box it failes to find the input object
+var acc_assist_obj = document.querySelectorAll("input")[4]  // I know this method is a bit weird, but when i use the method used for the other input box it failes to find the input object
 if (acc_assist_obj) {
-    document.querySelectorAll("input")[3].onchange = function () {     // Same as above function but for the accuracy match level
+    document.querySelectorAll("input")[4].onchange = function () {     // Same as above function but for the accuracy match level
         try {
             chrome.storage.local.remove("accuracy_assist");
         } catch (err) {
             console.log(err)
         }
 
-        var accuracy_assist = document.querySelectorAll("input")[3].value;
+        var accuracy_assist = document.querySelectorAll("input")[4].value;
         chrome.storage.local.set({'accuracy_assist': accuracy_assist}, function () {
             console.log("Assist match level saved as " + accuracy_assist + "%")
         });
@@ -71,3 +77,9 @@ document.getElementById("mode_assist").onchange = function () {
     });
 }
 
+document.getElementById("mode_hackerman").onchange = function () {
+    chrome.storage.local.set({'mode': 'hackerman'}, function () {
+        console.log("Mode saved as hackerman");
+        console.log(" __  __                   __                                                    \r\n\/\\ \\\/\\ \\                 \/\\ \\                                                   \r\n\\ \\ \\_\\ \\     __      ___\\ \\ \\\/\'\\      __   _ __    ___ ___      __      ___    \r\n \\ \\  _  \\  \/\'__`\\   \/\'___\\ \\ , <    \/\'__`\\\/\\`\'__\\\/\' __` __`\\  \/\'__`\\  \/\' _ `\\  \r\n  \\ \\ \\ \\ \\\/\\ \\L\\.\\_\/\\ \\__\/\\ \\ \\\\`\\ \/\\  __\/\\ \\ \\\/ \/\\ \\\/\\ \\\/\\ \\\/\\ \\L\\.\\_\/\\ \\\/\\ \\ \r\n   \\ \\_\\ \\_\\ \\__\/.\\_\\ \\____\\\\ \\_\\ \\_\\ \\____\\\\ \\_\\ \\ \\_\\ \\_\\ \\_\\ \\__\/.\\_\\ \\_\\ \\_\\\r\n    \\\/_\/\\\/_\/\\\/__\/\\\/_\/\\\/____\/ \\\/_\/\\\/_\/\\\/____\/ \\\/_\/  \\\/_\/\\\/_\/\\\/_\/\\\/__\/\\\/_\/\\\/_\/\\\/_\/\r\n");
+    });
+}

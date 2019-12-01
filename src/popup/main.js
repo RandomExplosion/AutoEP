@@ -46,7 +46,7 @@ function start() {
     });
 
     sleep(100).then(() => {        // Give it time to retrive the data
-        if (mode != "default" && mode != "assist") {        // If a mode has not been set, default to default mode
+        if (mode != "default" && mode != "assist" && mode != "hackerman") {        // If a mode has not been set, default to default mode
             mode = "default"
         }
         if (mode == "default") {
@@ -82,6 +82,11 @@ function start() {
                     window.close();
                 })
             }
+        } else if (mode == "hackerman") {
+            chrome.runtime.sendMessage({job: "start", delay: delay, mode: "hackerman", accuracy: 100});
+            sleep(50).then(() => {
+                window.close();
+            })
         }
     })
 }
