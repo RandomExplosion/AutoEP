@@ -14,8 +14,8 @@
 4.
 
 ## Specifications
-<!--- To find out your extension version go to (chrome://extensions)[chrome://extensions], -->
-<!--- To find out your chrome version go to (chrome://settings/help)[chrome://settings/help] -->
+<!--- To find out your extension version go to chrome://extensions -->
+<!--- To find out your chrome version go to chrome://settings/help -->
   - Extension Version:
   - Chrome Version:
   - Platform:
