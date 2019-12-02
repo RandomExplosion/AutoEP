@@ -1,9 +1,9 @@
 (function() {
-    chrome.runtime.sendMessage({job: "update_buttons"});
+    chrome.runtime.sendMessage({job: "update_buttons"});        // Send a message to get the current page url from the background script
 
     chrome.runtime.onMessage.addListener(function (msg) {
         if (msg.job == "toggle_buttons") {
-            document.getElementById("load").disabled = true;     
+            document.getElementById("load").disabled = true;     // Disable both buttons, one can be re-enabled depending on the current page
             document.getElementById("start").disabled = true; 
 
             if (msg.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/game.*mode=[0123]/g) || msg.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/dash.*mode=[0123]/g)) {  
@@ -29,12 +29,12 @@
     
             switch (mode) {
                 case "default": {
-                    if (typeof accuracy != "number" || isNaN(accuracy)) {
+                    if (typeof accuracy != "number" || isNaN(accuracy)) {   // Make sure the accuracy value is a number
                         alert("You have not set the accuracy! Please visit the settings page");
                     } else {
-                        if (accuracy > 100) {
+                        if (accuracy > 100) {       // Round down to 100 if over
                             accuracy = 100;
-                        } else if (accuracy < 0) {
+                        } else if (accuracy < 0) {  // Round up to 0 if under
                             accuracy = 0;
                         }
                         chrome.runtime.sendMessage({job: "start", delay: delay, mode: "default", accuracy: accuracy});
