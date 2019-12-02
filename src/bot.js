@@ -11,7 +11,18 @@ chrome.runtime.onMessage.addListener(function (msg) {
             accuracy = msg.accuracy;
             setInterval(checkAnswer, 200);
         } else if (msg.mode == "hackerman") {
-            setInterval(updateAnswer, 5);
+            setInterval((function() {
+                var answer_text = answer.slice(0, document.querySelectorAll("[id='answer-text']")[1].value.length);
+                var code = `$('input').val("${answer_text}"); $('input').change();`;
+                var script = document.createElement('script');      // Create a script tag on the page
+                script.textContent = code;      // Add the code into the script tag
+                (document.head||document.documentElement).appendChild(script);  // Add the script to the document
+                script.remove();  
+            
+                if (answer == document.querySelectorAll("[id='answer-text']")[1].value) {
+                    submit(answer);
+                }
+            }), 4)
         }
     }
     else if (msg.job === 'answer') { //If script was just sent an answer
@@ -35,11 +46,10 @@ chrome.runtime.onMessage.addListener(function (msg) {
 });
 
 
-function injectJS() {       // Function to inject the js to submit js into the page
-    console.log("Injecting js")
-    // The following code first sets the value of the input field to equal the answer, it then tells the page to update the input. Then it presses the submit button.
+function injectJS() {       // Function to inject the js to submit answers into the page
+    console.log("Injecting js");
     var code = `function submit(text) {
-        $('input').val(text)
+        $('input').val(text);
         $('input').change();
         angular.element('#submit-button').triggerHandler('click');
         angular.element('button.submit-button').triggerHandler('click');
@@ -50,13 +60,9 @@ function injectJS() {       // Function to inject the js to submit js into the p
     script.remove();  
 }
 
-function submit(text) {     // Submit text
-    var code = `submit("${text}");`;    // Inject code to call the submit function (that was injected earlier)
-    var script = document.createElement('script');
-    script.textContent = code;
-    (document.head||document.documentElement).appendChild(script);
-    script.remove();
-};
+function submit(text) {
+    location.href = `javascript:submit("${text}"); void 0`;
+}
 
 function checkAnswer() {
     //Compare the user's answer to the correct answer
@@ -109,21 +115,10 @@ function checkAnswer() {
     }    
 }
 
-function updateAnswer() {
-    try {
-        var answer_text = answer.slice(0, document.querySelectorAll("[id='answer-text']")[1].value.length);
 
-        var code = `$('input').val("${answer_text}"); $('input').change();`;
-        var script = document.createElement('script');      // Create a script tag on the page
-        script.textContent = code;      // Add the code into the script tag
-        (document.head||document.documentElement).appendChild(script);  // Add the script to the document
-        script.remove();  
 
-        if (answer == document.querySelectorAll("[id='answer-text']")[1].value) {
-            submit(answer);
-        }
-    } catch (err) {}
-}
+
+
 
 
 
