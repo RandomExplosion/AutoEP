@@ -9,7 +9,8 @@ Please visit the [usage](https://github.com/RandomExplosion/AutoEP/wiki/Usage) p
 
 ### Modes
 Default - The normal mode, self answers questions  
-Assist - All of the benefits, none of the guilt! (basically an autocorrect)
+Assist - All of the benefits, none of the guilt! (basically an autocorrect)  
+Hackerman - Corrects each character as it is typed
 
 ### Notes
 This is a chrome extension, and will not function correctly on other browsers.  
