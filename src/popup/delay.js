@@ -13,7 +13,6 @@
 
     slider.oninput = function() {       // Gets called when slider is moved
         sliderText.innerHTML = `Delay: ${slider.value}ms`;
-        chrome.storage.local.remove("delay");       // Removes current delay setting
 
         let filter = getComputedStyle(slider).getPropertyValue("--slider-filter");  // Pull the current filter from a css variable, looks like - "hue-rotate(0deg)"
         filter = filter.split("deg");
