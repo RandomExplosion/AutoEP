@@ -31,7 +31,7 @@ chrome.runtime.onInstalled.addListener(function(details) {       // Runs when th
 
 //Callback Function For table data request
 function StoreTableData(tabledata) {   
-    if (tabledata != undefined){
+    if (tabledata != undefined) {
         console.log('Recieved Table Data!');
         console.log('Creating Dictionaries');
 

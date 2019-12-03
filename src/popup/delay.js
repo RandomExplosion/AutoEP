@@ -24,4 +24,4 @@
 
         chrome.storage.local.set({"delay": sliderText.innerHTML.split("ms").join("").split(" ")[1]});   // Update the localstorage setting
     }
-})(slider = document.getElementById("delay"), document.getElementById("delayVal"));
+})(document.getElementById("delay"), document.getElementById("delayVal"));
