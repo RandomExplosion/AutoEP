@@ -13,6 +13,15 @@
         "128": "icons/Orange/x128.png"
     },
 
+    "commands":
+    {
+        "_execute_browser_action": {
+            "suggested_key": {
+                "windows": "Ctrl+Shift+A"
+            }
+        }
+    },
+
     "permissions": 
     [
         "tabs",
