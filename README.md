@@ -14,5 +14,3 @@ Hackerman - Corrects each character as it is typed
 
 ### Notes
 This is a chrome extension, and will not function correctly on other browsers.  
-It is unable to complete any Audio Translations! 
-This may or may not be added in the future.
