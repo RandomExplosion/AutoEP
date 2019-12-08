@@ -1,9 +1,8 @@
 //Array for the target language table
-let lantoeng = new Map();
-let engtolan = new Map();
-
-//The background page
-let bkg = chrome.extension.getBackgroundPage();
+let lantoeng = new Map();   // TARGET to BASE
+let engtolan = new Map();   // BASE to TARGET
+let audtolan = new Map();   // AUDIO to TARGET
+let audtoeng = new Map();   // AUDIO to BASE
 
 //Stores The Current Gamemode
 var gamemode; 
@@ -39,7 +38,13 @@ function StoreTableData(tabledata) {
             //First remove anything in brackets, then any leftover punctuation
             lantoeng.set(tabledata[i][0].replace(/ *\([^)]*\) */g, "").replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""), tabledata[i][1].replace(/;/g, ",")); //Add it to the Target Language - Base Language Dictionary
             engtolan.set(tabledata[i][1].replace(/ *\([^)]*\) */g, "").replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""), tabledata[i][0].replace(/;/g, ",")); //Add it to the Base Language - Target Language Dictionary
+            audtolan.set(tabledata[i][2], tabledata[i][0].replace(/;/g, ",")); //Add it to the Audio - Target Language Dictionary
+            audtoeng.set(tabledata[i][2], tabledata[i][1].replace(/;/g, ",")); //Add it to the Audio - Base Language Dictionary
         }   
+        console.log(lantoeng);
+        console.log(engtolan);
+        console.log(audtolan);
+        console.log(audtoeng);
     } 
     else {   
         console.log('Table is Empty!?');
@@ -116,7 +121,6 @@ chrome.runtime.onMessage.addListener(function(msg) {
             var translatedstring = undefined;
 
             console.log(`Recieved Question: \"${msg.question}\" from content script.`);
-            console.log(`Removing Whitespace and Punctuation: \"${msg.question.replace(/ *\([^)]*\) */g, "").replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,"")}\" from content script.`);
 
             //alert(gamemode);
             //Use different Map depending on the gamemode
@@ -150,7 +154,6 @@ chrome.runtime.onMessage.addListener(function(msg) {
                 case '1': { //BASE text to TARGET text
                     chrome.tabs.query({currentWindow: true, active: true},
                         function (tabArray) {
-                      
                             //Strip The question of it's punctuation and whitespace then run it through the map
                             translatedstring = engtolan.get(msg.question.replace(/ *\([^)]*\) */g, "").replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""));
                             
@@ -167,13 +170,39 @@ chrome.runtime.onMessage.addListener(function(msg) {
                     break;
                 }
 
-                case '2': { //Spoken TARGET to BASE TEXT <NOT IMPLEMENTED>
-                    alert("Listening mode is not currently supported!");
+                case '2': { //Spoken TARGET to BASE TEXT
+                    chrome.tabs.query({currentWindow: true, active: true},
+                        function (tabArray) {
+                            translatedstring = audtoeng.get(msg.question);
+                            
+                            console.log(`Sending answer \"${translatedstring}\" back to content script`);//Log to console
+                            //Send Answer Back to the Content Script
+                            if (Math.floor((Math.random() * 100) + 1) <= accuracy || mode == "assist" || mode == "hackerman") {    //Get a random number and compare it with the accuracy value  
+                                chrome.tabs.sendMessage(tabArray[0].id, {job: 'answer', answer: translatedstring});
+                            }
+                            else {
+                                chrome.tabs.sendMessage(tabArray[0].id, {job: 'answer', answer: "incorrect"});
+                            }
+                        }
+                    );
                     break;
                 }
 
-                case '3': { //Spoken TARGET to TARGET TEXT <NOT IMPLEMENTED>
-                    alert("Dictation mode is not currently supported!");
+                case '3': { //Spoken TARGET to TARGET TEXT
+                    chrome.tabs.query({currentWindow: true, active: true},
+                        function (tabArray) {
+                            translatedstring = audtolan.get(msg.question);
+                            
+                            console.log(`Sending answer \"${translatedstring}\" back to content script`);//Log to console
+                            //Send Answer Back to the Content Script
+                            if (Math.floor((Math.random() * 100) + 1) <= accuracy || mode == "assist" || mode == "hackerman") {    //Get a random number and compare it with the accuracy value  
+                                chrome.tabs.sendMessage(tabArray[0].id, {job: 'answer', answer: translatedstring});
+                            }
+                            else {
+                                chrome.tabs.sendMessage(tabArray[0].id, {job: 'answer', answer: "incorrect"});
+                            }
+                        }
+                    );
                     break;
                 }
 

@@ -26,10 +26,7 @@
                 }), 4)
             }
         } else if (msg.job == "answer") {
-            if (msg.answer == null) {       // This means the table wasn't loaded correctly
-                window.history.back();  // Return the user to the dashboard
-                alert("Something went wrong and the answer table was loaded incorrectly... You have been ejected from the game."); 
-            } else {
+            if (msg.answer != null && msg.answer != undefined) {       // This means the table wasn't loaded correctly
                 if (mode == "default") {
                     submit(msg.answer);
                     if (msg.answer == "incorrect") {
@@ -114,15 +111,3 @@
         }    
     }
 })();
-
-
-
-
-/*
-function moreTime() {       // Function to click the more time button
-    timer = document.getElementsByClassName("clock-label ep-animate ng-binding")[0].innerText; // Get the current amount of seconds left
-    if (parseInt(timer, 10) < 5) {       // Check if there is less then 5 seconds left
-        document.getElementsByClassName("more-time-button nice-button positive-green")[0].click();  // Click the more time button
-    }
-}
-*/
