@@ -117,7 +117,7 @@ function start() {
                                     document.getElementById("correct-button").click();
                                 })
                             }) 
-                        }, 800);`
+                        }, ${delay * 2.66});`
                     })
                 }
             });
