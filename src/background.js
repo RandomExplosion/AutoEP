@@ -97,7 +97,7 @@ function load() {
 function start() {
     chrome.tabs.query({"currentWindow": true, "active": true}, function(tab) {   //Run a query for the active tab info
         var tab = tab[0];
-        if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/game.*mode=[0123]/g) || tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/dash.*mode=[0123]/g)) {  
+        if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/game.*mode=[01238]/g) || tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/dash.*mode=[01238]/g)) {  
             //Find out what gamemode is being played
             chrome.tabs.getSelected(null, function(tab) {
                 console.log('Beginning game');
@@ -105,7 +105,21 @@ function start() {
 
                 gamemode = tab.url[tab.url.length - 1]; //Get the last character of the current url (number from 0 to 4)
                 console.log(`gamemode: ${gamemode}`);
-                chrome.tabs.sendMessage(tab.id, {job: 'begin_task', mode: mode, accuracy: accuracy, delay: delay});
+                if (gamemode != "8") {      //If not speaking mode
+                    chrome.tabs.sendMessage(tab.id, {job: 'begin_task', mode: mode, accuracy: accuracy, delay: delay});
+                } else {
+                    chrome.tabs.executeScript(tab.id, { code:   //Execute script to answer speaking mode, this is here to bypass usual answer table checks
+                        `setInterval(function() {
+                            document.getElementById("record-button").dispatchEvent(new CustomEvent("mousedown"));
+                            new Promise(resolve => setTimeout(resolve, 500)).then(() => {
+                                document.getElementById("record-button").dispatchEvent(new CustomEvent("mouseup"));
+                                new Promise(resolve => setTimeout(resolve, 500)).then(() => {
+                                    document.getElementById("correct-button").click();
+                                })
+                            }) 
+                        }, 800);`
+                    })
+                }
             });
         }
     });

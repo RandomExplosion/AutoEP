@@ -5,7 +5,7 @@ chrome.runtime.onMessage.addListener(function (msg) {
         document.getElementById("load").disabled = true;     // Disable both buttons, one can be re-enabled depending on the current page
         document.getElementById("start").disabled = true; 
 
-        if (msg.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/game.*mode=[0123]/g) || msg.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/dash.*mode=[0123]/g)) {  
+        if (msg.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/game.*mode=[01238]/g) || msg.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/dash.*mode=[01238]/g)) {  
             document.getElementById("start").disabled = false;
         }
         else if (msg.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*list-starter.*/g)) {      
