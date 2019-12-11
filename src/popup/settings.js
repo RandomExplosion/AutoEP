@@ -3,8 +3,10 @@ chrome.storage.local.get(['mode', 'accuracy', 'accuracy_assist'], function(data)
     let accuracy = parseInt(data.accuracy);
     let accuracy_assist = parseInt(data.accuracy_assist);
 
-    document.querySelectorAll('[id^=mode_]').forEach(function(element) { element.checked = false; });   // Uncheck each checkbox
-    document.getElementById(`mode_${mode}`).checked = true;
+    if (mode != null) {
+        document.querySelectorAll('[id^=mode_]').forEach(function(element) { element.checked = false; });   // Uncheck each checkbox
+        document.getElementById(`mode_${mode}`).checked = true;
+    }
 
     if (typeof accuracy == "number" && !isNaN(accuracy)) {     // Set the text in the input fields
         document.getElementById("accuracy").value = accuracy;

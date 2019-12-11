@@ -25,7 +25,7 @@ chrome.runtime.onMessage.addListener(function (msg) {
             })
 
 
-            console.log(\`Sending: $\{questiontext\}\`);
+            //console.log(\`Sending: $\{questiontext\}\`);
 
             window.postMessage({ type: 'questionResponse', questiontext: questiontext}, '*');
         }`; 
