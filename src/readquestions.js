@@ -1,4 +1,3 @@
-//alert('Script Successfully Injected!');
 var prevquestion; //The question that was displayed last time the script checked
 var questiontext; //The current question
 
@@ -32,7 +31,12 @@ chrome.runtime.onMessage.addListener(function (msg) {
         (document.head||document.documentElement).appendChild(script); 
         script.remove();  
 
-        setInterval(copyandsend, msg.delay); //Begin Question Streaming Routine
+        //Play the first audio click manually because it does not start by itself   ( if the element exists )
+        if (document.getElementsByClassName("voice-speaker bg-audio-speaker-on")[0]) {  
+            document.getElementsByClassName("voice-speaker bg-audio-speaker-on")[0].click()
+        }
+
+        setInterval(copyandsend, msg.delay);    //Begin Question Streaming Routine and assign handler to variable
     }
 });
 
@@ -55,7 +59,7 @@ function copyandsend() {
     }
 }
 
-window.addEventListener('message', function(event) {
+window.addEventListener('message', function(event) {    //Listen for a message from the window
     if (event.data.type == "questionResponse") {
         questiontext = event.data.questiontext;
         if (questiontext != prevquestion && questiontext != undefined) {
