@@ -16,6 +16,9 @@ var accuracy;
 //Stores the delay
 var delay;
 
+//Stores the current task url
+var task;
+
 chrome.runtime.onInstalled.addListener(function(details) {       // Runs when the extension is newly installed
     if (details.reason == "install") {
         console.log("This is a first install!");
@@ -56,6 +59,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
         //If the current webpage is a vocabulary list
         if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*list-starter.*/g)) {
             console.log('Injecting Script to Read Table');
+            task = tab.url;
             chrome.tabs.executeScript(tabId, {
                 file: 'getanswertable.js'
             });
@@ -76,6 +80,11 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
         //If current webpage is the test completed page
         else if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*\/test-statistics/g)) {
             console.log('Game Finished!');
+
+            chrome.tabs.executeScript(tab.id, { code: `if (typeof speakingAnswerer != "undefined") { clearInterval(speakingAnswerer) }
+                window.location.href = "${task}";
+                window.location.reload();` 
+            });     //Delete the handler used to answer speaking mode if it exists and reload page on tasklist to remove content scripts
         }
     }
 });
@@ -108,16 +117,18 @@ function start() {
                 if (gamemode != "8") {      //If not speaking mode
                     chrome.tabs.sendMessage(tab.id, {job: 'begin_task', mode: mode, accuracy: accuracy, delay: delay});
                 } else {
-                    chrome.tabs.executeScript(tab.id, { code:   //Execute script to answer speaking mode, this is here to bypass usual answer table checks
-                        `setInterval(function() {
+                    chrome.tabs.executeScript(tab.id, { code:   //Execute script to answer speaking mode, this is here to bypass usual question reading
+                        `var speakingAnswerer = setInterval(function() {
                             document.getElementById("record-button").dispatchEvent(new CustomEvent("mousedown"));
                             new Promise(resolve => setTimeout(resolve, 500)).then(() => {
                                 document.getElementById("record-button").dispatchEvent(new CustomEvent("mouseup"));
                                 new Promise(resolve => setTimeout(resolve, 500)).then(() => {
-                                    document.getElementById("correct-button").click();
+                                    if (document.getElementById("correct-button")) {
+                                        document.getElementById("correct-button").click();
+                                    }
                                 })
                             }) 
-                        }, ${delay * (8 / 3)});`
+                        }, ${delay * (8 / 3)});`    //The mutiplication is to make it scale properly in relation to the other gamemode delay's
                     })
                 }
             });
