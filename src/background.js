@@ -81,10 +81,14 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
         else if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*\/test-statistics/g)) {
             console.log('Game Finished!');
 
-            chrome.tabs.executeScript(tab.id, { code: `if (typeof speakingAnswerer != "undefined") { clearInterval(speakingAnswerer) }
-                window.location.href = "${task}";
-                window.location.reload();` 
-            });     //Delete the handler used to answer speaking mode if it exists and reload page on tasklist to remove content scripts
+            if (typeof gamemode != "undefined") {
+                chrome.tabs.executeScript(tab.id, { code: `if (typeof speakingAnswerer != "undefined") { clearInterval(speakingAnswerer) }
+                    window.location.href = "${task}";
+                    window.location.reload();` 
+                });     //Delete the handler used to answer speaking mode if it exists and reload page on tasklist to remove content scripts
+
+                gamemode = undefined;
+            }
         }
     }
 });
