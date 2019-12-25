@@ -24,7 +24,14 @@ chrome.runtime.onInstalled.addListener(function(details) {       // Runs when th
         console.log("This is a first install!");
         chrome.storage.local.set({'delay': '300'}, function () {});
 
-        // Request user to accept eula here
+        
+        /*  TODO: EULA
+
+        // Request user to accept eula 
+        if (!confirm("By continuing you accept the EULA: TODO")) {
+            chrome.management.uninstallSelf();  // Remove extension if user does not accept
+        }
+        */
     } 
     else if (details.reason == "update" && chrome.runtime.getManifest().version != details.previousVersion) {  // Check for update and make sure it is a new version
         console.log("Updated from " + details.previousVersion + " to " + chrome.runtime.getManifest().version + "!");
