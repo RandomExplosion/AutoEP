@@ -3,7 +3,7 @@ name: Bug report
 about: Create a report to help us improve
 labels: bug
 ---
-<!--- Provide a general summary of the issue in the Title above -->
+<!--- Provide a general summary of the issue in the title above -->
 
 **Initial Steps**
  - [ ] I have updated to the latest extension version (N/A if on release)
