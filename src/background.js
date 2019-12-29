@@ -21,20 +21,18 @@ var task;
 
 chrome.runtime.onInstalled.addListener(function(details) {       // Runs when the extension is newly installed
     if (details.reason == "install") {
-        console.log("This is a first install!");
         chrome.storage.local.set({'delay': '300'}, function () {});
 
         
         /*  TODO: EULA
 
-        // Request user to accept eula 
         if (!confirm("By continuing you accept the EULA: TODO")) {
             chrome.management.uninstallSelf();  // Remove extension if user does not accept
         }
         */
     } 
     else if (details.reason == "update" && chrome.runtime.getManifest().version != details.previousVersion) {  // Check for update and make sure it is a new version
-        console.log("Updated from " + details.previousVersion + " to " + chrome.runtime.getManifest().version + "!");
+        console.log(`Updated from ${details.previousVersion} to ${chrome.runtime.getManifest().version}!`);
     }
 });
 
@@ -89,6 +87,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
             console.log('Game Finished!');
 
             if (typeof gamemode != "undefined") {
+                //TODO find a better method then reloading the page, this is temporary
                 chrome.tabs.executeScript(tab.id, { code: `if (typeof speakingAnswerer != "undefined") { clearInterval(speakingAnswerer) }
                     window.location.href = "${task}";
                     window.location.reload();` 
