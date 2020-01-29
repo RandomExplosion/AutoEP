@@ -16,9 +16,6 @@ var accuracy;
 //Stores the delay
 var delay;
 
-//Stores the current task url
-var task;
-
 chrome.runtime.onInstalled.addListener(function(details) {       // Runs when the extension is newly installed
     if (details.reason == "install") {
         chrome.storage.local.set({'delay': '300'}, function () {});
@@ -29,6 +26,7 @@ chrome.runtime.onInstalled.addListener(function(details) {       // Runs when th
         if (!confirm("By continuing you accept the EULA: TODO")) {
             chrome.management.uninstallSelf();  // Remove extension if user does not accept
         }
+
         */
     } 
     else if (details.reason == "update" && chrome.runtime.getManifest().version != details.previousVersion) {  // Check for update and make sure it is a new version
@@ -64,7 +62,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
         //If the current webpage is a vocabulary list
         if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*list-starter.*/g)) {
             console.log('Injecting Script to Read Table');
-            task = tab.url;
+
             chrome.tabs.executeScript(tabId, {
                 file: 'getanswertable.js'
             });
@@ -88,9 +86,8 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 
             if (typeof gamemode != "undefined") {
                 //TODO find a better method then reloading the page, this is temporary
-                chrome.tabs.executeScript(tab.id, { code: `if (typeof speakingAnswerer != "undefined") { clearInterval(speakingAnswerer) }
-                    window.location.href = "${task}";
-                    window.location.reload();` 
+                chrome.tabs.executeScript(tab.id, { 
+                    code: `if (typeof speakingAnswerer != "undefined") { clearInterval(speakingAnswerer) }`
                 });     //Delete the handler used to answer speaking mode if it exists and reload page on tasklist to remove content scripts
 
                 gamemode = undefined;
