@@ -16,25 +16,16 @@ var accuracy;
 //Stores the delay
 var delay;
 
-chrome.runtime.onInstalled.addListener(function(details) {       // Runs when the extension is newly installed
+chrome.runtime.onInstalled.addListener(details => {       // Runs when the extension is newly installed
     if (details.reason == "install") {
-        chrome.storage.local.set({'delay': '300'}, function () {});
-
-        
-        /*  TODO: EULA
-
-        if (!confirm("By continuing you accept the EULA: TODO")) {
-            chrome.management.uninstallSelf();  // Remove extension if user does not accept
-        }
-
-        */
+        chrome.storage.local.set({'delay': '300'});
+        chrome.storage.local.set({'mode': 'default'});
+        chrome.storage.local.set({'accuracy': ''});
+        chrome.storage.local.set({'accuracy_assist': ''});
     } 
-    else if (details.reason == "update" && chrome.runtime.getManifest().version != details.previousVersion) {  // Check for update and make sure it is a new version
-        console.log(`Updated from ${details.previousVersion} to ${chrome.runtime.getManifest().version}!`);
-    }
 });
 
-//Callback Function For table data request
+// Callback function for table data request
 function StoreTableData(tabledata) {   
     if (tabledata != undefined) {
         console.log('Recieved Table Data!');
@@ -85,10 +76,10 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
             console.log('Game Finished!');
 
             if (typeof gamemode != "undefined") {
-                //TODO find a better method then reloading the page, this is temporary
+                //TODO remove content scripts
                 chrome.tabs.executeScript(tab.id, { 
                     code: `if (typeof speakingAnswerer != "undefined") { clearInterval(speakingAnswerer) }`
-                });     //Delete the handler used to answer speaking mode if it exists and reload page on tasklist to remove content scripts
+                });     //Delete the handler used to answer speaking mode if it exists
 
                 gamemode = undefined;
             }
@@ -262,10 +253,5 @@ chrome.runtime.onMessage.addListener(function(msg) {
         accuracy = msg.accuracy;
         delay = msg.delay
         start();
-    }
-    else if (msg.job == "update_buttons") {
-        chrome.tabs.query({"currentWindow": true, "active": true}, function(tab) {   //Run a query for the active tab info
-            chrome.runtime.sendMessage({job: "toggle_buttons", url: tab[0].url});
-        })
     }
 });
