@@ -32,7 +32,6 @@ button {
     text-decoration: none;
     padding: 20px;
     border: none;
-    transition: all 0.4s ease 0s;
     width: 200px;
     cursor:pointer;
     color: var(--text);
