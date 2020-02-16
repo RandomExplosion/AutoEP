@@ -3,7 +3,8 @@
 
 /*  Colour Scheme   */
 :root {
-    --window-background: #3a342f;
+    --window-background: #534c46;
+    --tab-background: #3a342f;
     --text: #fff;
 
     --button-background: #f17d39;
