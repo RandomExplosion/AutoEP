@@ -17,7 +17,8 @@
     {
         "_execute_browser_action": {
             "suggested_key": {
-                "windows": "Ctrl+Shift+A"
+                "windows": "Ctrl+Shift+A",
+                "mac": "Command+Shift+A"
             }
         }
     },
