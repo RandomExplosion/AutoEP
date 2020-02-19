@@ -110,7 +110,9 @@ function start() {
                 console.log('Beginning game');
                 console.log(`url: ${tab.url}`);
 
-                gamemode = tab.url[tab.url.length - 1]; //Get the last character of the current url (number from 0 to 4)
+                tab.url.replace(/[?&]+mode=(\d)/gi, function(m,value) {
+                    gamemode = value;
+                }); //Get the gamemode from the url with regex
                 console.log(`gamemode: ${gamemode}`);
                 if (gamemode != "8") {      //If not speaking mode
                     chrome.tabs.sendMessage(tab.id, {job: 'begin_task', mode: mode, accuracy: accuracy, delay: delay});
