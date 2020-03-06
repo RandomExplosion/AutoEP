@@ -2,7 +2,7 @@
     "short_name": "AutoEP",
     "name" : "AutoEP - Bot for Education Perfect",
     "description": "A bot to help complete education perfect tasks.",
-    "version": "2.1.10",
+    "version": "2.1.11",
     "manifest_version": 2,
 
     "icons": 
