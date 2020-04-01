@@ -62,7 +62,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
         //If the current webpage is a game                                                                                  
         else if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/game.*mode=[0123]/g) || tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/dash.*mode=[0123]/g)) {
             console.log('Injecting Script to Play Game >:)');
-            
+
             chrome.tabs.executeScript(tabId, {
                 file: 'readquestions.js'
             });
@@ -91,12 +91,31 @@ function load() {
     chrome.tabs.query({"currentWindow": true, "active": true}, function(tab) {    //Run a query for the active tab info
         console.log("Loading table...");
         var tab = tab[0];
-        if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*list-starter.*/g)) {      
+        if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*list-starter.*/g)) {     
+            //Temporarily disable the start button while the table is being loaded
+            chrome.tabs.executeScript(tab.id, {
+                code: `document.getElementById("start-button-main").disabled = true; document.getElementById("start-button-main").style.background='#A9A9A9';`
+            });
+
             //Log to the console for Debugging Purposes
             console.log('Requesting Table content...');  
 
-            //Request Table Data
-            chrome.tabs.sendMessage(tab.id, {job: 'requesting_table'}, StoreTableData);
+            chrome.tabs.executeScript(tab.id, {
+                code: `async function cacheAudio() {
+                    let elements = Array.from(document.getElementsByClassName("stats-item ng-scope avoidPageBreak"));
+                    for (let i = 0; i < elements.length; i++) {
+                        elements[i].click();
+                        await new Promise(r => setTimeout(r, 100));
+                    }
+                }
+                cacheAudio();`
+            });         // Click on all the elements to cache the audio (yes its janky but it works)
+
+            
+            new Promise(r => setTimeout(r, 8000)).then(() => {   // Make sure the audio is cached properly before requesting table data
+                //Request Table Data
+                chrome.tabs.sendMessage(tab.id, {job: 'requesting_table'}, StoreTableData);
+            });       
         }
     });
 }
@@ -110,9 +129,15 @@ function start() {
                 console.log('Beginning game');
                 console.log(`url: ${tab.url}`);
 
-                tab.url.replace(/[?&]+mode=(\d)/gi, function(m,value) {
-                    gamemode = value;
-                }); //Get the gamemode from the url with regex
+                if (isNaN(tab.url[tab.url.length - 1])) {  
+                    tab.url.replace(/[?&]+mode=(\d)/gi, value => {
+                        gamemode = value;
+                    }); //Get the gamemode from the url with regex
+                } else {
+                    gamemode = tab.url[tab.url.length - 1]; //Get the last character of the current url (number from 0 to 4)
+                }
+
+
                 console.log(`gamemode: ${gamemode}`);
                 if (gamemode != "8") {      //If not speaking mode
                     chrome.tabs.sendMessage(tab.id, {job: 'begin_task', mode: mode, accuracy: accuracy, delay: delay});
@@ -137,7 +162,7 @@ function start() {
 }
 
 //When we recieve a message from the question streamer (readquestion.js)
-chrome.runtime.onMessage.addListener(function(msg) {
+chrome.runtime.onMessage.addListener(msg => {
     if (msg.job == "answerQuestion") {
 
         //Attempt translation with error catch
@@ -164,7 +189,7 @@ chrome.runtime.onMessage.addListener(function(msg) {
                             //Strip The question of it's punctuation and whitespace then run it through the map
                             translatedstring = lantoeng.get(msg.question.replace(/ *\([^)]*\) */g, "").replace(/[.,\/#!$%\^ &\*;:{}=\-_`~()]/g,""));
                             
-                            console.log(`Sending answer \"${translatedstring}\" back to content script`);//Log to console
+                            console.log(`Sending answer \"${translatedstring}\" back to content script`); //Log to console
                             if (Math.floor((Math.random() * 100) + 1) <= accuracy || mode == "assist" || mode == "hackerman") {    //Get a random number and compare it with the accuracy value (assist mode bypasses this)
                                 chrome.tabs.sendMessage(tabArray[0].id, {job: 'answer', answer: translatedstring});
                             }
@@ -199,8 +224,15 @@ chrome.runtime.onMessage.addListener(function(msg) {
                     chrome.tabs.query({currentWindow: true, active: true},
                         function (tabArray) {
                             translatedstring = audtoeng.get(msg.question);
-                            
+
                             console.log(`Sending answer \"${translatedstring}\" back to content script`);//Log to console
+                            if (typeof translatedstring === "undefined") {  // if translated string undefined then re-play the audio
+                                new Promise(resolve => setTimeout(resolve, 250)).then(() => {
+                                    chrome.tabs.executeScript(tabArray[0].id, {
+                                        code: `document.getElementsByClassName("voice-speaker")[0].click();`
+                                    });
+                                });
+                            }
                             //Send Answer Back to the Content Script
                             if (Math.floor((Math.random() * 100) + 1) <= accuracy || mode == "assist" || mode == "hackerman") {    //Get a random number and compare it with the accuracy value  
                                 chrome.tabs.sendMessage(tabArray[0].id, {job: 'answer', answer: translatedstring});
@@ -219,6 +251,13 @@ chrome.runtime.onMessage.addListener(function(msg) {
                             translatedstring = audtolan.get(msg.question);
                             
                             console.log(`Sending answer \"${translatedstring}\" back to content script`);//Log to console
+                            if (typeof translatedstring === "undefined") {  // if translated string undefined then re-play the audio
+                                new Promise(resolve => setTimeout(resolve, 250)).then(() => {
+                                    chrome.tabs.executeScript(tabArray[0].id, {
+                                        code: `document.getElementsByClassName("voice-speaker")[0].click();`
+                                    });
+                                });
+                            }
                             //Send Answer Back to the Content Script
                             if (Math.floor((Math.random() * 100) + 1) <= accuracy || mode == "assist" || mode == "hackerman") {    //Get a random number and compare it with the accuracy value  
                                 chrome.tabs.sendMessage(tabArray[0].id, {job: 'answer', answer: translatedstring});

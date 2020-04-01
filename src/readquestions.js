@@ -8,23 +8,18 @@ chrome.runtime.onMessage.addListener(function (msg) {
 
         let script = document.createElement('script'); 
         script.textContent =  `function readAudio() {
-            var questiontext;
-            var audioInstances = {};
-            Object.assign(audioInstances, Howler._howls)
 
-            Object.keys(audioInstances).forEach(function(key) {
-                if (audioInstances[key]._src.startsWith("https://static.educationperfect.com/sound/")) {    //Make sure it is an mp3 for the translations
-                    audioInstances[key] = [audioInstances[key]._src.split("/").last().split(".")[0], audioInstances[key].playing()];     //Set each instance to just the mp3 name of the source file and if it is playing
-                    if (audioInstances[key][1]) {
-                        questiontext = audioInstances[key][0];
+            var questiontext = undefined;
+
+            Object.keys(Howler._howls).forEach(key => {
+                if (!Howler._howls[key]._src.startsWith("https://static.languageperfect.com/sound/dash") && !Howler._howls[key]._src.startsWith("static/sounds/")) {    //Make sure the mp3 isn't part of the dash sounds or the other static sounds
+                    if (!Howler._howls[key]._sounds[0]._paused) {
+                        questiontext = Howler._howls[key]._src.split("/").slice(-1)[0].split(".")[0];   //Save just the name of the mp3
                     }
-                } else {
-                    audioInstances[key] = undefined;        //Set it to undefined if it is not (delete is too slow)
                 }
-            })
+            });
 
-
-            //console.log(\`Sending: $\{questiontext\}\`);
+            //console.log(\`Detected mp3: $\{questiontext\}\`);
 
             window.postMessage({ type: 'questionResponse', questiontext: questiontext}, '*');
         }`; 
