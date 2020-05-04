@@ -51,7 +51,7 @@ function StoreTableData(tabledata) {
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     if (changeInfo.status == 'complete' && tab.active) {
         //If the current webpage is a vocabulary list
-        if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*list-starter.*/g)) {
+        if (tab.url.match(/https:\/\/www.(languageperfect|educationperfect)\.com\/app\/#\/.*list-starter.*/g)) {
             console.log('Injecting Script to Read Table');
 
             chrome.tabs.executeScript(tabId, {
@@ -60,7 +60,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
         }
         
         //If the current webpage is a game                                                                                  
-        else if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/game.*mode=[0123]/g) || tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/dash.*mode=[0123]/g)) {
+        else if (tab.url.match(/https:\/\/www\.(educationperfect|languageperfect)\.com\/app\/#\/.*\/(game|dash).*mode=[0123].*/g)) {
             console.log('Injecting Script to Play Game >:)');
 
             chrome.tabs.executeScript(tabId, {
@@ -72,7 +72,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
         }
 
         //If current webpage is the test completed page
-        else if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*\/test-statistics/g)) {
+        else if (tab.url.match(/https:\/\/www.(educationperfect|languageperfect).com\/app\/#\/.*\/test-statistics/g)) {
             console.log('Game Finished!');
 
             if (typeof gamemode != "undefined") {
@@ -91,7 +91,7 @@ function load() {
     chrome.tabs.query({"currentWindow": true, "active": true}, function(tab) {    //Run a query for the active tab info
         console.log("Loading table...");
         var tab = tab[0];
-        if (tab.url.match(/https:\/\/www.educationperfect.com\/app\/#\/.*list-starter.*/g)) {     
+        if (tab.url.match(/https:\/\/www.(languageperfect|educationperfect)\.com\/app\/#\/.*list-starter.*/g)) {     
             //Temporarily disable the start button while the table is being loaded
             chrome.tabs.executeScript(tab.id, {
                 code: `document.getElementById("start-button-main").disabled = true; document.getElementById("start-button-main").style.background='#A9A9A9';`
@@ -123,7 +123,7 @@ function load() {
 function start() {
     chrome.tabs.query({"currentWindow": true, "active": true}, function(tab) {   //Run a query for the active tab info
         var tab = tab[0];
-        if (tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/game.*mode=[01238]/g) || tab.url.match(/https:\/\/www\.educationperfect\.com\/app\/#\/.*\/dash.*mode=[01238]/g)) {  
+        if (tab.url.match(/https:\/\/www\.(educationperfect|languageperfect)\.com\/app\/#\/.*\/(game|dash).*mode=[01238].*/g)) {  
             //Find out what gamemode is being played
             chrome.tabs.getSelected(null, function(tab) {
                 console.log('Beginning game');
