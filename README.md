@@ -1,4 +1,7 @@
 ![](https://github.com/RandomExplosion/AutoEP/blob/master/SocialImage.png)
+# THIS EXTENSION IS NO LONGER UNDER ACTIVE DEVLOPMENT! 
+# THIS MAY OR MAY NOT CHANGE IN THE FUTURE.
+
 AutoEP is an automation solution for the Online Learning Site: Education Perfect 
 
 ### Setup
